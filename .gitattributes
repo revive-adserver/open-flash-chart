@@ -85,6 +85,7 @@ charts/series/bars/RoundGlass.as -text
 charts/series/bars/Sketch.as -text
 charts/series/bars/Stack.as -text
 charts/series/bars/StackCollection.as -text
+charts/series/dots/DefaultDotProperties.as -text
 charts/series/dots/Hollow.as -text
 charts/series/dots/PointDot.as -text
 charts/series/dots/PointDotBase.as -text
