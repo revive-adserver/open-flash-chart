@@ -6,6 +6,19 @@
 /Loading.as -text
 /NumberFormat.as -text
 /NumberUtils.as -text
+/Parser.as -text
+/PointCandle.as -text
+/PointHLC.as -text
+/Properties.as -text
+/README.txt -text
+/Range.as -text
+/ScreenCoords.as -text
+/ScreenCoordsBase.as -text
+/ScreenCoordsRadar.as -text
+/ShowTipEvent.as -text
+/Tooltip.as -text
+br/com/stimuli/string/README.txt -text
+br/com/stimuli/string/printf.as -text
 com/adobe/crypto/MD5.as -text
 com/adobe/crypto/SHA1.as -text
 com/adobe/crypto/SHA224.as -text
@@ -71,3 +84,4 @@ obj/open-flash-chartConfig.xml -text
 /open-flash-chart.as3proj -text
 string/Css.as -text
 string/Utils.as -text
+/tr.as -text
