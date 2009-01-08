@@ -1,7 +1,7 @@
 ﻿package charts {
 	import charts.series.Element;
-	import charts.Elements.Point;
 	import charts.series.dots.PointDotBase;
+	import charts.series.dots.Point;
 	import string.Utils;
 	import flash.display.BlendMode;
 	import flash.geom.Point;
@@ -52,7 +52,7 @@
 		protected override function get_element( index:Number, value:Object ): Element {
 			
 			var s:Object = this.merge_us_with_value_object( value );
-			return new charts.Elements.Point( index, new Properties( { } ));// s );
+			return new charts.series.dots.Point( index, new Properties( { } ));// s );
 		}
 		
 		public override function resize(sc:ScreenCoordsBase):void {

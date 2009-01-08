@@ -1,6 +1,4 @@
 ﻿package charts.series.dots {
-	import charts.series.dots.scat;
-	import charts.Elements.Point;
 	
 	public class dot_factory {
 		
@@ -19,7 +17,7 @@
 					break;
 				
 				case 'dot':
-					return new charts.Elements.Point(index, style);
+					return new Point(index, style);
 					break;
 				
 				case 'solid-dot':
@@ -31,6 +29,9 @@
 					break;
 					
 				default:
+				//
+				// copy out the bow tie and then remove
+				//
 					return new scat(style);
 					break;
 			}

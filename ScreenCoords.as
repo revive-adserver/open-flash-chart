@@ -1,6 +1,6 @@
 package {
 	import flash.geom.Point;
-	import charts.Elements.Point;
+	import charts.series.dots.Point;
 	
 	public class ScreenCoords extends ScreenCoordsBase
 	{
