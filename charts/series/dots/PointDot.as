@@ -8,7 +8,7 @@
 		
 		public function PointDot( index:Number, style:Object ) {
 			
-			super( index, style );
+			super( index, new Properties({}) );// style );
 			
 			this.visible = true;
 			
@@ -24,7 +24,6 @@
 			s.blendMode = BlendMode.ERASE;
 			
 			this.line_mask = s;
-			
 			
 			this.attach_events();
 		}

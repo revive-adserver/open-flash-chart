@@ -37,7 +37,7 @@
 	//		if( style.value == null)
 	//			style.value = style.y;
 
-			super( index, style );
+			super( index, new Properties({}) );// style );
 			
 			this.visible = true;
 

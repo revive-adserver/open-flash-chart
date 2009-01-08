@@ -9,7 +9,11 @@
 		tr.ace(8);
 			style = style as Properties;
 			tr.aces( 'dot factory type:', style.get('type'));
-			style.set('type', 'anchor');
+			
+			if ( (style.get('type') != 'anchor' ) && (style.get('type') != 'dot' )
+			&& (style.get('type') != 'hollow-dot' ))
+				style.set('type', 'anchor');
+				
 			tr.aces( 'dot factory type:', style.get('type'));
 			
 			
@@ -32,7 +36,7 @@
 					break;
 					
 				case 'hollow-dot':
-					return new Hollow(index, style);
+					return new Hollow(index, style as Properties);
 					break;
 					
 				default:

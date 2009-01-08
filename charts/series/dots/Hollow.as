@@ -3,26 +3,27 @@
 	import charts.series.dots.PointDotBase;
 	import flash.display.BlendMode;
 	import flash.display.Sprite;
+	import string.Utils;
 	
 	public class Hollow extends PointDotBase {
 		
-		public function Hollow( index:Number, style:Object ) {
-			tr.aces('h i', index);
+		public function Hollow( index:Number, style:Properties ) {
+			// tr.aces('h i', index);
 			super( index, style );
 			
-			this.visible = true;
+			var colour:Number = string.Utils.get_colour( style.get('colour') );
 			
 			this.graphics.clear();
 			//
 			// fill a big circle
 			//
 			this.graphics.lineStyle( 0, 0, 0 );
-			this.graphics.beginFill( style.colour, 1 );
-			this.graphics.drawCircle( 0, 0, style['dot-size']);
+			this.graphics.beginFill( colour, 1 );
+			this.graphics.drawCircle( 0, 0, style.get('dot-size'));
 			//
 			// punch out the hollow circle:
 			//
-			this.graphics.drawCircle( 0, 0, style['dot-size']-style.width);
+			this.graphics.drawCircle( 0, 0, style.get('dot-size')-style.get('width'));
 			this.graphics.endFill();	// <-- LOOK
 			//
 			// HACK: we fill an invisible circle over
@@ -32,7 +33,7 @@
 			//
 			this.graphics.lineStyle( 0, 0, 0 );
 			this.graphics.beginFill(0, 0);
-			this.graphics.drawCircle( 0, 0, style['dot-size'] );
+			this.graphics.drawCircle( 0, 0, style.get('dot-size') );
 			this.graphics.endFill();
 			//
 			// MASK
@@ -40,7 +41,7 @@
 			var s:Sprite = new Sprite();
 			s.graphics.lineStyle( 0, 0, 0 );
 			s.graphics.beginFill( 0, 1 );
-			s.graphics.drawCircle( 0, 0, style['dot-size'] + style['halo-size'] );
+			s.graphics.drawCircle( 0, 0, style.get('dot-size') + style.get('halo-size') );
 			s.blendMode = BlendMode.ERASE;
 			
 			this.line_mask = s;

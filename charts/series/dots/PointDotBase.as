@@ -12,42 +12,42 @@
 		protected var radius:Number;
 		protected var colour:Number;
 		
-		public function PointDotBase( index:Number, style:Object ) {
+		public function PointDotBase( index:Number, style:Properties ) {
 			
 			super();
 			this.is_tip = false;
-			
+			this.visible = true;
 			
 			// line charts have a value and no X,
 			// scatter charts have x, y (not value):
-			if( style.y == null)
-				style.y = style.value;
+			if( !style.has('y') )
+				style.set('y', style.get('value'));
 		
-			this._y = Number( style.y );
+			this._y = style.get('y') as Number;
 			
-			tr.aces( 'x', style.x );
+			tr.aces( 'x', style.get('x') );
 			// no X passed in so calculate it from the index
-			if( style.x == null )
+			if( !style.has('x') )
 			{
 				this.index = this._x = index;
 			}
 			else
 			{
-				this._x = style.x;
+				this._x = style.get('x') as Number;
 				this.index = Number.MIN_VALUE;
 			}
 			
-			this.radius = style['dot-size'];
-			this.tooltip = this.replace_magic_values( style.tip );
+			this.radius = style.get('dot-size');
+			this.tooltip = this.replace_magic_values( style.get('tip') );
 			
-			if ( style['on-click'] )
-				this.set_on_click( style['on-click'] );
+			if ( style.has('on-click') )
+				this.set_on_click( style.get('on-click') );
 			
 			//
 			// TODO: fix this hack
 			//
-			if ( style.axis )
-				if ( style.axis == 'right' )
+			if ( style.has('axis') )
+				if ( style.get('axis') == 'right' )
 					this.right_axis = true;
 
 		}

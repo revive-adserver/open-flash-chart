@@ -22,7 +22,7 @@
 			}
 		}
 		
-		public function get(name:String):Object {
+		public function get(name:String):* {
 			
 			if ( this.has(name) )
 				return this._props[name];

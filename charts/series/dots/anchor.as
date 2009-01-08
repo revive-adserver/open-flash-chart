@@ -33,25 +33,19 @@
 				alpha:			1,
 				// these are optional and may not be set
 				rotation:		0,
-				sides:			3
+				sides:			3,
+				
+				// hack:
+				value:			value.get('value')
 				
 			};
 			
 			//object_helper.merge_2( value, style );
-			style.colour = string.Utils.get_colour( style.get('colour') );
-			
-			// scatter charts have x, y (not value):
-		//	if( style.value == null)
-		//		style.value = style.y;
+			var colour:Number = string.Utils.get_colour( value.get('colour') );
 
-			super( index, style );
+			super( index, value as Properties );
 
-			this.visible = true;
-
-			if (style.alpha == null)
-				style.alpha = 1;
-
-			this.tooltip = this.replace_magic_values( style.tip );
+			this.tooltip = this.replace_magic_values( value.get('tip') );
 			this.attach_events();
 
 			// if style.x is null then user wants a gap in the line
@@ -74,29 +68,29 @@
 					}
 					else
 					{
-						bgColor = style.colour;
+						bgColor = colour;
 					}
 					
-					this.graphics.beginFill(bgColor, style['background-alpha']); 
+					this.graphics.beginFill(bgColor, value.get('background-alpha')); 
 				}
 				else
 				{
 					// set the fill to be the same color and alpha as the line
-					this.graphics.beginFill( style.colour, style.alpha );
+					this.graphics.beginFill( colour, value.get('alpha') );
 				}
 
-				this.graphics.lineStyle( style.width, style.colour, style.alpha );
+				this.graphics.lineStyle( value.get('width'), colour, value.get('alpha') );
 
-				this.drawAnchor(this.graphics, this.radius, style.sides, rotation);
+				this.drawAnchor(this.graphics, this.radius, value.get('sides'), rotation);
 				// Check to see if part of the line needs to be erased
 				//trace("haloSize = ", haloSize);
-				if (style['halo-size'] > 0)
+				if (value.get('halo-size') > 0)
 				{
-					style['halo-size'] += this.radius;
+					var size:Number = value.get('halo-size') + this.radius;
 					var s:Sprite = new Sprite();
 					s.graphics.lineStyle( 0, 0, 0 );
 					s.graphics.beginFill( 0, 1 );
-					this.drawAnchor(s.graphics, style['halo-size'], style.sides, rotation);
+					this.drawAnchor(s.graphics, size, value.get('sides'), rotation);
 					s.blendMode = BlendMode.ERASE;
 					s.graphics.endFill();
 					this.line_mask = s;

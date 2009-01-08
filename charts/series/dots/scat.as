@@ -15,7 +15,7 @@
 			// scatter charts have x, y (not value):
 			style.value = style.y;
 
-			super( -99, style );
+			super( -99, new Properties({}) );// style );
 
 			// override the basics in PointDotBase:
 			this._x = style.x;

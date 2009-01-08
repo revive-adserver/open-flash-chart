@@ -29,7 +29,7 @@
 			//
 			s.width = this.style.width;
 			
-			return new Hollow( index, s );
+			return new Hollow( index, s as Properties );
 		}
 	}
 }

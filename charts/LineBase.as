@@ -27,9 +27,6 @@
 			//
 			// the width of the hollow circle is the same as the width of the line
 			//
-//			s.width = this.style.width;
-//			if( s.type == null )
-//				s.type = 'dot';
 
 var tmp:Properties;
 			if( value is Number )
