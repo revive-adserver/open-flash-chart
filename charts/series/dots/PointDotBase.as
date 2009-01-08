@@ -23,7 +23,7 @@
 			if( !style.has('y') )
 				style.set('y', style.get('value'));
 		
-			this._y = style.get('y') as Number;
+			this._y = style.get('y');
 			
 			tr.aces( 'x', style.get('x') );
 			// no X passed in so calculate it from the index
@@ -33,7 +33,7 @@
 			}
 			else
 			{
-				this._x = style.get('x') as Number;
+				this._x = style.get('x');
 				this.index = Number.MIN_VALUE;
 			}
 			

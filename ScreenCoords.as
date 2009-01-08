@@ -305,7 +305,7 @@ package {
 		
 		//
 		// make a point object, using the absolute values (e.g. -5,-5 )
-		//
+		/*
 		public function make_point_2( x:Number, y:Number, right_axis:Boolean ):charts.Elements.Point
 		{
 			return new charts.Elements.Point(
@@ -315,7 +315,7 @@ package {
 				// whats this for?
 				//,y
 				);
-		}
+		}*/
 		
 		public function set_bar_groups( n:Number ): void {
 			this.bar_groups = n;

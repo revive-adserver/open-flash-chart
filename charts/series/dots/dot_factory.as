@@ -4,18 +4,9 @@
 	
 	public class dot_factory {
 		
-		public static function make( index:Number, style:Object ):PointDotBase {
+		public static function make( index:Number, style:Properties ):PointDotBase {
 			
-		tr.ace(8);
-			style = style as Properties;
 			tr.aces( 'dot factory type:', style.get('type'));
-			
-			if ( (style.get('type') != 'anchor' ) && (style.get('type') != 'dot' )
-			&& (style.get('type') != 'hollow-dot' ))
-				style.set('type', 'anchor');
-				
-			tr.aces( 'dot factory type:', style.get('type'));
-			
 			
 			switch( style.get('type') )
 			{
@@ -36,7 +27,7 @@
 					break;
 					
 				case 'hollow-dot':
-					return new Hollow(index, style as Properties);
+					return new Hollow(index, style);
 					break;
 					
 				default:

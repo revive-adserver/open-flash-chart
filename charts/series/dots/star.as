@@ -11,7 +11,7 @@
 	
 	public class star extends PointDotBase {
 		
-		public function star( index:Number, value:Object ) {
+		public function star( index:Number, value:Properties ) {
 			
 			// optional parameter defaults:
 			var style:Object = {
@@ -30,21 +30,13 @@
 				
 			};
 			
-			object_helper.merge_2( value, style );
-			style.colour = string.Utils.get_colour( style.colour );
+		//	object_helper.merge_2( value, style );
 			
-			// scatter charts have x, y (not value):
-	//		if( style.value == null)
-	//			style.value = style.y;
-
-			super( index, new Properties({}) );// style );
+			var colour:Number = string.Utils.get_colour( value.get('colour') );
 			
-			this.visible = true;
-
-			if (style.alpha == null)
-				style.alpha = 1;
-
-			this.tooltip = this.replace_magic_values( style.tip );
+			super( index, value );
+			
+			this.tooltip = this.replace_magic_values( value.get('tip') );
 			this.attach_events();
 
 			// if style.x is null then user wants a gap in the line
@@ -58,37 +50,36 @@
 //			else
 //			{
 				
-				if (style.hollow)
+				if (value.get('hollow'))
 				{
 					// Hollow - set the fill to the background color/alpha
-					if (style['background-colour'] != null)
+					if (value.get('background-colour') != null)
 					{
-						var bgColor:Number = string.Utils.get_colour( style['background-colour'] );
+						var bgColor:Number = string.Utils.get_colour( value.get('background-colour') );
 					}
 					else
 					{
-						bgColor = style.colour;
+						bgColor = colour;
 					}
 					
-					this.graphics.beginFill(bgColor, style['background-alpha']); 
+					this.graphics.beginFill(bgColor, value.get('background-alpha')); 
 				}
 				else
 				{
 					// set the fill to be the same color and alpha as the line
-					this.graphics.beginFill( style.colour, style.alpha );
+					this.graphics.beginFill( colour, value.get('alpha') );
 				}
 
-				this.graphics.lineStyle( style.width, style.colour, style.alpha );
+				this.graphics.lineStyle( value.get('width'), colour, value.get('alpha') );
 
-				this.drawStar_2(this.graphics, this.radius, style.rotation);
+				this.drawStar_2(this.graphics, this.radius, value.get('rotation'));
 				// Check to see if part of the line needs to be erased
-				if (style['halo-size'] > 0)
+				if (value.get('halo-size') > 0)
 				{
-					style['halo-size'] += this.radius;
 					var s:Sprite = new Sprite();
 					s.graphics.lineStyle( 0, 0, 0 );
 					s.graphics.beginFill( 0, 1 );
-					this.drawStar_2(s.graphics, style['halo-size'], style.rotation);
+					this.drawStar_2(s.graphics, value.get('halo-size')+this.radius, value.get('rotation'));
 					s.blendMode = BlendMode.ERASE;
 					s.graphics.endFill();
 					this.line_mask = s;

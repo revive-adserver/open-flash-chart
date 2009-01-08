@@ -13,7 +13,7 @@
 			this._props = new Dictionary();
 			this._parent = parent;
 			
-			tr.ace(json);
+			// tr.ace(json);
 			
 			for (var prop:String in json ) {
 				

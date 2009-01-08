@@ -40,7 +40,7 @@
 				default_style.colour = Utils.get_colour( default_style.colour );
 			
 			// return new scat( default_style );
-			return dot_factory.make( 0, default_style );
+			return dot_factory.make( 0, new Properties( { } ));// default_style );
 		}
 		
 		// Draw points...
