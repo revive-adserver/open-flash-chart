@@ -50,7 +50,6 @@ charts/BarSketch.as -text
 charts/BarStack.as -text
 charts/Base.as -text
 charts/Candle.as -text
-charts/Elements/Point.as -text
 charts/Elements/PointBarFade.as -text
 charts/Elements/Star.as -text
 charts/Factory.as -text
@@ -87,6 +86,7 @@ charts/series/bars/Stack.as -text
 charts/series/bars/StackCollection.as -text
 charts/series/dots/DefaultDotProperties.as -text
 charts/series/dots/Hollow.as -text
+charts/series/dots/Point.as -text
 charts/series/dots/PointDot.as -text
 charts/series/dots/PointDotBase.as -text
 charts/series/dots/anchor.as -text
