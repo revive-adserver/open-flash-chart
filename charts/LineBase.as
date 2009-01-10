@@ -28,15 +28,12 @@
 			// the width of the hollow circle is the same as the width of the line
 			//
 
-var tmp:Properties;
+			var tmp:Properties;
 			if( value is Number )
 				tmp = new Properties( { value:value }, this.style['--dot-style']);
 			else
 				tmp = new Properties( value, this.style['--dot-style']);
 				
-	tr.ace(7);
-	
-	tr.aces(7.5, tmp.get('type'));
 			return dot_factory.make( index, tmp );
 		}
 		

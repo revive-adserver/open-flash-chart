@@ -2,7 +2,7 @@
 	import charts.series.dots.Point;
 	import charts.series.Element;
 	
-	public class AreaLine extends AreaBase {
+	public class AreaLine extends Area {
 		
 		public function AreaLine( json:Object ) {
 			

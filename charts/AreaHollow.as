@@ -5,6 +5,7 @@
 	import string.Utils;
 	import flash.display.BlendMode;
 	
+	
 	public class AreaHollow extends AreaBase {
 		
 		public function AreaHollow( json:Object ) {
@@ -15,7 +16,7 @@
 		//
 		// called from the base object
 		//
-		protected override function get_element( index:Number, value:Object ): Element {
+		protected  function get_eleme__nt( index:Number, value:Object ): Element {
 			
 			//
 			// WARNING: this is copied from LineHollow, THIS MUST BE

@@ -28,7 +28,7 @@ caurina/transitions/SpecialPropertyModifier.as -text
 caurina/transitions/SpecialPropertySplitter.as -text
 caurina/transitions/TweenListObj.as -text
 caurina/transitions/Tweener.as -text
-charts/AreaBase.as -text
+charts/Area.as -text
 charts/AreaHollow.as -text
 charts/AreaLine.as -text
 charts/Bar.as -text

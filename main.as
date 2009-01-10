@@ -3,9 +3,15 @@ package  {
 	import charts.series.Element;
 	import charts.Factory;
 	import charts.ObjectCollection;
+	import elements.Menu;
 	import charts.series.has_tooltip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	
+	// for image upload:
+	import flash.events.ProgressEvent;
+	import flash.net.URLVariables;
+	
 	import flash.display.Sprite;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -70,6 +76,7 @@ package  {
 		private var URL:String;		// ugh, vile. The IOError doesn't report the URL
 		private var id:String;
 		private var chart_parameters:Object;
+		private var menu:Menu;
 		
 		public function main() {
 			this.chart_parameters = LoaderInfo(this.loaderInfo).parameters;
@@ -87,7 +94,7 @@ package  {
 				// no data found -- debug mode?
 				try {
 					//var file:String = "../data-files/scatter-anchors.txt";
-					var file:String = "../../data-files/line-hollow.txt";
+					var file:String = "../../data-files/area-1.txt";
 					//var file:String = "../../../test-data-files/stack.txt";
 					this.load_external_file( file );
 
@@ -192,24 +199,51 @@ package  {
 		// External interface called by Javascript to
 		// save the flash as an image, then POST it to a URL
 		//
-		public function post_image( url:String, callback:String, debug:Boolean ):void {
-			
+		//public function post_image( url:String, callback:String, debug:Boolean ):void {
+		public function post_image(id:String, url:String, post_params:Object, callback:String, debug:Boolean):void {
+          
 			var header:URLRequestHeader = new URLRequestHeader("Content-type", "application/octet-stream");
 
 			//Make sure to use the correct path to jpg_encoder_download.php
-			var jpgURLRequest:URLRequest = new URLRequest(url);
+			var request:URLRequest = new URLRequest(url);
 			
-			jpgURLRequest.requestHeaders.push(header);
-			jpgURLRequest.method = URLRequestMethod.POST;
-			jpgURLRequest.data = image_binary();
+			request.requestHeaders.push(header);
+			request.method = URLRequestMethod.POST;
+			request.data = image_binary();
+
+			var loader:URLLoader = new URLLoader();
+			loader.dataFormat = URLLoaderDataFormat.VARIABLES;
+             
+			request.method = URLRequestMethod.POST;
+			var urlVars:URLVariables = new URLVariables();
+			for (var key:String in post_params) {
+				urlVars[key] = post_params[key];
+			}
+			urlVars.b64_image_data =  getImgBinary();
+			request.data = urlVars;
 
 			if( debug )
 			{
 				// debug the PHP:
-				flash.net.navigateToURL(jpgURLRequest, "_blank");
+				flash.net.navigateToURL(request, "_blank");
 			}
 			else
 			{
+				//we have to use the PROGRESS event instead of the COMPLETE event due to a bug in flash
+				loader.addEventListener(ProgressEvent.PROGRESS, function (e:ProgressEvent):void {
+						tr.ace("progress:" + e.bytesLoaded + ", total: " + e.bytesTotal);
+						if ((e.bytesLoaded == e.bytesTotal) && (callback != null)) {
+							ExternalInterface.call(callback, id);
+						}
+					});
+
+				try {
+					loader.load( request );
+				} catch (error:Error) {
+					tr.ace("unable to load:" + error);
+				}
+			 
+				/*
 				var loader:URLLoader = new URLLoader();
 				loader.dataFormat = URLLoaderDataFormat.BINARY;
 				loader.addEventListener(Event.COMPLETE, function(e:Event):void {
@@ -223,6 +257,7 @@ package  {
 					});
 					
 				loader.load( jpgURLRequest );
+				*/
 			}
 		}
 
@@ -493,6 +528,8 @@ package  {
 				sc = this.resize_chart();
 			
 			
+			this.menu.resize();
+			
 			// tell the web page that we have resized our content
 			if( this.id != null )
 				ExternalInterface.call("ofc_resize", sc.left, sc.width, sc.top, sc.height, id);
@@ -669,8 +706,15 @@ package  {
 				this.addChild( set );
 			this.addChild( this.tooltip );
 
+			if (true) {
+				this.menu = new Menu('99');
+				this.addChild(this.menu);
+			}
+			
 			this.ok = true;
 			this.resize();
+			
+			
 		}
 		
 		//

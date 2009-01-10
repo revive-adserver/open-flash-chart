@@ -32,8 +32,8 @@ package charts {
 						collection.add( new Line( elements[i] ) );
 						break;
 						
-					case 'area_hollow':
-						collection.add( new AreaHollow( elements[i] ) );
+					case 'area':
+						collection.add( new Area( elements[i] ) );
 						break;
 						
 					case 'area_line':

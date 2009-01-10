@@ -6,11 +6,12 @@
 	import flash.display.BlendMode;
 	import flash.geom.Point;
 	import flash.display.Sprite;
+	import charts.series.dots.DefaultDotProperties;
+
 	
-	
-	public class AreaBase extends LineBase {
+	public class Area extends LineBase {
 		
-		public function AreaBase( json:Object ) {
+		public function Area( json:Object ) {
 			
 			this.style = {
 				values:			[],
@@ -19,12 +20,14 @@
 				fill:			'#3030d0',
 				text:			'',		// <-- default not display a key
 				'dot-size':		5,
-				'halo-size':	2,
 				'font-size':	10,
 				'fill-alpha':	0.6,
-				tip:			'#val#',
 				'line-style':	new LineStyle( json['line-style'] ),
-				loop:			false		// <-- for radar charts
+				loop:			false,		// <-- for radar charts
+				
+				// default dot:
+				// HACK: fix this (remove the merge below)
+				'--dot-style':	new DefaultDotProperties(json['dot-style'],'#val#','#3030d0')
 			};
 			
 			object_helper.merge_2( json, this.style );
@@ -44,15 +47,6 @@
 			// so the mask child can punch a hole through the line
 			//
 			this.blendMode = BlendMode.LAYER;
-		}
-		
-		//
-		// called from the base object
-		//
-		protected override function get_element( index:Number, value:Object ): Element {
-			
-			var s:Object = this.merge_us_with_value_object( value );
-			return new charts.series.dots.Point( index, new Properties( { } ));// s );
 		}
 		
 		public override function resize(sc:ScreenCoordsBase):void {
