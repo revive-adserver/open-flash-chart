@@ -29,8 +29,6 @@ caurina/transitions/SpecialPropertySplitter.as -text
 caurina/transitions/TweenListObj.as -text
 caurina/transitions/Tweener.as -text
 charts/Area.as -text
-charts/AreaHollow.as -text
-charts/AreaLine.as -text
 charts/Bar.as -text
 charts/Bar3D.as -text
 charts/BarBase.as -text
@@ -130,7 +128,9 @@ com/adobe/webapis/URLLoaderBase.as -text
 com/adobe/webapis/events/ServiceEvent.as -text
 com/serialization/json/JSON.as -text
 elements/Background.as -text
+elements/CameraIcon.as -text
 elements/InnerBackground.as -text
+elements/Menu.as -text
 elements/axis/AxisLabel.as -text
 elements/axis/RadarAxis.as -text
 elements/axis/RadarAxisLabels.as -text

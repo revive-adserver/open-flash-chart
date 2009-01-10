@@ -36,10 +36,6 @@ package charts {
 						collection.add( new Area( elements[i] ) );
 						break;
 						
-					case 'area_line':
-						collection.add( new AreaLine( elements[i] ) );
-						break;
-						
 					case 'pie':
 						collection.add( new Pie( elements[i] ) );
 						break;
