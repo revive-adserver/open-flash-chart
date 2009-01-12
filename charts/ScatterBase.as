@@ -6,11 +6,14 @@
 	import string.Utils;
 	import flash.geom.Point;
 	import flash.display.Sprite;
+	import charts.series.dots.DefaultDotProperties;
 	
 	public class ScatterBase extends Base {
 
 		// TODO: move this into Base
 		protected var style:Object;
+		
+		protected var default_style:DefaultDotProperties;
 		
 		public function ScatterBase() { }
 		
@@ -39,8 +42,11 @@
 			if( default_style.colour is String )
 				default_style.colour = Utils.get_colour( default_style.colour );
 			
-			// return new scat( default_style );
-			return dot_factory.make( 0, new Properties( { } ));// default_style );
+			var tmp:Properties = new Properties( value, this.default_style);
+				
+			return dot_factory.make( index, tmp );
+			
+			// return dot_factory.make( 0, new Properties( { } ));// default_style );
 		}
 		
 		// Draw points...

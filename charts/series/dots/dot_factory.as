@@ -4,12 +4,16 @@
 		
 		public static function make( index:Number, style:Properties ):PointDotBase {
 			
-			tr.aces( 'dot factory type:', style.get('type'));
+			tr.aces( 'dot factory type', style.get('type'));
 			
 			switch( style.get('type') )
 			{
 				case 'star':
 					return new star(index, style);
+					break;
+					
+				case 'bow':
+					return new bow(index, style);
 					break;
 				
 				case 'anchor':
@@ -32,7 +36,8 @@
 				//
 				// copy out the bow tie and then remove
 				//
-					return new scat(style);
+					return new Point(index, style);
+					// return new scat(style);
 					break;
 			}
 		}

@@ -88,6 +88,7 @@ charts/series/dots/Point.as -text
 charts/series/dots/PointDot.as -text
 charts/series/dots/PointDotBase.as -text
 charts/series/dots/anchor.as -text
+charts/series/dots/bow.as -text
 charts/series/dots/dot_factory.as -text
 charts/series/dots/scat.as -text
 charts/series/dots/star.as -text
