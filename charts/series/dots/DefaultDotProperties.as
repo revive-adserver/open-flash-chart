@@ -19,7 +19,9 @@
 				alpha:			1,
 				// this is for anchors:
 				rotation:		0,
-				sides:			3
+				sides:			3,
+				// this is for hollow dot:
+				width:			1
 				} );
 				
 				

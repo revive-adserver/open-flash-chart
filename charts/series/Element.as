@@ -141,12 +141,13 @@
 
 		/**
 		 * Replace #x_label# with the label. This is called
-		 * after the X Label object has been build (see main.as)
+		 * after the X Label object has been built (see main.as)
 		 * 
 		 * @param	labels
 		 */
 		public function tooltip_replace_labels( labels:XAxisLabels ):void {
 			
+			// tr.aces('x label', this.index, labels.get( this.index ));
 			this.tooltip = this.tooltip.replace('#x_label#', labels.get( this.index ) );
 		}
 		

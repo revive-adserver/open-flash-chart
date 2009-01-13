@@ -18,14 +18,14 @@
 			this.is_tip = false;
 			this.visible = true;
 			
-			// line charts have a value and no X,
-			// scatter charts have x, y (not value):
+			// line charts have a value and no X, scatter charts have
+			// x, y (not value): radar charts have value, Y does not 
+			// make sense.
 			if( !style.has('y') )
 				style.set('y', style.get('value'));
 		
 			this._y = style.get('y');
 			
-			tr.aces( 'x', style.get('x') );
 			// no X passed in so calculate it from the index
 			if( !style.has('x') )
 			{
@@ -33,6 +33,7 @@
 			}
 			else
 			{
+				tr.aces( 'x', style.get('x') );
 				this._x = style.get('x');
 				this.index = Number.MIN_VALUE;
 			}

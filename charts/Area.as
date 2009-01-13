@@ -27,11 +27,15 @@
 				
 				// default dot:
 				// HACK: fix this (remove the merge below)
-				'--dot-style':	new DefaultDotProperties(json['dot-style'],'#val#','#3030d0')
+				'--dot-style':	null
 			};
 			
 			object_helper.merge_2( json, this.style );
 
+			// hack:
+			this.style['--dot-style'] = new DefaultDotProperties(
+				json['dot-style'], '#val#', this.style.colour);
+			
 			if( this.style.fill == '' )
 				this.style.fill = this.style.colour;
 				
