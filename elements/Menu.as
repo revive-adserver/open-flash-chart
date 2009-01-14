@@ -10,27 +10,28 @@
 		
 		public function Menu(chartId:String) {
 			
-			this.draw();
 			var camera_icon:CameraIcon = new CameraIcon(chartId);
 			camera_icon.x = 5;
 			camera_icon.y = 5;
 			this.addChild(camera_icon);
 			
+			this.draw(camera_icon.width);
+			
 			this.addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
 			this.addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler);
 		}
 		
-		private function draw(): void {
+		private function draw( width:Number ): void {
 			
 			this.graphics.clear();
 			
 			this.graphics.beginFill(0x000000, .3);
 			this.graphics.moveTo( 0, 0 );
 			this.graphics.lineTo( 0, 30 );
-			this.graphics.lineTo( 20, 30 );
-			this.graphics.lineTo( 25, 40 );
-			this.graphics.lineTo( 50, 40 );
-			this.graphics.lineTo( 50, 0 );
+			this.graphics.lineTo( width-25, 30 );
+			this.graphics.lineTo( width-20, 40 );
+			this.graphics.lineTo( width, 40 );
+			this.graphics.lineTo( width, 0 );
 			
 			this.graphics.endFill();
 		}
