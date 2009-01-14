@@ -41,6 +41,7 @@
 			this.radius = style.get('dot-size');
 			this.tooltip = this.replace_magic_values( style.get('tip') );
 			
+			tr.aces( 'on click', style.get('on-click') );
 			if ( style.has('on-click') )
 				this.set_on_click( style.get('on-click') );
 			

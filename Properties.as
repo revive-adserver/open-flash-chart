@@ -24,7 +24,7 @@
 		
 		public function get(name:String):* {
 			
-			if ( this.has(name) )
+			if ( this._props[name] != null )
 				return this._props[name];
 			
 			if ( this._parent != null )
@@ -42,7 +42,14 @@
 		}
 		
 		public function has(name:String):Boolean {
-			return this._props[name]!=null;
+			if ( this._props[name] == null ) {
+				if ( this._parent != null )
+					return this._parent.has(name);
+				else
+					return false;
+			}
+			else
+				return true;
 		}
 	}
 }
