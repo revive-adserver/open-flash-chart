@@ -11,39 +11,12 @@
 	
 	public class anchor extends PointDotBase {
 		
-		public function anchor( index:Number, value:Object ) {
+		public function anchor( index:Number, value:Properties ) {
 			
-			//
-			//
-			//
-			value = value as Properties;
-			//
-			//
-			//
 			
-			// optional parameter defaults:
-			var style:Object = {
-				// these will be set by the parent (line, scatter, etc...)
-				// are are here to prevent bugs...
-				width:			2,
-				colour:			'#3030d0',
-				tip:			'Anchor [#x#,#y#] #size#',
-				'dot-size':		5,
-				'halo-size':	2,
-				alpha:			1,
-				// these are optional and may not be set
-				rotation:		0,
-				sides:			3,
-				
-				// hack:
-				value:			value.get('value')
-				
-			};
-			
-			//object_helper.merge_2( value, style );
 			var colour:Number = string.Utils.get_colour( value.get('colour') );
 
-			super( index, value as Properties );
+			super( index, value );
 
 			this.tooltip = this.replace_magic_values( value.get('tip') );
 			this.attach_events();
@@ -59,12 +32,12 @@
 //			else
 //			{
 				
-				if (style.hollow)
+				if (value.get('hollow'))
 				{
 					// Hollow - set the fill to the background color/alpha
-					if (style['background-colour'] != null)
+					if( value.has('background-colour') )
 					{
-						var bgColor:Number = string.Utils.get_colour( style['background-colour'] );
+						var bgColor:Number = string.Utils.get_colour( value.get('background-colour') );
 					}
 					else
 					{

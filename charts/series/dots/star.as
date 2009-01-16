@@ -13,25 +13,6 @@
 		
 		public function star( index:Number, value:Properties ) {
 			
-			// optional parameter defaults:
-			var style:Object = {
-				// these will be set by the parent (line, scatter, etc...)
-				// are are here to prevent bugs...
-				width:			2,
-				colour:			'#3030d0',
-				tip:			'Star [#x#,#y#] #size#',
-				'dot-size':		5,
-				'halo-size':	2,
-				alpha:			1,
-				// these are optional and may not be set
-				hollow:					false,
-				'background-alpha':		0,
-				rotation:				0
-				
-			};
-			
-		//	object_helper.merge_2( value, style );
-			
 			var colour:Number = string.Utils.get_colour( value.get('colour') );
 			
 			super( index, value );

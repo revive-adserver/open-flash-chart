@@ -16,8 +16,7 @@
 			this.buttonMode = true;
 			this.useHandCursor = true;
 			this.chartId = chartId;
-			
-			
+			 
 			this.alpha = 0.5;
 			
 			this.graphics.beginFill(0xffffff, .8);

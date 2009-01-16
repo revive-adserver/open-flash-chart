@@ -54,22 +54,6 @@
 
 		}
 		
-		//
-		// all dot share the same resize code:
-		/*
-		public override function resize( sc:ScreenCoordsBase ):void {
-
-			var p:flash.geom.Point = sc.get_get_x_from_pos_and_y_from_val( this.index, this._y, this.right_axis );
-			//
-			// Haha! This is the worst code in the world,
-			// but it is kinda kooky and cool at the same time :-)
-			//
-			this.x = this.line_mask.x = p.x;
-			this.y = this.line_mask.y = p.y;
-			
-		}
-		*/
-		
 		public override function resize( sc:ScreenCoordsBase ): void {
 			
 			if ( this.index != Number.MIN_VALUE ) {
