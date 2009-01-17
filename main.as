@@ -93,7 +93,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/line-hollow.txt";
+					var file:String = "../../data-files/tooltip-mixed-1.txt";
 					//var file:String = "../../data-files/radar-2.txt";
 					//var file:String = "../../../test-data-files/stack.txt";
 					this.load_external_file( file );
@@ -706,8 +706,8 @@ package  {
 				this.addChild( set );
 			this.addChild( this.tooltip );
 
-			if (true) {
-				this.menu = new Menu('99');
+			if (json['menu'] != null) {
+				this.menu = new Menu('99', json['menu']);
 				this.addChild(this.menu);
 			}
 			
@@ -735,8 +735,6 @@ package  {
 			this.y_axis			= new YAxisLeft( json );
 			this.y_axis_right	= new YAxisRight( json );
 			
-			
-			
 			// access all our globals through this:
 			var g:Global = Global.getInstance();
 			// this is needed by all the elements tooltip
@@ -755,7 +753,6 @@ package  {
 			this.addChild( this.x_legend );
 			this.addChild( this.y_legend );
 			this.addChild( this.y_legend_2 );
-			//this.addChild( this.x_labels );
 			this.addChild( this.y_axis );
 			this.addChild( this.y_axis_right );
 			this.addChild( this.x_axis );

@@ -4,7 +4,7 @@
 		
 		public static function make( index:Number, style:Properties ):PointDotBase {
 			
-			tr.aces( 'dot factory type', style.get('type'));
+			// tr.aces( 'dot factory type', style.get('type'));
 			
 			switch( style.get('type') )
 			{

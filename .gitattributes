@@ -130,6 +130,7 @@ com/adobe/webapis/events/ServiceEvent.as -text
 com/serialization/json/JSON.as -text
 elements/Background.as -text
 elements/CameraIcon.as -text
+elements/DefaultMenuProperties.as -text
 elements/InnerBackground.as -text
 elements/Menu.as -text
 elements/axis/AxisLabel.as -text

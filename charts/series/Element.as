@@ -147,8 +147,8 @@
 		 */
 		public function tooltip_replace_labels( labels:XAxisLabels ):void {
 			
-			// tr.aces('x label', this.index, labels.get( this.index ));
-			this.tooltip = this.tooltip.replace('#x_label#', labels.get( this.index ) );
+			tr.aces('x label', this._x, labels.get( this._x ));
+			this.tooltip = this.tooltip.replace('#x_label#', labels.get( this._x ) );
 		}
 		
 		/**

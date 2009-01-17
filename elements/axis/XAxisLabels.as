@@ -32,7 +32,6 @@ package elements.axis {
 			// TODO: remove this and the class
 			// var style:XLabelStyle = new XLabelStyle( json.x_labels );
 			
-			
 			this.style = {
 				rotate:		0,
 				visible:	null,
@@ -77,8 +76,17 @@ package elements.axis {
 				//
 				this.need_labels = false;
 				
+				var x:Number = 0;
+				
 				for each( var s:Object in this.style.labels )
-					this.add( s, this.style );
+				{
+					var tmpStyle:Object = {};
+					object_helper.merge_2( this.style, tmpStyle );
+					tmpStyle.x = x;
+					// we need the x position for #x_label# tooltips
+					this.add( s, tmpStyle );
+					x++;
+				}
 			}
 		}
 		
@@ -140,7 +148,6 @@ package elements.axis {
 				x:			style.x
 			};
 
-			
 			//
 			// inherit some properties from
 			// our parents 'globals'
@@ -155,9 +162,6 @@ package elements.axis {
 				label_style.text = this.replace_magic_values(label_style.text, label_style.x);
 			}
 			
-			
-			
-			// this.axis_labels.push( label_style.text );
 			// Map X location to label string
 			this.axis_labels[label_style.x] = label_style.text;
 

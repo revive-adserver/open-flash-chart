@@ -5,21 +5,25 @@
 	import elements.CameraIcon;
 	import caurina.transitions.Tweener;
 	import caurina.transitions.Equations;
+	import string.Utils;
 
 	public class Menu extends Sprite {
 		
 		private var original_alpha:Number;
+		private var props:Properties;
 		
-		public function Menu(chartId:String) {
+		public function Menu( chartId:String, json:Object ) {
+			
+			this.props = new DefaultMenuProperties(json);
 			
 			this.original_alpha = this.alpha = 0.4;
 			
-			var camera_icon:CameraIcon = new CameraIcon(chartId);
+			var camera_icon:CameraIcon = new CameraIcon(chartId, this.props.get('camera-text'));
 			camera_icon.x = 5;
 			camera_icon.y = 5;
 			this.addChild(camera_icon);
 			
-			this.draw(camera_icon.width);
+			this.draw(camera_icon.width+10);
 			
 			this.addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
 			this.addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler);
@@ -29,15 +33,29 @@
 			
 			this.graphics.clear();
 			
-			this.graphics.beginFill(0x202020, 1);
+			var colour:Number = string.Utils.get_colour( this.props.get('colour') );
+			var o_colour:Number = string.Utils.get_colour( this.props.get('outline-colour') );
+			
+			this.graphics.lineStyle( 1, o_colour );
+			this.graphics.beginFill(colour, 1);
 			this.graphics.moveTo( 0, 0 );
 			this.graphics.lineTo( 0, 30 );
 			this.graphics.lineTo( width-25, 30 );
 			this.graphics.lineTo( width-20, 40 );
 			this.graphics.lineTo( width, 40 );
 			this.graphics.lineTo( width, 0 );
-			
 			this.graphics.endFill();
+			
+			// arrows
+			this.graphics.lineStyle( 1, o_colour );
+			this.graphics.moveTo( width-15, 33 );
+			this.graphics.lineTo( width-10, 38 );
+			this.graphics.lineTo( width - 5, 33 );
+			
+			this.graphics.moveTo( width-15, 30 );
+			this.graphics.lineTo( width-10, 35 );
+			this.graphics.lineTo( width - 5, 30 );
+			
 		}
 		
 		public function mouseOverHandler(event:MouseEvent):void {
@@ -56,7 +74,7 @@
 			//
 			//this.stage.stageHeight
 			
-			this.x = this.stage.stageWidth - this.width - 10;
+			this.x = this.stage.stageWidth - this.width - 5;
 			this.y = -(this.height) + 10;
 			
 		}

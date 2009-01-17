@@ -9,9 +9,10 @@
 	import flash.text.TextFormat;
 
 	public class CameraIcon extends Sprite {
+		
 		private var chartId:String;
 
-		public function CameraIcon(chartId:String) {
+		public function CameraIcon(chartId:String, text:String) {
 			
 			this.buttonMode = true;
 			this.useHandCursor = true;
@@ -19,17 +20,26 @@
 			 
 			this.alpha = 0.5;
 			
-			this.graphics.beginFill(0xffffff, .8);
-			this.graphics.drawRoundRect(0, 0, 80, 20, 5, 5 );
-			this.graphics.endFill();
 			
-			this.add_text();
+			
+			var width:Number = this.add_text(text);
+			this.draw_bg(
+				width +
+				30 + // icon width
+				10 // 5px padding on either side
+				);
 			this.draw_camera();
 			
 			this.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 			this.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			this.addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
 			this.addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler);
+		}
+		
+		private function draw_bg( width:Number ):void {
+			this.graphics.beginFill(0xffffff, .8);
+			this.graphics.drawRoundRect(0, 0, width, 20, 5, 5 );
+			this.graphics.endFill();
 		}
 		
 		private function draw_camera():void {
@@ -45,20 +55,21 @@
 			
 		}
 		
-		private function add_text(): void {
+		private function add_text(text:String): Number {
 			var title:TextField = new TextField();
             title.x = 35;
 			title.y = 0;
 			
 			//this.text = 'Save chart';
 			
-			title.htmlText = 'Save chart';
+			title.htmlText = text;
 			
 			var fmt:TextFormat = new TextFormat();
-			fmt.color = 0;// this.css.color;
-//			fmt.font = this.css.font_family?this.css.font_family:'Verdana';
+			fmt.color = 0x0000ff;// this.css.color;
+			fmt.font = 'Verdana';
 //			fmt.bold = this.css.font_weight == 'bold'?true:false;
 			fmt.size = 10;// this.css.font_size;
+			fmt.underline = true;
 //			fmt.align = "center";
 		
 			title.setTextFormat(fmt);
@@ -66,8 +77,9 @@
 			
 //			title.border = true;
 			
-
 			this.addChild(title);
+			
+			return title.width;
 		}
 
 		public function mouseClickHandler(event:MouseEvent):void {

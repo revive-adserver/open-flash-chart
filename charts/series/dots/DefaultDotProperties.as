@@ -13,7 +13,6 @@
 				'type':			'dot',
 				'dot-size': 	5,
 				'halo-size':	2,
-				//'on-click':		null,
 				'colour':		colour,
 				'tip':			tip,
 				alpha:			1,
