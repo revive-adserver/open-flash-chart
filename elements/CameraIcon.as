@@ -11,8 +11,11 @@
 	public class CameraIcon extends Sprite {
 		
 		private var chartId:String;
-
-		public function CameraIcon(chartId:String, text:String) {
+		private var props:Properties;
+		
+		public function CameraIcon(chartId:String, json:Object) {
+			
+			this.props = new DefaultCameraIconProperties(json);
 			
 			this.buttonMode = true;
 			this.useHandCursor = true;
@@ -20,9 +23,7 @@
 			 
 			this.alpha = 0.5;
 			
-			
-			
-			var width:Number = this.add_text(text);
+			var width:Number = this.add_text(props.get('text'));
 			this.draw_bg(
 				width +
 				30 + // icon width
@@ -45,12 +46,12 @@
 		private function draw_camera():void {
 			
 			this.graphics.beginFill(0x000000, .2);
-			this.graphics.drawRoundRect(2, 4, 26, 15, 2, 2);
+			this.graphics.drawRoundRect(2, 4, 26, 14, 2, 2);
 			this.graphics.drawRect(20, 1, 5, 3);
 			this.graphics.endFill();
 
 			this.graphics.beginFill(0x000000, .3);
-			this.graphics.drawCircle(8, 11, 5);
+			this.graphics.drawCircle(9, 11, 4.5);
 			this.graphics.endFill();
 			
 		}
@@ -74,6 +75,10 @@
 		
 			title.setTextFormat(fmt);
 			title.autoSize = "left";
+			
+			// so we don't get an I-beam cursor when we mouse
+			// over the text - pass mouse messages onto the button
+			title.mouseEnabled = false;
 			
 //			title.border = true;
 			
