@@ -527,8 +527,8 @@ package  {
 			else
 				sc = this.resize_chart();
 			
-			
-			this.menu.resize();
+			if( this.menu )
+				this.menu.resize();
 			
 			// tell the web page that we have resized our content
 			if( this.id != null )
