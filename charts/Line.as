@@ -32,10 +32,14 @@ package charts {
 				// HACK: fix this (remove the merge below)
 			};
 			
-			this.props = new DefaultDotProperties( json['dot-style'], '#val#', '#3030d0');
+			// hack: keep this incase the merge kills it, we'll
+			// remove the merge later (and this hack)
+			var tmp:Object = json['dot-style'];
 			
 			object_helper.merge_2( json, this.style );
-
+			
+			this.props = new DefaultDotProperties( tmp, this.style.colour, this.style.axis);
+			
 			this.style.colour = string.Utils.get_colour( this.style.colour );
 			
 			this.key		= this.style.text;
