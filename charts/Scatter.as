@@ -15,13 +15,18 @@
 				colour:			'#3030d0',
 				text:			'',		// <-- default not display a key
 				'font-size':	12,
-				tip:			'[#x#,#y#] #size#'
+				tip:			'[#x#,#y#] #size#',
+				axis:			'left'
 			};
 			
-			this.default_style = new DefaultDotProperties(
-				json['dot-style'], '[#x#,#y#] #size#', '#3030d0');
+			// hack: keep this incase the merge kills it, we'll
+			// remove the merge later (and this hack)
+			var tmp:Object = json['dot-style'];
 			
 			object_helper.merge_2( json, style );
+			
+			this.default_style = new DefaultDotProperties(
+				json['dot-style'], this.style.colour, this.style.axis);
 			
 			this.line_width = style.width;
 			this.colour		= string.Utils.get_colour( style.colour );

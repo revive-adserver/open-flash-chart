@@ -8,6 +8,7 @@
 	import flash.geom.Point;
 	import flash.display.Sprite;
 	import flash.display.BlendMode;
+	import charts.series.dots.DefaultDotProperties;
 	
 	
 	public class ScatterLine extends ScatterBase
@@ -29,22 +30,27 @@
 				width:			2,
 				colour:			'#3030d0',
 				text:			'',		// <-- default not display a key
-				'dot-size':		5,
-				'halo-size':	2,
 				'font-size':	12,
-				tip:			'[#x#,#y#] #size#',
-				stepgraph:		0
+				stepgraph:		0,
+				axis:			'left'
 			};
+			
+			// hack: keep this incase the merge kills it, we'll
+			// remove the merge later (and this hack)
+			var tmp:Object = json['dot-style'];
 			
 			object_helper.merge_2( json, style );
 			
+			this.default_style = new DefaultDotProperties(
+				json['dot-style'], this.style.colour, this.style.axis);
+				
 			this.style.colour = string.Utils.get_colour( style.colour );
 			
 			this.line_width = style.width;
 			this.colour		= this.style.colour;
 			this.key		= style.text;
 			this.font_size	= style['font-size'];
-			this.circle_size = style['dot-size'];
+			//this.circle_size = style['dot-size'];
 			
 			switch (style['stepgraph']) {
 				case 'horizontal':
@@ -54,15 +60,8 @@
 					stepgraph = STEP_VERTICAL;
 					break;
 			}
-     
-			for each( var val:Object in style.values )
-			{
-				if( val['dot-size'] == null )
-					val['dot-size'] = style['dot-size'];
-			}
-			
+	
 			this.values = style.values;
-
 			this.add_values();
 		}
 		
@@ -135,6 +134,8 @@
 				
 				var tmp:Sprite = this.getChildAt(i) as Sprite;
 				
+				
+				tr.ace("!!");
 				//
 				// filter out the line masks
 				//
@@ -142,7 +143,7 @@
 				{
 					var e:Element = tmp as Element;
 					
-					// tr.ace(e.screen_x);
+					tr.ace(e.x);
 					
 					// tell the point where it is on the screen
 					// we will use this info to place the tooltip

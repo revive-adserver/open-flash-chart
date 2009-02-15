@@ -111,6 +111,8 @@
 			}
 			else if ( this.link.substring(0, 5) == 'http:' )
 				this.browse_url( this.link );
+			else if ( this.link.substring(0, 6) == 'https:' )
+				this.browse_url( this.link );
 			else
 				ExternalInterface.call( this.link, this.index );
 		}
