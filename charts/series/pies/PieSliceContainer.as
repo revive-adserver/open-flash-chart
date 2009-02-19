@@ -42,6 +42,9 @@
 			//
 			// value.set('label', this.replace_magic_values( value.get('label') ) );
 			
+			
+			tr.aces( 'pie', value.get('animate') );
+			
 			this.pieSlice = new PieSlice( index, value );
 			this.addChild( this.pieSlice );
 			var textlabel:String = value.get('label');
@@ -52,7 +55,7 @@
 			this.alpha = this.original_alpha = value.get('alpha');
 			//
 			if ( !value.has('label-colour') )
-				value.set('label-colour', value.get('label'));
+				value.set('label-colour', value.get('colour'));
 				
 			if ( !value.get('no-labels') ) {
 				this.pieLabel = new PieLabel(
@@ -64,7 +67,7 @@
 				this.addChild( this.pieLabel );
 			}
 			
-			this.attach_events();
+			this.attach_events__(value);
 			this.animating = false;
 		}
 		
@@ -148,15 +151,27 @@
 		// override this. I think this needs to be moved into an
 		// animation manager?
 		//
-		protected override function attach_events():void {
+		protected function attach_events__(value:Properties):void {
 			
-			// weak references so the garbage collector will kill them:
-			this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_bounce_out, false, 0, true);
-			this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_bounce_out, false, 0, true);
+			var anims:Array = value.get('animate');
 			
-			this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_alpha, false, 0, true);
-			this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_alpha, false, 0, true);
-			
+			for each( var a:Object in anims ) {
+				switch( a.type ) {
+					
+					case "bounce":
+						// weak references so the garbage collector will kill them:
+						this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_bounce_out, false, 0, true);
+						this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_bounce_out, false, 0, true);
+						this.animationOffset = a.distance;
+						break;
+						
+					default:
+						// weak references so the garbage collector will kill them:
+						this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_alpha, false, 0, true);
+						this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_alpha, false, 0, true);
+						break;
+				}
+			}
 		}
 		
 		public function mouseOver_bounce_out(event:Event):void {

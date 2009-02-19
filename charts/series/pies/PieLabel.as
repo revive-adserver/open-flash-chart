@@ -1,5 +1,6 @@
 ﻿package charts.series.pies {
 	
+	import string.Utils;
 	import charts.series.has_tooltip;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -15,12 +16,14 @@
 			// legend_tf._rotation = 3.6*value.bar_bottom;
 			
 			var fmt:TextFormat = new TextFormat();
-			fmt.color = style.colour;
+			fmt.color = string.Utils.get_colour( style.colour );
 			fmt.font = "Verdana";
 			fmt.size = style['font-size'];
 			fmt.align = "center";
 			this.setTextFormat(fmt);
 			this.autoSize = "left";
+			
+			this.mouseEnabled = false;
 		}
 		
 		public function move_label( rad:Number, x:Number, y:Number, ang:Number ):Boolean {

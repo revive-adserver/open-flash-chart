@@ -15,7 +15,7 @@
 				'gradient-fill':	false,
 				stroke:				1,
 				colours:			["#900000", "#009000"],	// slices colours
-				animate:			1,
+				animate:			[{"type":"fade-in"}],
 				tip:				'#val# of #total#',	// #percent#, #label#
 				'no-labels':		false,
 				'on-click':			null
