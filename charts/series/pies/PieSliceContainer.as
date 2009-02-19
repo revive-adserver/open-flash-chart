@@ -39,6 +39,9 @@
 			if( style['no-labels'] )
 				textlabel = '';
 			
+			if( style['label-colour'] == null )
+				style['label-colour'] = style.colour;
+				
 			this.pieLabel = new PieLabel(
 					{
 						label:			textlabel,
