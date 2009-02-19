@@ -20,7 +20,6 @@
 		private var colour:Number;
 		public var slice_angle:Number;
 		private var border_width:Number;
-		private var slice_alpha:Number;
 		public var angle:Number;
 		public var is_over:Boolean;
 		public var nolabels:Boolean;
@@ -34,42 +33,29 @@
 		public var position_original:flash.geom.Point;
 		public var position_animate_to:flash.geom.Point;
 		
-		public function PieSlice( index:Number, style:Object ) {
+		public function PieSlice( index:Number, value:Properties ) {
 		
-			this.colour = style.colour;
-			this.slice_angle = style.angle;
+			this.colour = value.get('colour');
+			this.slice_angle = value.get('angle');
 			this.border_width = 1;
-			this.angle = style.start;
-			this.slice_alpha = style.alpha;
-			this.alpha = style.alpha;
-			this.animate = style.animate;
-			this.nolabels = style['no-labels'];
-			this.value = style.value;
-			this.gradientFill = style['gradient-fill'];
-			this.label = style.label;
-			this.index = index;
-			this.rawToolTip = style.tip;
+			this.angle = value.get('start');
+			this.animate = value.get('animate');
+			this.nolabels = value.get('no-labels');
+			this.value = value.get('value');
+			this.gradientFill = value.get('gradient-fill');
 			
-			this.tooltip = this.replace_magic_values( style.tip );
+			this.index = index;
+			this.rawToolTip = value.get('tip');
+			
+			this.label = this.replace_magic_values( value.get('label') );
+			this.tooltip = this.replace_magic_values( value.get('tip') );
 			
 			// TODO: why is this commented out in the patch file?
 			// this.attach_events();
 			
-			if ( style['on-click'] )
-				this.set_on_click( style['on-click'] );
+			if ( value.has('on-click') )
+				this.set_on_click( value.get('on-click') );
 		}
-		
-		//public override function mouseOver(event:Event):void {
-			//
-			//Tweener.addTween(this, { alpha:1, time:0.6, transition:Equations.easeOutCirc } );
-			//this.is_over = true;
-			//this.dispatchEvent( new ShowTipEvent( this.slice_angle ) );
-		//}
-//
-		//public override function mouseOut(event:Event):void {
-			//Tweener.addTween(this, { alpha:slice_alpha, time:0.8, transition:Equations.easeOutElastic } );
-			//this.is_over = false;
-		//}
 		
 		//
 		// This is called by the tooltip when it is finished with us,

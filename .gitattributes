@@ -93,6 +93,7 @@ charts/series/dots/dot_factory.as -text
 charts/series/dots/scat.as -text
 charts/series/dots/star.as -text
 charts/series/has_tooltip.as -text
+charts/series/pies/DefaultPieProperties.as -text
 charts/series/pies/PieLabel.as -text
 charts/series/pies/PieSlice.as -text
 charts/series/pies/PieSliceContainer.as -text

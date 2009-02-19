@@ -5,6 +5,8 @@
 	import caurina.transitions.Tweener;
 	import caurina.transitions.Equations;
 	import flash.geom.Point;
+	//import flash.events.Event;
+	import flash.events.MouseEvent;
 	
 	public class PieSliceContainer extends Element {
 		
@@ -24,6 +26,8 @@
 		private var moveToX:Number;
 		private var moveToY:Number;
 		
+		private var original_alpha:Number;
+		
 		
 
 		//
@@ -31,24 +35,34 @@
 		// we want to rotate the slice, but not the text, so
 		// this container holds both
 		//
-		public function PieSliceContainer( index:Number, style:Object )
+		public function PieSliceContainer( index:Number, value:Properties )
 		{
-			this.pieSlice = new PieSlice( index, style );
-			this.addChild( this.pieSlice );
-			var textlabel:String = style.label;
-			if( style['no-labels'] )
-				textlabel = '';
+			//
+			// replace magic in the label:
+			//
+			// value.set('label', this.replace_magic_values( value.get('label') ) );
 			
-			if( style['label-colour'] == null )
-				style['label-colour'] = style.colour;
+			this.pieSlice = new PieSlice( index, value );
+			this.addChild( this.pieSlice );
+			var textlabel:String = value.get('label');
+			
+			//
+			// we set the alpha of the parent container
+			//
+			this.alpha = this.original_alpha = value.get('alpha');
+			//
+			if ( !value.has('label-colour') )
+				value.set('label-colour', value.get('label'));
 				
-			this.pieLabel = new PieLabel(
+			if ( !value.get('no-labels') ) {
+				this.pieLabel = new PieLabel(
 					{
-						label:			textlabel,
-						colour:			style['label-colour'],
-						'font-size':	style['font-size'],
-						'on-click':		style['on-click'] } )
-			this.addChild( this.pieLabel );
+						label:			value.get('label'),
+						colour:			value.get('label-colour'),
+						'font-size':	value.get('font-size'),
+						'on-click':		value.get('on-click') } )
+				this.addChild( this.pieLabel );
+			}
 			
 			this.attach_events();
 			this.animating = false;
@@ -130,22 +144,42 @@
 			return {x:p.x,y:p.y};
 		}
 		
-		public override function mouseOver(event:Event):void {
+		//
+		// override this. I think this needs to be moved into an
+		// animation manager?
+		//
+		protected override function attach_events():void {
+			
+			// weak references so the garbage collector will kill them:
+			this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_bounce_out, false, 0, true);
+			this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_bounce_out, false, 0, true);
+			
+			this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_alpha, false, 0, true);
+			this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_alpha, false, 0, true);
+			
+		}
+		
+		public function mouseOver_bounce_out(event:Event):void {
 			
 			if ( this.animating ) return;
 			
 			this.animating = true;
 			Tweener.removeTweens(this);
-			
-			// tr.ace('over container');
-//			Tweener.addTween(this, {x:this.myPieSlice.position_animate_to.x, y:this.myPieSlice.position_animate_to.y, time:0.4, transition:"linear"} );
 			Tweener.addTween(this, {x:this.moveToX, y:this.moveToY, time:0.4, transition:"easeOutBounce"} );
 		}
 		
-		public override function mouseOut(event:Event):void {
+		public function mouseOut_bounce_out(event:Event):void {
 			Tweener.removeTweens(this);
 			Tweener.addTween(this, {x:this.saveX, y:this.saveY, time:0.4, transition:"easeOutBounce"} );
 			this.animating = false;
+		}
+		
+		public function mouseOver_alpha(event:Event):void {
+			Tweener.addTween(this, { alpha:1, time:0.6, transition:Equations.easeOutCirc } );
+		}
+
+		public function mouseOut_alpha(event:Event):void {
+			Tweener.addTween(this, { alpha:this.original_alpha, time:0.8, transition:Equations.easeOutElastic } );
 		}
 
 		public function getLabelTopY():Number

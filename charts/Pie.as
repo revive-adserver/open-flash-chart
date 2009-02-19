@@ -4,6 +4,7 @@
 	import string.Utils;
 	import charts.series.Element;
 	import charts.series.pies.PieSliceContainer;
+	import charts.series.pies.DefaultPieProperties;
 	import global.Global;
 	
 	import flash.display.Sprite;
@@ -21,6 +22,10 @@
 		public var style:Object;
 		public var total_value:Number = 0;
 		
+		// new:
+		private var props:Properties;
+		//
+		
 		public function Pie( json:Object )
 		{
 			this.labels = new Array();
@@ -28,23 +33,21 @@
 			this.colours = new Array();
 			
 			this.style = {
-				alpha:				0.5,
-				'start-angle':		90,
-				'label-colour':		0x900000,	// default label colour
-				'font-size':		10,
-				'gradient-fill':	false,
-				stroke:				1,
-				colours:			["#900000", "#009000"],	// slices colours
-				animate:			1,
-				tip:				'#val# of #total#',	// #percent#, #label#
-				'no-labels':		false,
-				'on-click':			null
+				colours:			["#900000", "#009000"]	// slices colours
 			}
 			
 			object_helper.merge_2( json, this.style );			
 			
 			for each( var colour:String in this.style.colours )
 				this.colours.push( string.Utils.get_colour( colour ) );
+				
+			//
+			//
+			//
+			this.props = new DefaultPieProperties(json);
+			//
+			//
+			//
 			
 			this.label_line = 10;
 
@@ -65,7 +68,7 @@
 			var g:Global = Global.getInstance();
 			
 			var total:Number = 0;
-			var slice_start:Number = this.style['start-angle'];
+			var slice_start:Number = this.props.get('start-angle');
 			var i:Number;
 			var val:Object;
 			
@@ -86,7 +89,7 @@
 				if( slice_angle >= 0 )
 				{
 					
-					var t:String = this.style.tip.replace('#total#', NumberUtils.formatNumber( this.total_value ));
+					var t:String = this.props.get('tip').replace('#total#', NumberUtils.formatNumber( this.total_value ));
 					t = t.replace('#percent#', NumberUtils.formatNumber( value / this.total_value * 100 ) + '%');
 				
 					this.addChild(
@@ -110,42 +113,34 @@
 		
 		private function add_slice( index:Number, start:Number, angle:Number, value:Object, tip:String, colour:String ): PieSliceContainer {
 			
-			var default_style:Object = {
-					colour:				colour,
-					tip:				tip,
-					alpha:				this.style.alpha,
-					start:				start,
-					angle:				angle,
-					value:				null,
-					animate:			this.style.animate,
-					'no-labels':		this.style['no-labels'],
-					label:				"",
-					'label-colour':		this.style['label-colour'],
-					'font-size':		this.style['font-size'],
-					'gradient-fill':	this.style['gradient-fill'],
-					'on-click':			this.style['on-click']
-			};
+				
+			// Properties chain:
+			//   pie-slice -> calculated-stuff -> pie
+			//
+			// calculated-stuff:
+			var calculated_stuff:Properties = new Properties(
+				{
+					colour:				colour,		// <-- from the colour cycle array
+					tip:				tip,		// <-- replaced the #total# & #percent# for this slice
+					start:				start,		// <-- calculated
+					angle:				angle		// <-- calculated
+				},
+				this.props );
 			
+			var tmp:Object = {};			
 			if ( value is Number )
-			{
-				default_style.value = value;
-				default_style.label = value.toString();
-			}
+				tmp.value = value;
 			else
-				object_helper.merge_2( value, default_style );
-
+				tmp = value;
 				
-				
-			// our parent colour is a number, but
-			// we may have our own colour:
-			if( default_style.colour is String )
-				default_style.colour = Utils.get_colour( default_style.colour );
-				
-			if( default_style['label-colour'] is String )
-				default_style['label-colour'] = Utils.get_colour( default_style['label-colour'] );
-				
-				
-			return new PieSliceContainer( index, default_style );
+			var p:Properties = new Properties( tmp, calculated_stuff );
+			
+			// no user defined label?
+			if ( !p.has('label') )
+				p.set('label', p.get('value').toString());
+			
+			// tr.aces( 'value', p.get('value'), p.get('label'), p.get('colour') );
+			return new PieSliceContainer( index, p );
 		}
 		
 		
