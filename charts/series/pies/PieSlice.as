@@ -24,6 +24,7 @@
 		public var is_over:Boolean;
 		public var nolabels:Boolean;
 		private var animate:Boolean;
+		private var finished_animating:Boolean;
 		public var value:Number;
 		private var gradientFill:Boolean;
 		private var label:String;
@@ -55,6 +56,8 @@
 			
 			if ( value.has('on-click') )
 				this.set_on_click( value.get('on-click') );
+			
+			this.finished_animating = false;
 		}
 		
 		//
@@ -96,21 +99,6 @@
 			this.pieRadius = radius;
 			this.x = sc.get_center_x();
 			this.y = sc.get_center_y();
-			
-			//
-			// use to animate the mouse over and mouse out events:
-			/*
-			this.position_original = new flash.geom.Point(this.x, this.y);
-			
-			var ang:Number = this.angle + (this.slice_angle / 2);
-			
-			var animationOffset:Number = 10;
-			this.position_animate_to = new flash.geom.Point(
-				this.x + (animationOffset * Math.cos(ang * TO_RADIANS)),
-				this.y + (animationOffset * Math.sin(ang * TO_RADIANS)) );
-			//
-			//
-			*/
 			
 			var label_line_length:Number = 10;
 			
@@ -178,19 +166,28 @@
 			if (!this.nolabels) this.draw_label_line( radius, label_line_length, this.slice_angle );
 			// return;
 			
+			
 			if( this.animate )
 			{
-				if ( this.rotation != this.angle )	// <-- have we already rotated this slice?
-					Tweener.addTween(this, { rotation:this.angle, time:1.4, transition:Equations.easeOutCirc } );
+				if ( !this.finished_animating ) {
+					this.finished_animating = true;
+					// have we already rotated this slice?
+					Tweener.addTween(this, { rotation:this.angle, time:1.4, transition:Equations.easeOutCirc, onComplete:this.done_animating } );
+				}
 			}
 			else
 			{
-				this.rotation = this.angle;
+				this.done_animating();
 			}
 		}
 		
-		// draw the line from the pie slice to the label
+		private function done_animating():void {
+			this.rotation = this.angle;
+			this.finished_animating = true;
+		}
 		
+		
+		// draw the line from the pie slice to the label
 		private function draw_label_line( rad:Number, tick_size:Number, slice_angle:Number ):void {
 			//draw line
 			

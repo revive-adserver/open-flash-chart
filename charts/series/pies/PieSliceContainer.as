@@ -151,9 +151,31 @@
 		// override this. I think this needs to be moved into an
 		// animation manager?
 		//
+		// BTW this is called attach_events__ because Element has an
+		//     attach_events already. I guess we need to fix one of them
+		//
 		protected function attach_events__(value:Properties):void {
 			
-			var anims:Array = value.get('animate');
+			//
+			// TODO: either move this into properties
+			//       props.as(Array).get('moo');
+			//       or get rid of type checking
+			//
+			
+			var animate:Object = value.get('animate');
+			if (!(animate is Array)) {
+				if ((animate == null) || (animate)) {
+					animate = [{"type":"bounce","distance":5}];
+				}
+				else {
+					animate = new Array();
+				}
+			}
+			
+			var anims:Array = animate as Array;
+			//
+			// end to do
+			//
 			
 			for each( var a:Object in anims ) {
 				switch( a.type ) {

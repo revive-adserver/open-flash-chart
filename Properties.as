@@ -34,7 +34,7 @@
 			tr.aces( 'ERROR: property not found', name);
 			return Number.NEGATIVE_INFINITY;
 		}
-		
+			
 		// set does not recurse down, we don't want to set
 		// our parents property
 		public function set(name:String, value:Object):void {

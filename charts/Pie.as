@@ -148,32 +148,29 @@
 			// PIE charts don't do closest to mouse tooltips
 			return { Element:null, distance_x:0, distance_y:0 };
 		}
-		
+
+
 		public override function resize( sc:ScreenCoordsBase ): void {
 			var radius:Number = this.style.radius;
-			if (isNaN(radius)) 
-			{
+			if (isNaN(radius)){
 				radius = ( Math.min( sc.width, sc.height ) / 2.0 );
 				var offsets:Object = {top:0, right:0, bottom:0, left:0};
-				
+				trace("sc.width, sc.height, radius", sc.width, sc.height, radius);
+
 				var i:Number;
 				var sliceContainer:PieSliceContainer;
-				
+
 				// loop to gather and merge offsets
-				for ( i = 0; i < this.numChildren; i++ )
-				{
+				for ( i = 0; i < this.numChildren; i++ ) {
 					sliceContainer = this.getChildAt(i) as PieSliceContainer;
 					var pie_offsets:Object = sliceContainer.get_radius_offsets();
-					for (var key:Object in offsets) 
-					{
+					for (var key:Object in offsets) {
 						if ( pie_offsets[key] > offsets[key] ) {
 							offsets[key] = pie_offsets[key];
 						}
 					}
 				}
-
 				var vRadius:Number = radius;
-				var hRadius:Number = radius;
 				// Calculate minimum radius assuming the contraint is vertical
 				// Shrink radius by the largest top/bottom offset
 				vRadius -= Math.max(offsets.top, offsets.bottom);
@@ -188,27 +185,13 @@
 					//radius -= radius + offsets.right - (sc.width / 2);
 					vRadius = (sc.width / 2) - offsets.right;
 				}
-					
-				// Calculate minimum radius assuming the contraint is horizontal
-				// Shrink radius by the largest left/right offset
-				hRadius -= Math.max(offsets.left, offsets.right);
-				// check to see if the left/right labels will fit
-				if ((hRadius + offsets.top) > (sc.height / 2))
-				{
-					//radius -= radius + offsets.height - (sc.width / 2);
-					hRadius = (sc.height / 2) - offsets.top;
-				}
-				if ((hRadius + offsets.bottom) > (sc.height / 2))
-				{
-					//radius -= radius + offsets.right - (sc.width / 2);
-					hRadius = (sc.height / 2) - offsets.bottom;
-				}
-				// Use the smallest calculated radius but not less than 10
-				radius = Math.max(Math.min(vRadius, hRadius), 10);
+
+				// Make sure the radius is at least 10
+				radius = Math.max(vRadius, 10);
 			}
-			
+
 			var rightTopTicAngle:Number		= 720;
-			var rightTopTicIdx:Number 		= -1;
+			var rightTopTicIdx:Number		= -1;
 			var rightBottomTicAngle:Number	= -720;
 			var rightBottomTicIdx:Number	= -1;
 
@@ -222,7 +205,7 @@
 			{
 				sliceContainer = this.getChildAt(i) as PieSliceContainer;
 				sliceContainer.pie_resize(sc, radius);
-				
+
 				// While we are looping through the children, we determine which
 				// labels are the starting points in each quadrant so that we
 				// move the labels around to prevent overlaps
@@ -236,7 +219,7 @@
 						rightTopTicIdx = i;
 					}
 					// Just in case no tics in Right-Bottom
-					if ((rightBottomTicAngle < 0) || 
+					if ((rightBottomTicAngle < 0) ||
 						((rightBottomTicAngle > 90) && (rightBottomTicAngle < ticAngle)))
 					{
 						rightBottomTicAngle = ticAngle;
@@ -261,20 +244,20 @@
 				}
 				else if (ticAngle <= 180)
 				{
-					// Left side - Bottom
-					if ((leftBottomTicAngle < 0) || (ticAngle < leftBottomTicAngle))
-					{
-						leftBottomTicAngle = ticAngle;
-						leftBottomTicIdx = i;
-					}
-					// Just in case no tics in Left-Top
-					if ((leftTopTicAngle > 360) || (leftTopTicAngle < ticAngle))
-					{
-						leftTopTicAngle = ticAngle;
-						leftTopTicIdx = i;
-					}
+				// Left side - Bottom
+				if ((leftBottomTicAngle < 0) || (ticAngle < leftBottomTicAngle))
+				{
+					leftBottomTicAngle = ticAngle;
+					leftBottomTicIdx = i;
 				}
-				else 
+				// Just in case no tics in Left-Top
+				if ((leftTopTicAngle > 360) || (leftTopTicAngle < ticAngle))
+				{
+					leftTopTicAngle = ticAngle;
+					leftTopTicIdx = i;
+				}
+				}
+				else
 				{
 					// Left side - Top
 					if ((leftTopTicAngle > 360) || (ticAngle > leftTopTicAngle))
@@ -290,8 +273,8 @@
 					}
 				}
 			}
-			
-			// Make a clockwise pass on right side of pie trying to move 
+
+			// Make a clockwise pass on right side of pie trying to move
 			// the labels so that they do not overlap
 			var childIdx:Number = rightTopTicIdx;
 			var yVal:Number = sc.top;
@@ -303,10 +286,10 @@
 				if ((ticAngle >= 270) || (ticAngle <= 90))
 				{
 					yVal = sliceContainer.moveLabelDown(sc, yVal);
-					
+	
 					childIdx++;
 					if (childIdx >= this.numChildren) childIdx = 0;
-					
+
 					bDone = (childIdx == rightTopTicIdx);
 				}
 				else
@@ -314,8 +297,8 @@
 					bDone = true;
 				}
 			}
-			
-			// Make a counter-clockwise pass on right side of pie trying to move 
+
+			// Make a counter-clockwise pass on right side of pie trying to move
 			// the labels so that they do not overlap
 			childIdx = rightBottomTicIdx;
 			yVal = sc.bottom;
@@ -327,10 +310,10 @@
 				if ((ticAngle >= 270) || (ticAngle <= 90))
 				{
 					yVal = sliceContainer.moveLabelUp(sc, yVal);
-					
+
 					childIdx--;
 					if (childIdx < 0) childIdx = this.numChildren - 1;
-					
+
 					bDone = (childIdx == rightBottomTicIdx);
 				}
 				else
@@ -338,8 +321,8 @@
 					bDone = true;
 				}
 			}
-			
-			// Make a clockwise pass on left side of pie trying to move 
+
+			// Make a clockwise pass on left side of pie trying to move
 			// the labels so that they do not overlap
 			childIdx = leftBottomTicIdx;
 			yVal = sc.bottom;
@@ -351,10 +334,10 @@
 				if ((ticAngle > 90) && (ticAngle < 270))
 				{
 					yVal = sliceContainer.moveLabelUp(sc, yVal);
-					
+
 					childIdx++;
 					if (childIdx >= this.numChildren) childIdx = 0;
-					
+
 					bDone = (childIdx == leftBottomTicIdx);
 				}
 				else
@@ -362,8 +345,8 @@
 					bDone = true;
 				}
 			}
-			
-			// Make a counter-clockwise pass on left side of pie trying to move 
+
+			// Make a counter-clockwise pass on left side of pie trying to move
 			// the labels so that they do not overlap
 			childIdx = leftTopTicIdx;
 			yVal = sc.top;
@@ -375,10 +358,10 @@
 				if ((ticAngle > 90) && (ticAngle < 270))
 				{
 					yVal = sliceContainer.moveLabelDown(sc, yVal);
-					
+
 					childIdx--;
 					if (childIdx < 0) childIdx = this.numChildren - 1;
-					
+
 					bDone = (childIdx == leftTopTicIdx);
 				}
 				else
@@ -386,9 +369,8 @@
 					bDone = true;
 				}
 			}
-			
 		}
-		
+
 		
 		public override function toString():String {
 			return "Pie with "+ this.numChildren +" children";
