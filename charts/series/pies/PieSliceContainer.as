@@ -56,16 +56,16 @@
 			//
 			if ( !value.has('label-colour') )
 				value.set('label-colour', value.get('colour'));
-				
-			if ( !value.get('no-labels') ) {
-				this.pieLabel = new PieLabel(
-					{
-						label:			value.get('label'),
-						colour:			value.get('label-colour'),
-						'font-size':	value.get('font-size'),
-						'on-click':		value.get('on-click') } )
-				this.addChild( this.pieLabel );
-			}
+			
+			var l:String = value.get('no-labels') ? '' : value.get('label');
+			
+			this.pieLabel = new PieLabel(
+				{
+					label:			l,
+					colour:			value.get('label-colour'),
+					'font-size':	value.get('font-size'),
+					'on-click':		value.get('on-click') } )
+			this.addChild( this.pieLabel );
 			
 			this.attach_events__(value);
 			this.animating = false;
@@ -177,6 +177,9 @@
 			// end to do
 			//
 			
+			this.addEventListener(MouseEvent.MOUSE_OVER, this.mouseOver_first, false, 0, true);
+			this.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut_first, false, 0, true);
+						
 			for each( var a:Object in anims ) {
 				switch( a.type ) {
 					
@@ -196,19 +199,28 @@
 			}
 		}
 		
-		public function mouseOver_bounce_out(event:Event):void {
+		//
+		// stop multiple tweens from running
+		//
+		public function mouseOver_first(event:Event):void {
 			
 			if ( this.animating ) return;
 			
 			this.animating = true;
 			Tweener.removeTweens(this);
+		}
+		
+		public function mouseOut_first(event:Event):void {
+			Tweener.removeTweens(this);
+			this.animating = false;
+		}
+		
+		public function mouseOver_bounce_out(event:Event):void {
 			Tweener.addTween(this, {x:this.moveToX, y:this.moveToY, time:0.4, transition:"easeOutBounce"} );
 		}
 		
 		public function mouseOut_bounce_out(event:Event):void {
-			Tweener.removeTweens(this);
 			Tweener.addTween(this, {x:this.saveX, y:this.saveY, time:0.4, transition:"easeOutBounce"} );
-			this.animating = false;
 		}
 		
 		public function mouseOver_alpha(event:Event):void {
