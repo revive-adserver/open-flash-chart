@@ -19,7 +19,8 @@
 			
 			var default_style:Object = {
 					colour:		this.style.colour,
-					tip:		this.style.tip
+					tip:		this.style.tip,
+					alpha:      this.style.alpha
 			};
 			
 			if( value is Number )
