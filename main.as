@@ -56,7 +56,7 @@ package  {
 	
 	public class main extends Sprite {
 		
-		public  var VERSION:String = "2 Hyperion";
+		public  var VERSION:String = "2 Ichor";
 		private var title:Title = null;
 		//private var x_labels:XAxisLabels;
 		private var x_axis:XAxis;
@@ -93,7 +93,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/y-axis-fix-this-bug.txt";
+					var file:String = "../../data-files/pie-fixed-radius.txt";
 					//var file:String = "../../data-files/radar-2.txt";
 					//var file:String = "../../../test-data-files/stack.txt";
 					this.load_external_file( file );
@@ -809,7 +809,7 @@ package  {
 			cm.hideBuiltInItems();
 
 			// OFC CREDITS
-			var fs:ContextMenuItem = new ContextMenuItem("Charts by Open Flash Chart 2" );
+			var fs:ContextMenuItem = new ContextMenuItem("Charts by Open Flash Chart [version "+VERSION+"]" );
 			fs.addEventListener(
 				ContextMenuEvent.MENU_ITEM_SELECT,
 				function doSomething(e:ContextMenuEvent):void {
