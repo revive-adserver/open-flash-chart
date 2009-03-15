@@ -130,10 +130,7 @@ com/adobe/webapis/URLLoaderBase.as -text
 com/adobe/webapis/events/ServiceEvent.as -text
 com/serialization/json/JSON.as -text
 elements/Background.as -text
-elements/CameraIcon.as -text
-elements/DefaultMenuProperties.as -text
 elements/InnerBackground.as -text
-elements/Menu.as -text
 elements/axis/AxisLabel.as -text
 elements/axis/RadarAxis.as -text
 elements/axis/RadarAxisLabels.as -text
@@ -156,8 +153,12 @@ elements/labels/XLegend.as -text
 elements/labels/YLegendBase.as -text
 elements/labels/YLegendLeft.as -text
 elements/labels/YLegendRight.as -text
+elements/menu/CameraIcon.as -text
 elements/menu/DefaultCameraIconProperties.as -text
+elements/menu/DefaultMenuProperties.as -text
+elements/menu/Menu.as -text
 elements/menu/menuItem.as -text
+elements/menu/menu_item_factory.as -text
 global/Global.as -text
 /json.help.txt -text
 /main.as -text

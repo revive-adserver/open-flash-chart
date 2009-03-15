@@ -1,4 +1,4 @@
-﻿package elements {
+﻿package elements.menu {
 
 	public class DefaultMenuProperties extends Properties
 	{

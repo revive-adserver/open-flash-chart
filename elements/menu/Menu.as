@@ -1,8 +1,8 @@
-﻿package elements {
+﻿package elements.menu {
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import elements.CameraIcon;
+	import elements.menu.menuItem;
 	import caurina.transitions.Tweener;
 	import caurina.transitions.Equations;
 	import string.Utils;
@@ -15,7 +15,7 @@
 		private var first_showing:Boolean;
 		private var hidden_pos:Number;
 		
-		public function Menu( chartId:String, json:Object ) {
+		public function Menu( chartID:String, json:Object ) {
 			
 			this.props = new DefaultMenuProperties(json);
 			
@@ -28,12 +28,13 @@
 			
 			for each ( var val:Object in json.values )
 			{
-				var camera_icon:CameraIcon = new CameraIcon(chartId, val);
-				camera_icon.x = 5;
-				camera_icon.y = pos;
-				this.addChild(camera_icon);
-				height = camera_icon.y + camera_icon.height + 5;
-				pos += camera_icon.height + 5;
+				var tmp:DefaultCameraIconProperties = new DefaultCameraIconProperties(val);
+				var menu_item:menuItem = menu_item_factory.make(chartID, tmp);
+				menu_item.x = 5;
+				menu_item.y = pos;
+				this.addChild(menu_item);
+				height = menu_item.y + menu_item.height + 5;
+				pos += menu_item.height + 5;
 			}
 			
 			var width:Number = 0;

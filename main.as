@@ -3,7 +3,7 @@ package  {
 	import charts.series.Element;
 	import charts.Factory;
 	import charts.ObjectCollection;
-	import elements.Menu;
+	import elements.menu.Menu;
 	import charts.series.has_tooltip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;

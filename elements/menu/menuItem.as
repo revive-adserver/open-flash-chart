@@ -8,14 +8,14 @@
     import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 
-	public class MenuItem extends Sprite {
+	public class menuItem extends Sprite {
 		
-		private var chartId:String;
-		private var props:Properties;
+		protected var chartId:String;
+		protected var props:Properties;
 		
-		public function MenuItem(chartId:String, json:Object) {
+		public function menuItem(chartId:String, props:Properties) {
 			
-			this.props = new DefaultCameraIconProperties(json);
+			this.props = props;
 			
 			this.buttonMode = true;
 			this.useHandCursor = true;
@@ -23,18 +23,22 @@
 			 
 			this.alpha = 0.5;
 			
-			var width:Number = this.add_text(props.get('text'));
+			var width:Number = this.add_elements();
+			
 			this.draw_bg(
 				width +
-				30 + // icon width
 				10 // 5px padding on either side
 				);
-			this.draw_camera();
 			
 			this.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 			this.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			this.addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
 			this.addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler);
+		}
+		
+		protected function add_elements(): Number {
+			var width:Number = this.add_text(this.props.get('text'), 5);
+			return width;
 		}
 		
 		private function draw_bg( width:Number ):void {
@@ -43,22 +47,10 @@
 			this.graphics.endFill();
 		}
 		
-		private function draw_camera():void {
-			
-			this.graphics.beginFill(0x000000, .2);
-			this.graphics.drawRoundRect(2, 4, 26, 14, 2, 2);
-			this.graphics.drawRect(20, 1, 5, 3);
-			this.graphics.endFill();
-
-			this.graphics.beginFill(0x000000, .3);
-			this.graphics.drawCircle(9, 11, 4.5);
-			this.graphics.endFill();
-			
-		}
 		
-		private function add_text(text:String): Number {
+		protected function add_text(text:String, left:Number): Number {
 			var title:TextField = new TextField();
-            title.x = 35;
+            title.x = left;
 			title.y = 0;
 			
 			//this.text = 'Save chart';
@@ -89,7 +81,7 @@
 
 		public function mouseClickHandler(event:MouseEvent):void {
 			this.alpha = 0.0;
-			tr.aces('Save Image:', this.props.get('javascript-function')+'('+this.chartId+')');
+			tr.aces('Menu item clicked:', this.props.get('javascript-function')+'('+this.chartId+')');
 			ExternalInterface.call(this.props.get('javascript-function'), this.chartId);
 			this.alpha = 1.0;
 		}
