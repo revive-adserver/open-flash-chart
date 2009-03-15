@@ -809,7 +809,7 @@ package  {
 			cm.hideBuiltInItems();
 
 			// OFC CREDITS
-			var fs:ContextMenuItem = new ContextMenuItem("Charts by Open Flash Chart [version "+VERSION+"]" );
+			var fs:ContextMenuItem = new ContextMenuItem("Charts by Open Flash Chart [Version "+VERSION+"]" );
 			fs.addEventListener(
 				ContextMenuEvent.MENU_ITEM_SELECT,
 				function doSomething(e:ContextMenuEvent):void {

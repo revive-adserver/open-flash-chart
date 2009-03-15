@@ -6,7 +6,8 @@
 	import caurina.transitions.Tweener;
 	import caurina.transitions.Equations;
 	import string.Utils;
-
+	import flash.filters.DropShadowFilter;
+	
 	public class Menu extends Sprite {
 		
 		private var original_alpha:Number;
@@ -18,7 +19,8 @@
 			
 			this.props = new DefaultMenuProperties(json);
 			
-			this.original_alpha = this.alpha = 0.4;
+			this.original_alpha = 0.4;
+			this.alpha = 1;
 			
 			var pos:Number = 5;
 			var height:Number = 0;
@@ -41,6 +43,19 @@
 			
 			this.draw(width+10, height);
 			this.hidden_pos = height;
+			
+			/*
+			var dropShadow:DropShadowFilter = new flash.filters.DropShadowFilter();
+			dropShadow.blurX = 4;
+			dropShadow.blurY = 4;
+			dropShadow.distance = 4;
+			dropShadow.angle = 45;
+			dropShadow.quality = 2;
+			dropShadow.alpha = 0.5;
+			// apply shadow filter
+			this.filters = [dropShadow];
+			*/
+			
 			
 			this.addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
 			this.addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler);

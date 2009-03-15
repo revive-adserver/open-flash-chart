@@ -150,11 +150,35 @@
 			//
 			this.y = top;
 			this.x = tmp.x;
+
+			//var d:Number = this.x / this.stage.stageWidth * 3;
+			Tweener.removeTweens(this);
+			
+//			this.y = this.stage.stageHeight + this.height + 3;
+//			Tweener.addTween(this, { y:top, time:1, delay:d, transition:Equations.easeOutBounce } );
+			
+//			this.y = -height - 10;
+//			Tweener.addTween(this, { y:top, time:1, delay:d, transition:Equations.easeOutBounce } );
+			
+			
+//			var d:Number = this.x / this.stage.stageWidth * 2;
+//			this.y = top;
+//			this.alpha = 0;
+//			Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:1.2, delay:d, transition:Equations.easeOutQuad } );
+
+//			var d:Number = this.x / this.stage.stageWidth * 2;
+//			this.y = top;
+//			this.alpha = 0;
+//			Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:0.7, delay:d, transition:Equations.easeOutQuad } );
+//			this.scaleX = 0.3;
+//			Tweener.addTween(this, { scaleX:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
+//			this.scaleY = 0.3;
+//			Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
 			
 			//
 			// tell the tooltip where to show its self
 			//
-			this.tip_pos = new flash.geom.Point( this.x + (tmp.width / 2), this.y );
+			this.tip_pos = new flash.geom.Point( this.x + (tmp.width / 2), top );
 			
 			//
 			// return the bounds to draw the item:

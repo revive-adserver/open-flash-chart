@@ -89,8 +89,8 @@
 
 		public function mouseClickHandler(event:MouseEvent):void {
 			this.alpha = 0.0;
-			tr.ace('Save Image');
-			ExternalInterface.call("save_image", this.chartId);
+			tr.aces('Save Image:', this.props.get('javascript-function')+'('+this.chartId+')');
+			ExternalInterface.call(this.props.get('javascript-function'), this.chartId);
 			this.alpha = 1.0;
 		}
 
