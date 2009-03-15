@@ -1,4 +1,4 @@
-﻿package elements {
+﻿package elements.menu {
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -8,12 +8,12 @@
     import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 
-	public class CameraIcon extends Sprite {
+	public class MenuItem extends Sprite {
 		
 		private var chartId:String;
 		private var props:Properties;
 		
-		public function CameraIcon(chartId:String, json:Object) {
+		public function MenuItem(chartId:String, json:Object) {
 			
 			this.props = new DefaultCameraIconProperties(json);
 			
