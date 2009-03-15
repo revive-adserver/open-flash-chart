@@ -3,10 +3,11 @@
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
-	
 	import flash.text.TextField;
     import flash.text.TextFieldType;
 	import flash.text.TextFormat;
+	import flash.filters.GlowFilter;
+	import string.Utils;
 
 	public class menuItem extends Sprite {
 		
@@ -42,7 +43,7 @@
 		}
 		
 		private function draw_bg( width:Number ):void {
-			this.graphics.beginFill(0xffffff, .8);
+			this.graphics.beginFill(string.Utils.get_colour( this.props.get('background-colour') ));
 			this.graphics.drawRoundRect(0, 0, width, 20, 5, 5 );
 			this.graphics.endFill();
 		}
@@ -58,7 +59,7 @@
 			title.htmlText = text;
 			
 			var fmt:TextFormat = new TextFormat();
-			fmt.color = 0x0000ff;// this.css.color;
+			fmt.color = string.Utils.get_colour( this.props.get('text-colour') );
 			fmt.font = 'Verdana';
 //			fmt.bold = this.css.font_weight == 'bold'?true:false;
 			fmt.size = 10;// this.css.font_size;
@@ -87,7 +88,17 @@
 		}
 
 		public function mouseOverHandler(event:MouseEvent):void {
-			this.alpha = 0.9;
+			this.alpha = 1;
+
+			///Glow Filter
+			var glow:GlowFilter = new GlowFilter();
+			glow.color = string.Utils.get_colour( this.props.get('glow-colour') );
+			glow.alpha = 0.8;
+			glow.blurX = 4;
+			glow.blurY = 4;
+			glow.inner = false;
+			
+			this.filters = new Array(glow);
 		}
 		
 		public function mouseDownHandler(event:MouseEvent):void {
@@ -96,6 +107,7 @@
 
 		public function mouseOutHandler(event:MouseEvent):void {
 			this.alpha = 0.5;
+			this.filters = new Array();
 		}
 	}
 }

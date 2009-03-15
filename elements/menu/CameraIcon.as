@@ -24,14 +24,18 @@
 		
 		private function draw_camera():void {
 			
-			this.graphics.beginFill(0x000000, .2);
-			this.graphics.drawRoundRect(2, 4, 26, 14, 2, 2);
-			this.graphics.drawRect(20, 1, 5, 3);
-			this.graphics.endFill();
+			var s:Sprite = new Sprite();
+			
+			s.graphics.beginFill(0x505050);
+			s.graphics.drawRoundRect(2, 4, 26, 14, 2, 2);
+			s.graphics.drawRect(20, 1, 5, 3);
+			s.graphics.endFill();
 
-			this.graphics.beginFill(0x000000, .3);
-			this.graphics.drawCircle(9, 11, 4.5);
-			this.graphics.endFill();
+			s.graphics.beginFill(0x202020);
+			s.graphics.drawCircle(9, 11, 4.5);
+			s.graphics.endFill();
+			
+			this.addChild(s);
 			
 		}
 	}
