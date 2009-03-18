@@ -183,7 +183,7 @@ package  {
 			
 			// this just calls the javascript function which will grab an image from use
 			// an do something with it.
-			ExternalInterface.call("save_image");
+			ExternalInterface.call("save_image", this.chart_parameters['id']);
 		}
 
 		
@@ -199,8 +199,8 @@ package  {
 		// External interface called by Javascript to
 		// save the flash as an image, then POST it to a URL
 		//
-		//public function post_image( url:String, callback:String, debug:Boolean ):void {
-		public function post_image(id:String, url:String, post_params:Object, callback:String, debug:Boolean):void {
+		//public function post_image(url:String, post_params:Object, callback:String, debug:Boolean):void {
+		public function post_image(url:String, callback:String, debug:Boolean):void {
           
 			var header:URLRequestHeader = new URLRequestHeader("Content-type", "application/octet-stream");
 
@@ -209,19 +209,31 @@ package  {
 			
 			request.requestHeaders.push(header);
 			request.method = URLRequestMethod.POST;
+			//
 			request.data = image_binary();
 
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.VARIABLES;
-             
-			request.method = URLRequestMethod.POST;
+            
+			/*
+			 * i can't figure out how to make these work
+			 * 
 			var urlVars:URLVariables = new URLVariables();
 			for (var key:String in post_params) {
 				urlVars[key] = post_params[key];
 			}
-			urlVars.b64_image_data =  getImgBinary();
-			request.data = urlVars;
+			*/
+			// base64:
+			// urlVars.b64_image_data =  getImgBinary();
+			// RAW:
+			// urlVars.b64_image_data = image_binary();
+			
+			// request.data = urlVars;
 
+			var id:String = '';
+			if ( this.chart_parameters['id'] )
+				id = this.chart_parameters['id'];
+				
 			if( debug )
 			{
 				// debug the PHP:
@@ -231,8 +243,10 @@ package  {
 			{
 				//we have to use the PROGRESS event instead of the COMPLETE event due to a bug in flash
 				loader.addEventListener(ProgressEvent.PROGRESS, function (e:ProgressEvent):void {
+					
 						tr.ace("progress:" + e.bytesLoaded + ", total: " + e.bytesTotal);
 						if ((e.bytesLoaded == e.bytesTotal) && (callback != null)) {
+							tr.aces('Calling: ', callback + '(' + id + ')'); 
 							ExternalInterface.call(callback, id);
 						}
 					});
@@ -531,8 +545,8 @@ package  {
 				this.menu.resize();
 			
 			// tell the web page that we have resized our content
-			if( this.id != null )
-				ExternalInterface.call("ofc_resize", sc.left, sc.width, sc.top, sc.height, id);
+			if( this.chart_parameters['id'] )
+				ExternalInterface.call("ofc_resize", sc.left, sc.width, sc.top, sc.height, this.chart_parameters['id']);
 			else
 				ExternalInterface.call("ofc_resize", sc.left, sc.width, sc.top, sc.height);
 				
