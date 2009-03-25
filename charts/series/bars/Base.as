@@ -8,6 +8,7 @@
 	import flash.geom.Point;
 	import global.Global;
 	import charts.series.Element;
+	import string.Utils;
 	
 	public class Base extends Element
 	{
@@ -24,6 +25,7 @@
 			this.index = index;
 			this.parse_value(value);
 			this.colour = colour;
+				
 			this.tooltip = this.replace_magic_values( tooltip );
 			
 			this.group = group;

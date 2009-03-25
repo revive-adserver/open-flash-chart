@@ -3,35 +3,36 @@
 	import charts.series.bars.Base;
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Matrix;
-       
-       public class CylinderOutline extends Base
-       {
-          
-          public function CylinderOutline( index:Number, style:Object, group:Number ) {
-             
-             
-             super(index, style, style.colour, style.tip, style.alpha, group);
-             
-             var dropShadow:DropShadowFilter = new flash.filters.DropShadowFilter();
-             dropShadow.blurX = 5;
-             dropShadow.blurY = 5;
-             dropShadow.distance = 3;
-             dropShadow.angle = 45;
-             dropShadow.quality = 2;
-             dropShadow.alpha = 0.4;
-             // apply shadow filter
-             this.filters = [dropShadow];
-          }
-          
-          public override function resize( sc:ScreenCoordsBase ):void {
-             
-             this.graphics.clear();
-             var h:Object = this.resize_helper( sc as ScreenCoords );
-             
-             this.bg( h.width, h.height, h.upside_down );
-             this.glass( h.width, h.height, h.upside_down );
-          }
-          
+
+	public class CylinderOutline extends Base {
+
+		public function CylinderOutline( index:Number, props:Properties, group:Number ) {
+
+			// MASSIVE HACK:
+			super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
+
+//             super(index, style, style.colour, style.tip, style.alpha, group);
+
+			var dropShadow:DropShadowFilter = new flash.filters.DropShadowFilter();
+			dropShadow.blurX = 5;
+			dropShadow.blurY = 5;
+			dropShadow.distance = 3;
+			dropShadow.angle = 45;
+			dropShadow.quality = 2;
+			dropShadow.alpha = 0.4;
+			// apply shadow filter
+			this.filters = [dropShadow];
+		}
+
+		public override function resize( sc:ScreenCoordsBase ):void {
+
+			this.graphics.clear();
+			var h:Object = this.resize_helper( sc as ScreenCoords );
+
+			this.bg( h.width, h.height, h.upside_down );
+			this.glass( h.width, h.height, h.upside_down );
+		}
+
           private function bg( w:Number, h:Number, upside_down:Boolean ):void {
 
              var rad:Number = w/3;

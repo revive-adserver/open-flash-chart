@@ -6,9 +6,10 @@ package charts.series.bars {
 	
 	public class Bar extends Base {
 	
-		public function Bar( index:Number, style:Object, group:Number ) {
+		public function Bar( index:Number, props:Properties, group:Number ) {
 			
-			super(index, style, style.colour, style.tip, style.alpha, group);
+			// MASSIVE HACK:
+			super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
 		}
 		
 		public override function resize( sc:ScreenCoordsBase ):void {

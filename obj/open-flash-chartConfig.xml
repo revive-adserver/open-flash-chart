@@ -6,12 +6,12 @@
 <flex-config>
   <compiler>
     <source-path append="true">
-      <path-element>C:\Users\John\Documents\flex\svn\version-2\open-flash-chart\trunk</path-element>
-      <path-element>C:\Users\John\AppData\Local\FlashDevelop\Library\AS3\classes</path-element>
+      <path-element>C:\Documents and Settings\Dan Glazebrook\My Documents\open-flash-chart\version-2\open-flash-chart\trunk</path-element>
+      <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\John\Documents\flex\svn\version-2\open-flash-chart\trunk\main.as</path-element>
+    <path-element>C:\Documents and Settings\Dan Glazebrook\My Documents\open-flash-chart\version-2\open-flash-chart\trunk\main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>60</default-frame-rate>
@@ -19,5 +19,4 @@
     <width>600</width>
     <height>400</height>
   </default-size>
-  <metadata />
 </flex-config>

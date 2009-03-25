@@ -10,10 +10,25 @@
 	{
 		protected var group:Number;
 		protected var style:Object;
+		private var props:Properties;
 		
 		public function BarBase( json:Object, group:Number )
 		{
 		
+			var root:Properties = new Properties( {
+				values:				[],
+				colour:				'#3030d0',
+				text:				'',		// <-- default not display a key
+				'font-size':		12,
+				tip:				'#val#<br>#x_label#',
+				alpha:				0.6,
+				'on-click':			null,
+				'axis':				'left'
+			} );
+			
+			this.props = new Properties(json, root);
+			
+			
 			this.style = {
 				values:				[],
 				colour:				'#3030d0',
@@ -27,12 +42,15 @@
 			
 			object_helper.merge_2( json, this.style );
 			
-			this.colour		= string.Utils.get_colour( this.style.colour );
-			this.key		= this.style.text;
-			this.font_size	= this.style['font-size'];
+			this.colour		= string.Utils.get_colour( this.props.get('colour') );
+			//this.key		= this.style.text;
+			this.key		= this.props.get('text');
+			this.font_size	= this.props.get('font-size');
 
 			// Minor hack, replace all #key# with this key text:
 			this.style.tip = this.style.tip.replace('#key#', this.key);
+			this.props.set( 'tip', this.props.get('tip').replace('#key#', this.key) );
+			
 			
 			//
 			// bars are grouped, so 3 bar sets on one chart
@@ -108,6 +126,24 @@
 			return default_style;
 		}
 		
+		protected function get_element_helper_prop( value:Object ): Properties {
+			
+			var default_style:Properties = new Properties({
+				colour:		this.style.colour,
+				tip:		this.style.tip,
+				alpha:		this.style.alpha,
+				'on-click':	this.style['on-click'],
+				axis:		this.style.axis
+			});
+			
+			var s:Properties;
+			if( value is Number )
+				s = new Properties({'top': value}, default_style);
+			else
+				s = new Properties(value, default_style);
+			
+			return s;
+		}
 		
 		/*
 				

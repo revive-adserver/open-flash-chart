@@ -1,7 +1,7 @@
 ﻿package {
 
 	import flash.utils.Dictionary;
-
+	import string.Utils;
 	
 	public class Properties extends Object
 	{
@@ -33,6 +33,14 @@
 			
 			tr.aces( 'ERROR: property not found', name);
 			return Number.NEGATIVE_INFINITY;
+		}
+		
+		//
+		// this is a bit dirty, I wish I could do something like:
+		//   props.get('colour').as_colour()
+		//
+		public function get_colour(name:String):Number {
+			return Utils.get_colour(this.get(name));
 		}
 			
 		// set does not recurse down, we don't want to set
