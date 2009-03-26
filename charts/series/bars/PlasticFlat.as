@@ -5,10 +5,10 @@
        public class PlasticFlat extends Base
        {
           
-          public function PlasticFlat( index:Number, style:Object, group:Number ) {
+          public function PlasticFlat( index:Number, props:Properties, group:Number ) {
              
-             
-             super(index, style, style.colour, style.tip, style.alpha, group);
+             super(index, props, group);
+             //super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
              
              var dropShadow:DropShadowFilter = new flash.filters.DropShadowFilter();
              dropShadow.blurX = 5;

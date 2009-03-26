@@ -19,20 +19,20 @@
 		protected var bottom:Number;
 		protected var mouse_out_alpha:Number;
 		
-		public function Base( index:Number, value:Object, colour:Number, tooltip:String, alpha:Number, group:Number )
+		public function Base( index:Number, props:Properties, group:Number )
 		{
 			super();
 			this.index = index;
-			this.parse_value(value);
-			this.colour = colour;
+			this.parse_value(props);
+			this.colour = props.get_colour('colour');
 				
-			this.tooltip = this.replace_magic_values( tooltip );
+			this.tooltip = this.replace_magic_values( props.get('tip') );
 			
 			this.group = group;
 			this.visible = true;
 			
 			// remember what our original alpha is:
-			this.mouse_out_alpha = alpha;
+			this.mouse_out_alpha = props.get('alpha');
 			// set the sprit alpha:
 			this.alpha = this.mouse_out_alpha;
 			
@@ -43,11 +43,11 @@
 			// This is UGLY!!! We need to decide if we are passing in a SINGLE style object,
 			// or many parameters....
 			//
-			if( value['on-click'] )
-				this.set_on_click( value['on-click'] );
+			if( props.has('on-click') )
+				this.set_on_click( props.get('on-click') );
 				
-			if ( value.axis )
-				if ( value.axis == 'right' )
+			if( props.has('axis') )
+				if( props.get('axis') == 'right' )
 					this.right_axis = true;
 		}
 		
@@ -56,22 +56,15 @@
 		// Y position, some like candle and scatter have many values
 		// and will override this method to parse their value
 		//
-		protected function parse_value( value:Object ):void {
+		protected function parse_value( props:Properties ):void {
 			
-			if( value is Number )
-			{
-				this.top = value as Number;
-				this.bottom = Number.MIN_VALUE;		// <-- align to Y min OR zero
+			if ( !props.has('bottom') ) {
+				// align to Y min OR zero
+				props.set('bottom', Number.MIN_VALUE );
 			}
-			else
-			{
-				this.top = value.top;
-				
-				if( value.bottom == null )
-					this.bottom = Number.MIN_VALUE;	// <-- align to Y min OR zero
-				else
-					this.bottom = value.bottom;
-			}
+			
+			this.top = props.get('top');
+			this.bottom = props.get('bottom');
 		}
 		
 		protected function replace_magic_values( t:String ): String {

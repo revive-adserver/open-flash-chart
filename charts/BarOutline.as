@@ -25,14 +25,21 @@
 		//
 		protected override function get_element( index:Number, value:Object ): Element {
 			
-			var default_style:Object = this.get_element_helper( value );
+			var root:Properties = new Properties( {
+				'outline-colour':	this.style['outline-colour']
+				} );
+		
+			var default_style:Properties = this.get_element_helper_prop( value );
+			default_style.set_parent( root );
 			
+	/*
 			if ( !default_style['outline-colour'] )
 				default_style['outline-colour'] = this.style['outline-colour'];
 			
 			if( default_style['outline-colour'] is String )
 				default_style['outline-colour'] = Utils.get_colour( default_style['outline-colour'] );
-				
+	*/
+
 			return new Outline( index, default_style, this.group );
 		}
 	}

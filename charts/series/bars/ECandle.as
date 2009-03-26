@@ -9,24 +9,22 @@
 		protected var low:Number;
 
 		
-		public function ECandle( index:Number, style:Object, group:Number ) {
+		public function ECandle( index:Number, props:Properties, group:Number ) {
 			
-			super(index, style, style.colour, style.tip, style.alpha, group);
+			super(index, props, group);
+			//super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
+			//super(index, style, style.colour, style.tip, style.alpha, group);
 		}
 		
 		//
 		// a candle chart has many values used to display each point
 		//
-		protected override function parse_value( value:Object ):void {
+		protected override function parse_value( props:Properties ):void {
 			
 			// set top (open) and bottom (close)
-			super.parse_value( value );
-			
-			if( ! ( value is Number ) )
-			{
-				this.high = value.high;
-				this.low = value.low;
-			}
+			super.parse_value( props );
+			this.high = props.get('high');
+			this.low = props.get('low');
 		}
 		
 		protected override function replace_magic_values( t:String ): String {

@@ -8,8 +8,9 @@
 
 		public function CylinderOutline( index:Number, props:Properties, group:Number ) {
 
-			// MASSIVE HACK:
-			super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
+			super(index, props, group);
+			//// MASSIVE HACK:
+			//super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
 
 //             super(index, style, style.colour, style.tip, style.alpha, group);
 

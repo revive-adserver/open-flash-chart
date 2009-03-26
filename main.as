@@ -56,7 +56,7 @@ package  {
 	
 	public class main extends Sprite {
 		
-		public  var VERSION:String = "2 Ichor";
+		public  var VERSION:String = "2 Jörmungandr";
 		private var title:Title = null;
 		//private var x_labels:XAxisLabels;
 		private var x_axis:XAxis;
@@ -93,7 +93,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/bar-cylinder.txt";
+					var file:String = "../../data-files/bar-on-show.txt";
 					//var file:String = "../../data-files/radar-2.txt";
 					//var file:String = "../../../test-data-files/stack.txt";
 					this.load_external_file( file );

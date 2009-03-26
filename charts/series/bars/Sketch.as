@@ -7,11 +7,12 @@
 		private var outline:Number;
 		private var offset:Number;
 		
-		public function Sketch( index:Number, style:Object, group:Number ) {
+		public function Sketch( index:Number, props:Properties, group:Number ) {
 			
-			super( index, style, style.colour, style.tip, style.alpha, group );
-			this.outline = style['outline-colour'];
-			this.offset = style.offset;
+			super(index, props, group);
+			//super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
+			this.outline = props.get_colour('outline-colour');
+			this.offset = props.get('offset');
 		}
 		
 		

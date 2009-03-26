@@ -10,6 +10,7 @@
 		
 		public function Properties( json:Object, parent:Properties=null ) {
 		
+			// why is this a dictionary?
 			this._props = new Dictionary();
 			this._parent = parent;
 			
@@ -58,6 +59,27 @@
 			}
 			else
 				return true;
+		}
+		
+		public function set_parent(p:Properties):void {
+			if ( this._parent != null )
+				p.set_parent( this._parent );
+		
+			this._parent = p;
+		}
+		
+		//
+		// recurse and kill everything
+		//
+		public function die(): void {
+			if ( this._parent )
+				this._parent.die();
+			
+			for (var key:Object in this._props) {
+				// iterates through each object key
+				this._props[key] = null;
+			}
+			this._parent = null;
 		}
 	}
 }

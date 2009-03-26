@@ -99,9 +99,7 @@
 			return 0;
 		}
 		
-		//
-		// override or don't call this if you need better help
-		//
+		/*
 		protected function get_element_helper( value:Object ): Object {
 			
 			var default_style:Object = {
@@ -125,7 +123,11 @@
 			// tr.ace_json(default_style);
 			return default_style;
 		}
+		*/
 		
+		//
+		// override or don't call this if you need better help
+		//
 		protected function get_element_helper_prop( value:Object ): Properties {
 			
 			var default_style:Properties = new Properties({
@@ -192,6 +194,11 @@
 			var dy:Number = Math.abs( y - ex.y );
 			
 			return { element:ex, distance_x:shortest, distance_y:dy };
+		}
+		
+		public override function die():void {
+			super.die();
+			this.props.die();
 		}
 	}
 }

@@ -6,10 +6,11 @@
 	public class Outline extends Base {
 		private var outline:Number;
 		
-		public function Outline( index:Number, style:Object, group:Number )	{
+		public function Outline( index:Number, props:Properties, group:Number )	{
 			
-			super( index, style, style.colour, style.tip, style.alpha, group );
-			this.outline = style['outline-colour'];
+			super(index, props, group);
+			//super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
+			this.outline = props.get_colour('outline-colour');
 		}
 		
 		public override function resize( sc:ScreenCoordsBase ):void {

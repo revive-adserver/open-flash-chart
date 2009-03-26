@@ -8,8 +8,9 @@ package charts.series.bars {
 	
 		public function Bar( index:Number, props:Properties, group:Number ) {
 			
+			super(index, props, group);
 			// MASSIVE HACK:
-			super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
+			//super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
 		}
 		
 		public override function resize( sc:ScreenCoordsBase ):void {

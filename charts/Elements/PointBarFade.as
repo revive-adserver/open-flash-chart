@@ -8,7 +8,9 @@
 		
 		public function PointBarFade( index:Number, value:Object, colour:Number, group:Number )
 		{
-			super(index,value,colour,'',0.6,group);
+			var p:Properties = new Properties(value);
+			super(index, p, group);
+			//super(index,value,colour,'',0.6,group);
 		}
 		
 		public override function resize( sc:ScreenCoordsBase ):void {
