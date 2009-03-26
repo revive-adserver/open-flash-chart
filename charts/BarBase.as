@@ -11,6 +11,7 @@
 		protected var group:Number;
 		protected var style:Object;
 		private var props:Properties;
+		private var on_show:Properties;
 		
 		public function BarBase( json:Object, group:Number )
 		{
@@ -27,6 +28,13 @@
 			} );
 			
 			this.props = new Properties(json, root);
+			
+		
+			var on_show_root:Properties = new Properties( {
+				type:		"pop-up",
+				cascade:	3
+				});
+			this.on_show = new Properties(json['on-show'], on_show_root);
 			
 			
 			this.style = {
@@ -99,32 +107,6 @@
 			return 0;
 		}
 		
-		/*
-		protected function get_element_helper( value:Object ): Object {
-			
-			var default_style:Object = {
-				colour:		this.style.colour,
-				tip:		this.style.tip,
-				alpha:		this.style.alpha,
-				'on-click':	this.style['on-click'],
-				axis:		this.style.axis
-			};
-			
-			if( value is Number )
-				default_style.top = value;
-			else
-				object_helper.merge_2( value, default_style );
-				
-			// our parent colour is a number, but
-			// we may have our own colour:
-			if( default_style.colour is String )
-				default_style.colour = Utils.get_colour( default_style.colour );
-			
-			// tr.ace_json(default_style);
-			return default_style;
-		}
-		*/
-		
 		//
 		// override or don't call this if you need better help
 		//
@@ -135,7 +117,8 @@
 				tip:		this.style.tip,
 				alpha:		this.style.alpha,
 				'on-click':	this.style['on-click'],
-				axis:		this.style.axis
+				axis:		this.style.axis,
+				'on-show':	this.on_show
 			});
 			
 			var s:Properties;

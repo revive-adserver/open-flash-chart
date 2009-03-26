@@ -18,6 +18,9 @@
 		protected var top:Number;
 		protected var bottom:Number;
 		protected var mouse_out_alpha:Number;
+		private var on_show_animate:Boolean;
+		protected var on_show:Properties;
+		
 		
 		public function Base( index:Number, props:Properties, group:Number )
 		{
@@ -30,6 +33,8 @@
 			
 			this.group = group;
 			this.visible = true;
+			this.on_show_animate = true;
+			this.on_show = props.get('on-show');
 			
 			// remember what our original alpha is:
 			this.mouse_out_alpha = props.get('alpha');
@@ -140,45 +145,84 @@
 			
 			height = Math.abs( bar_bottom - bar_top );
 			
-			//
-			// move the Sprite to the correct screen location:
-			//
-			this.y = top;
-			this.x = tmp.x;
-
-			//var d:Number = this.x / this.stage.stageWidth * 3;
-			Tweener.removeTweens(this);
-			
-//			this.y = this.stage.stageHeight + this.height + 3;
-//			Tweener.addTween(this, { y:top, time:1, delay:d, transition:Equations.easeOutBounce } );
-			
-//			this.y = -height - 10;
-//			Tweener.addTween(this, { y:top, time:1, delay:d, transition:Equations.easeOutBounce } );
-			
-			
-//			var d:Number = this.x / this.stage.stageWidth * 2;
-//			this.y = top;
-//			this.alpha = 0;
-//			Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:1.2, delay:d, transition:Equations.easeOutQuad } );
-
-//			var d:Number = this.x / this.stage.stageWidth * 2;
-//			this.y = top;
-//			this.alpha = 0;
-//			Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:0.7, delay:d, transition:Equations.easeOutQuad } );
-//			this.scaleX = 0.3;
-//			Tweener.addTween(this, { scaleX:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
-//			this.scaleY = 0.3;
-//			Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
 			
 			//
 			// tell the tooltip where to show its self
 			//
-			this.tip_pos = new flash.geom.Point( this.x + (tmp.width / 2), top );
+			this.tip_pos = new flash.geom.Point( tmp.x + (tmp.width / 2), top );
 			
+			if ( this.on_show_animate )
+				this.first_show(tmp.x, top, height);
+			else {
+				//
+				// move the Sprite to the correct screen location:
+				//
+				this.y = top;
+				this.x = tmp.x;
+			}
+				
 			//
 			// return the bounds to draw the item:
 			//
 			return { width:tmp.width, top:top, height:height, upside_down:upside_down };
 		}
+		
+		protected function first_show(x:Number, y:Number, height:Number): void {
+			
+			this.on_show_animate = false;
+			Tweener.removeTweens(this);
+			
+			// tr.aces('base.as', this.on_show.get('type') );
+			var d:Number = x / this.stage.stageWidth * this.on_show.get('cascade');
+		
+			switch( this.on_show.get('type') ) {
+				
+				case 'pop-up':
+					this.x = x;
+					this.y = this.stage.stageHeight + this.height + 3;
+					Tweener.addTween(this, { y:y, time:1, delay:d, transition:Equations.easeOutBounce } );
+					break;
+					
+				case 'drop':
+					this.x = x;
+					this.y = -height - 10;
+					Tweener.addTween(this, { y:y, time:1, delay:d, transition:Equations.easeOutBounce } );
+					break;
+
+				case 'fade-in':
+					this.x = x;
+					this.y = y;
+					this.alpha = 0;
+					Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:1.2, delay:d, transition:Equations.easeOutQuad } );
+					break;
+					
+				case 'grow':
+					this.x = x;
+					this.y = y;
+					this.scaleY = 0.01;
+					Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutQuad } );
+					break;
+					
+				case 'pop':
+					this.y = top;
+					this.alpha = 0;
+					Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:0.7, delay:d, transition:Equations.easeOutQuad } );
+					this.scaleX = 0.01;
+					Tweener.addTween(this, { scaleX:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
+					this.scaleY = 0.01;
+					Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
+			
+				default:
+					this.y = y;
+					this.x = x;
+				
+			}
+			
+
+			
+			
+
+
+		}	
 	}
 }
