@@ -79,7 +79,7 @@ package {
 				this.x_offset = x_axis_range.offset;
 			}
 			if( y_axis_range ) {
-				tr.aces( 'YYYY', y_axis_range.offset );
+				// tr.aces( 'YYYY', y_axis_range.offset );
 				this.y_offset = y_axis_range.offset;
 			}
    				

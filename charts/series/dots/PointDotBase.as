@@ -6,60 +6,77 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import caurina.transitions.Tweener;
+	import caurina.transitions.Equations;
 	
 	public class PointDotBase extends Element {
 		
 		protected var radius:Number;
 		protected var colour:Number;
+		private var on_show_animate:Boolean;
+		protected var on_show:Properties;
 		
-		public function PointDotBase( index:Number, style:Properties ) {
+		public function PointDotBase( index:Number, props:Properties ) {
 			
 			super();
 			this.is_tip = false;
 			this.visible = true;
+			this.on_show_animate = true;
+			this.on_show = props.get('on-show');
 			
+			/*
+			this.on_show = new Properties( {
+				type:		"",
+				cascade:	3,
+				delay:		0
+				});
+			*/
+				
 			// line charts have a value and no X, scatter charts have
 			// x, y (not value): radar charts have value, Y does not 
 			// make sense.
-			if( !style.has('y') )
-				style.set('y', style.get('value'));
+			if( !props.has('y') )
+				props.set('y', props.get('value'));
 		
-			this._y = style.get('y');
+			this._y = props.get('y');
 			
 			// no X passed in so calculate it from the index
-			if( !style.has('x') )
+			if( !props.has('x') )
 			{
 				this.index = this._x = index;
 			}
 			else
 			{
-				tr.aces( 'x', style.get('x') );
-				this._x = style.get('x');
+				tr.aces( 'x', props.get('x') );
+				this._x = props.get('x');
 				this.index = Number.MIN_VALUE;
 			}
 			
-			this.radius = style.get('dot-size');
-			this.tooltip = this.replace_magic_values( style.get('tip') );
+			this.radius = props.get('dot-size');
+			this.tooltip = this.replace_magic_values( props.get('tip') );
 			
-			if ( style.has('on-click') )
-				this.set_on_click( style.get('on-click') );
+			if ( props.has('on-click') )
+				this.set_on_click( props.get('on-click') );
 			
 			//
 			// TODO: fix this hack
 			//
-			if ( style.has('axis') )
-				if ( style.get('axis') == 'right' )
+			if ( props.has('axis') )
+				if ( props.get('axis') == 'right' )
 					this.right_axis = true;
 
 		}
 		
 		public override function resize( sc:ScreenCoordsBase ): void {
 			
+			var x:Number;
+			var y:Number;
+			
 			if ( this.index != Number.MIN_VALUE ) {
 	
 				var p:flash.geom.Point = sc.get_get_x_from_pos_and_y_from_val( this.index, this._y, this.right_axis );
-				this.x = p.x;
-				this.y = p.y;
+				x = p.x;
+				y = p.y;
 			}
 			else
 			{
@@ -67,16 +84,109 @@
 				//
 				// Look: we have a real X value, so get its screen location:
 				//
-				this.x = sc.get_x_from_val( this._x );
-				this.y = sc.get_y_from_val( this._y, this.right_axis );
+				x = sc.get_x_from_val( this._x );
+				y = sc.get_y_from_val( this._y, this.right_axis );
 			}
 			
 			// Move the mask so it is in the proper place also
 			// this all needs to be moved into the base class
 			if (this.line_mask != null)
 			{
-				this.line_mask.x = this.x;
-				this.line_mask.y = this.y;
+				this.line_mask.x = x;
+				this.line_mask.y = y;
+			}
+			
+			if ( this.on_show_animate )
+				this.first_show(x, y);
+			else {
+				//
+				// move the Sprite to the correct screen location:
+				//
+				this.y = y;
+				this.x = x;
+			}
+		}
+		
+		public function is_tweening(): Boolean {
+			return Tweener.isTweening(this);
+		}
+		
+		protected function first_show(x:Number, y:Number): void {
+			
+			this.on_show_animate = false;
+			Tweener.removeTweens(this);
+			
+			// tr.aces('base.as', this.on_show.get('type') );
+			var d:Number = x / this.stage.stageWidth;
+			d *= this.on_show.get('cascade');
+			d += this.on_show.get('delay');
+		
+			switch( this.on_show.get('type') ) {
+				
+				case 'pop-up':
+					this.x = x;
+					this.y = this.stage.stageHeight + this.height + 3;
+					Tweener.addTween(this, { y:y, time:1.4, delay:d, transition:Equations.easeOutQuad } );
+					break;
+					
+				case 'explode':
+					this.x = this.stage.stageWidth/2;
+					this.y = this.stage.stageHeight/2;
+					Tweener.addTween(this, { y:y, x:x, time:1.4, delay:d, transition:Equations.easeOutQuad } );
+					break;
+				
+				case 'mid-slide':
+					this.x = x;
+					this.y = this.stage.stageHeight / 2;
+					this.alpha = 0.2;
+					Tweener.addTween(this, { alpha:1, y:y, time:1.4, delay:d, transition:Equations.easeOutQuad } );
+					break;
+				
+				/*
+				 * the tooltips go a bit funny with this one
+				case 'slide-in-up':
+					this.x = 20;	// <-- left
+					this.y = this.stage.stageHeight / 2;
+					Tweener.addTween(
+						this, 
+						{ x:x, time:1.4, delay:d, transition:Equations.easeOutQuad, 
+						onComplete:function():void {
+							Tweener.addTween(this, 
+							{ y:y, time:1.4, transition:Equations.easeOutQuad } ) }
+						} );
+					break;
+				*/
+				
+				case 'drop':
+					this.x = x;
+					this.y = -height - 10;
+					Tweener.addTween(this, { y:y, time:1.4, delay:d, transition:Equations.easeOutBounce } );
+					break;
+
+				case 'fade-in':
+					this.x = x;
+					this.y = y;
+					this.alpha = 0;
+					Tweener.addTween(this, { alpha:1, time:1.2, delay:d, transition:Equations.easeOutQuad } );
+					break;
+				
+				case 'shrink-in':
+					this.x = x;
+					this.y = y;
+					this.scaleX = this.scaleY = 5;
+					this.alpha = 0;
+					Tweener.addTween(
+						this,
+						{
+							scaleX:1, scaleY:1, alpha:1, time:1.2,
+							delay:d, transition:Equations.easeOutQuad, 
+							onComplete:function():void { tr.ace('Fin'); }
+						} );
+					break;
+					
+				default:
+					this.y = y;
+					this.x = x;
 			}
 		}
 		

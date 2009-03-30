@@ -48,6 +48,7 @@
 		
 			this.color = 0;
 			this.background_colour_set = false;
+			this.font_size = 9;
 			
 			// Splitting by the ;
 			var arr:Array = txt.split(";");

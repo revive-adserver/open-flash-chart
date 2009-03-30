@@ -173,7 +173,9 @@
 			Tweener.removeTweens(this);
 			
 			// tr.aces('base.as', this.on_show.get('type') );
-			var d:Number = x / this.stage.stageWidth * this.on_show.get('cascade');
+			var d:Number = x / this.stage.stageWidth;
+			d *= this.on_show.get('cascade');
+			d += this.on_show.get('delay');
 		
 			switch( this.on_show.get('type') ) {
 				
@@ -208,21 +210,14 @@
 					this.alpha = 0;
 					Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:0.7, delay:d, transition:Equations.easeOutQuad } );
 					this.scaleX = 0.01;
-					Tweener.addTween(this, { scaleX:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
 					this.scaleY = 0.01;
-					Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
+					Tweener.addTween(this, { scaleY:1, scaleX:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
 			
 				default:
 					this.y = y;
 					this.x = x;
 				
 			}
-			
-
-			
-			
-
-
 		}	
 	}
 }

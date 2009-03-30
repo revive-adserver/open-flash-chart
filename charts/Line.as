@@ -10,11 +10,19 @@ package charts {
 	import charts.series.dots.DefaultDotProperties;
 	import charts.series.dots.dot_factory;
 	
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
+	import charts.series.dots.PointDotBase;
+	
 	public class Line extends Base
 	{
 		// JSON style:
 		protected var style:Object;
 		private var props:Properties;
+		private var on_show:Properties;
+	
+		private var on_show_timer:Timer;
+		private var on_show_start:Boolean;
 		
 		public function Line( json:Object ) {
 		
@@ -40,6 +48,22 @@ package charts {
 			
 			this.props = new DefaultDotProperties( tmp, this.style.colour, this.style.axis);
 			
+			//
+			//
+			//
+			var on_show_root:Properties = new Properties( {
+				type:		"pop-up",
+				cascade:	3,
+				delay:		0
+				});
+			this.on_show = new Properties(json['on-show'], on_show_root);
+			this.on_show_start = true;
+			//
+			//
+			//
+			
+			
+			
 			this.style.colour = string.Utils.get_colour( this.style.colour );
 			
 			this.key		= this.style.text;
@@ -56,18 +80,21 @@ package charts {
 		}
 		
 		//
-		// called from the BaseLine object
+		// called from the Base object
 		//
 		protected override function get_element( index:Number, value:Object ): Element {
 
 			if ( value is Number )
 				value = { value:value };
 				
-			var tmp:Properties = new Properties( value, this.props);
+			var tmp:Properties = new Properties(value, this.props);
 				
 			// Minor hack, replace all #key# with this key text,
 			// we do this *after* the merge.
 			tmp.set( 'tip', tmp.get('tip').replace('#key#', this.key) );
+			
+			// attach the animation bits:
+			tmp.set('on-show', this.on_show);
 				
 			return dot_factory.make( index, tmp );
 		}
@@ -77,17 +104,86 @@ package charts {
 		public override function resize( sc:ScreenCoordsBase ): void {
 			this.x = this.y = 0;
 
+			this.move_dots(sc);
+			
+			if ( this.on_show_start )
+				this.start_on_show_timer();
+			else
+				this.draw_line();
+			
+		}
+		
+		private function start_on_show_timer(): void {
+			this.on_show_start = false;
+			this.on_show_timer = new Timer(1000 / 60);	// <-- 60 frames a second = 1000ms / 60
+			this.on_show_timer.addEventListener("timer", timedFunction);
+			// Start the timer
+			this.on_show_timer.start();
+		}
+		
+		private function timedFunction(eventArgs:TimerEvent): void {
+			if ( this.still_animating() ) {
+				this.draw_line();
+			}
+			else {
+				tr.ace( 'Line.as : on show animation stop' );
+				this.on_show_timer.stop();
+			}
+		}
+		
+		private function still_animating(): Boolean {
+			var i:Number;
+			var tmp:Sprite;
+		
+			for ( i=0; i < this.numChildren; i++ ) {
+
+				tmp = this.getChildAt(i) as Sprite;
+				
+				// filter out the line masks
+				if( tmp is PointDotBase )
+				{
+					var e:PointDotBase = tmp as PointDotBase;
+					if ( e.is_tweening() )
+						return true;
+				}
+			}
+			return false;
+		}
+		
+		private function draw_line(): void {
+			
 			this.graphics.clear();
 			this.graphics.lineStyle( this.style.width, this.style.colour );
 			
 			if( this.style['line-style'].style != 'solid' )
-				this.dash_line(sc);
+				this.dash_line();
 			else
-				this.solid_line(sc);
+				this.solid_line();
 		
 		}
 		
-		public function solid_line( sc:ScreenCoordsBase ): void {
+		public function move_dots( sc:ScreenCoordsBase ): void {
+			
+			var i:Number;
+			var tmp:Sprite;
+		
+			for ( i=0; i < this.numChildren; i++ ) {
+
+				tmp = this.getChildAt(i) as Sprite;
+				
+				// filter out the line masks
+				if( tmp is Element )
+				{
+					var e:Element = tmp as Element;
+					
+					// tell the point where it is on the screen
+					// we will use this info to place the tooltip
+					e.resize( sc );
+				}
+			}
+		}
+		
+		public function solid_line(): void {
 			
 			var first:Boolean = true;
 			var i:Number;
@@ -99,16 +195,11 @@ package charts {
 
 				tmp = this.getChildAt(i) as Sprite;
 				
-				//
 				// filter out the line masks
-				//
 				if( tmp is Element )
 				{
 					var e:Element = tmp as Element;
 					
-					// tell the point where it is on the screen
-					// we will use this info to place the tooltip
-					e.resize( sc );
 					if( first )
 					{
 						this.graphics.moveTo(e.x, e.y);
@@ -128,7 +219,7 @@ package charts {
 		}
 		
 		// Dashed lines by Arseni
-		public function dash_line( sc:ScreenCoordsBase ): void {
+		public function dash_line(): void {
 			
 			var first:Boolean = true;
 			
@@ -149,9 +240,6 @@ package charts {
 				{
 					var e:Element = tmp as Element;
 					
-					// tell the point where it is on the screen
-					// we will use this info to place the tooltip
-					e.resize( sc );
 					if( first )
 					{
 						this.graphics.moveTo(e.x, e.y);

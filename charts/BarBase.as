@@ -32,7 +32,8 @@
 		
 			var on_show_root:Properties = new Properties( {
 				type:		"pop-up",
-				cascade:	3
+				cascade:	3,
+				delay:		0
 				});
 			this.on_show = new Properties(json['on-show'], on_show_root);
 			
