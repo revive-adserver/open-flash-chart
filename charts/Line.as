@@ -3,7 +3,6 @@ package charts {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import charts.series.Element;
-	import string.Utils;
 	import flash.display.BlendMode;
 	import flash.display.Sprite;
 	
@@ -17,39 +16,31 @@ package charts {
 	public class Line extends Base
 	{
 		// JSON style:
-		protected var style:Object;
 		private var props:Properties;
+		private var dot_style:Properties;
 		private var on_show:Properties;
+		private var line_style:LineStyle;
 	
 		private var on_show_timer:Timer;
 		private var on_show_start:Boolean;
 		
 		public function Line( json:Object ) {
 		
-			
-			this.style = {
+			var root:Properties = new Properties({
 				values: 		[],
 				width:			2,
 				colour: 		'#3030d0',
 				text: 			'',		// <-- default not display a key
 				'font-size': 	12,
 				tip:			'#val#',
-				'line-style':	new LineStyle( json['line-style'] ),
 				loop:			false,
 				axis:			'left'
-				// HACK: fix this (remove the merge below)
-			};
+			});
+			this.props = new Properties(json, root);
 			
-			// hack: keep this incase the merge kills it, we'll
-			// remove the merge later (and this hack)
-			var tmp:Object = json['dot-style'];
+			this.line_style = new LineStyle(json['line-style']);
+			this.dot_style = new DefaultDotProperties(json['dot-style'], this.props.get('colour'), this.props.get('axis'));
 			
-			object_helper.merge_2( json, this.style );
-			
-			this.props = new DefaultDotProperties( tmp, this.style.colour, this.style.axis);
-			
-			//
-			//
 			//
 			var on_show_root:Properties = new Properties( {
 				type:		"pop-up",
@@ -60,16 +51,11 @@ package charts {
 			this.on_show_start = true;
 			//
 			//
-			//
 			
+			this.key		= this.props.get('text');
+			this.font_size	= this.props.get('font-size');
 			
-			
-			this.style.colour = string.Utils.get_colour( this.style.colour );
-			
-			this.key		= this.style.text;
-			this.font_size	= this.style['font-size']
-			
-			this.values = this.style.values;
+			this.values = this.props.get('values');
 			this.add_values();
 
 			//
@@ -86,8 +72,8 @@ package charts {
 
 			if ( value is Number )
 				value = { value:value };
-				
-			var tmp:Properties = new Properties(value, this.props);
+			
+			var tmp:Properties = new Properties(value, this.dot_style);
 				
 			// Minor hack, replace all #key# with this key text,
 			// we do this *after* the merge.
@@ -153,9 +139,9 @@ package charts {
 		private function draw_line(): void {
 			
 			this.graphics.clear();
-			this.graphics.lineStyle( this.style.width, this.style.colour );
+			this.graphics.lineStyle( this.props.get_colour('width'), this.props.get_colour('colour') );
 			
-			if( this.style['line-style'].style != 'solid' )
+			if( this.line_style.style != 'solid' )
 				this.dash_line();
 			else
 				this.solid_line();
@@ -212,7 +198,7 @@ package charts {
 				}
 			}
 			
-			if ( this.style.loop ) {
+			if ( this.props.get('loop') ) {
 				// close the line loop (radar charts)
 				this.graphics.lineTo(x, y);
 			}
@@ -227,8 +213,8 @@ package charts {
 			var prev_y:int = 0;
 			var on_len_left:Number = 0;
 			var off_len_left:Number = 0;
-			var on_len:Number = this.style['line-style'].on; //Stroke Length
-			var off_len:Number = this.style['line-style'].off; //Space Length
+			var on_len:Number = this.line_style.on; //Stroke Length
+			var off_len:Number = this.line_style.off; //Space Length
 			var now_on:Boolean = true;
 			
 			for ( var i:Number = 0; i < this.numChildren; i++ ) {				
@@ -317,7 +303,7 @@ package charts {
 		}
 		
 		public override function get_colour(): Number {
-			return this.style.colour;
+			return this.props.get_colour('colour');
 		}
 	}
 }
