@@ -30,6 +30,7 @@
 					i = (json.y_axis_right && json.y_axis_right.max) ? json.y_axis_right.max : values.length - 1;
 					parent.set_y_max( i );
 					ok = true;
+					this.i_need_labels = false;
 				}
 				else if ( json.y_axis_right.labels is Object ) 
 				{
@@ -58,13 +59,15 @@
 							}
 						}
 						ok = true;
+						this.i_need_labels = false;
 					}
 				}				
 			}
 			
+			/*
 			if( !ok && parent.style.visible )
 				values = make_labels( parent.style.min, parent.style.max, true, 1, lblText );
-			
+			*/
 			super( values, 1, json, 'y_label_2_', 'y_axis_right');
 		}
 

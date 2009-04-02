@@ -8,11 +8,22 @@
 	import flash.display.Sprite;
 	import charts.series.dots.DefaultDotProperties;
 
-	
-	public class Area extends LineBase {
+	//public class Area extends LineBase {
+	public class Area extends Line {
+		private var fill_colour:Number;
 		
 		public function Area( json:Object ) {
+			super(json);
 			
+			var fill:String;
+			if (json.fill)
+				fill = json.fill;
+			else
+				fill = json.colour;
+				
+			this.fill_colour = string.Utils.get_colour(fill);
+			
+			/*
 			this.style = {
 				values:			[],
 				width:			2,
@@ -38,10 +49,11 @@
 			
 			if( this.style.fill == '' )
 				this.style.fill = this.style.colour;
-				
-			this.style.colour = string.Utils.get_colour( this.style.colour );
-			this.style.fill = string.Utils.get_colour( this.style.fill );
 			
+			this.style.colour = string.Utils.get_colour( this.style.colour );
+			
+			this.style.fill = string.Utils.get_colour( this.style.fill );
+		
 			this.key = style.text;
 			this.font_size = style['font-size'];
 			this.values = style['values'];
@@ -51,9 +63,11 @@
 			// so the mask child can punch a hole through the line
 			//
 			this.blendMode = BlendMode.LAYER;
+			*/
 		}
 		
-		public override function resize(sc:ScreenCoordsBase):void {
+/*
+		public override function resize__(sc:ScreenCoordsBase):void {
 			
 			this.graphics.clear();
 			// now draw the line + hollow dots
@@ -116,5 +130,7 @@
 
 			this.graphics.endFill();
 		}
+		
+		*/
 	}
 }

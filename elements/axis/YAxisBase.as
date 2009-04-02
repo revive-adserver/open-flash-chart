@@ -34,13 +34,6 @@ package elements.axis {
 			this.stroke = style.stroke;
 			this.tick_length = style['tick-length'];
 			
-			// try to avoid infinate loops...
-			if ( this.style.steps == 0 )
-				this.style.steps = 1;
-				
-			if ( this.style.steps < 0 )
-				this.style.steps *= -1;
-			
 			if ((this.style.labels != null) &&
 				(this.style.labels.labels != null) &&
 				(this.style.labels.labels is Array) &&
@@ -68,8 +61,54 @@ package elements.axis {
 					}
 				}
 			}
-
+		}
+		
+		public function auto_range(): void {
+				
+			/*
+			var maxValue:Number = Math.max($bar_1->data) * 1.07;
+			$l = round(log($maxValue)/log(10));
+			$p = pow(10, $l) / 2;
+			$maxValue = round($maxValue * 1.1 / $p) * $p;
+			*/
 			
+			/*
+			 * http://forums.openflashchart.com/viewtopic.php?f=5&t=617&start=0
+			 * cdcarson
+			    // y axis data...
+    $counts = array_values($data);
+    $ymax = max($counts);
+    // add a bit of padding to the top, not strictly necessary...
+    $ymax += ceil(.1 * $ymax);
+    //$max_steps could be anything,depending on the height of the chart, font-size, etc..
+    $max_steps = 10;
+    /**
+    * The step sizes to test are created using an
+    * array of multipliers and a power of 10, starting at 0.
+    * $step_size = $multiplier * pow(10, $exponent);
+    * Assuming $multipliers = array(1, 2, 5) this would give us...
+    * 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000,...
+    * /
+    $n = 0;
+    $multipliers = array(1, 2, 5);
+    $num_multipliers = count($multipliers);
+    $exponent = floor($n / $num_multipliers);
+    $multiplier = $multipliers[$n % $num_multipliers];
+    $step_size = $multiplier * pow(10, $exponent);
+    $num_steps = ceil($ymax/$step_size);
+    //keep testing until we have the right step_size...
+    while ($num_steps >= $max_steps){
+       $n ++;
+       $exponent = floor($n / $num_multipliers);
+       $multiplier = $multipliers[$n % $num_multipliers];
+       $step_size = $multiplier * pow(10, $exponent);
+       $num_steps = ceil($ymax/$step_size);
+    }
+    $yaxis = new y_axis();
+    $yaxis->set_range(0, $ymax, $step_size);
+
+			 */
+
 		}
 		
 		public function get_style():Object { return null;  }
@@ -101,10 +140,49 @@ package elements.axis {
 				this.removeChildAt(0);
 		}
 		
+		private function get_steps(min:Number, max:Number, height:Number):Number {
+			// try to avoid infinite loops...
+			if ( this.style.steps == 0 )
+				this.style.steps = 1;
+				
+			if ( this.style.steps < 0 )
+				this.style.steps *= -1;
+			
+			// how many steps (grid lines) do we have?
+			var s:Number = (max - min) / this.style.steps;
+			if ( s > (height/2) ) {
+				// either no steps are set, or they are wrong and
+				// we have more grid lines than pixels to show them.
+				// E.g: 
+				//      max = 1,001,000
+				//      min =     1,000
+				//      s   =   200,000
+				s = (max - min) / 5;
+			}
+			
+			return s;
+		}
+		
 		public function resize(label_pos:Number, sc:ScreenCoords):void { }
 		
 		protected function resize_helper(label_pos:Number, sc:ScreenCoords, right:Boolean):void {
 			
+			// Set opacity for the first line to 0 (otherwise it overlaps the x-axel line)
+			//
+			// Bug? Does this work on graphs with minus values?
+			//
+			var i2:Number = 0;
+			var i:Number;
+			var y:Number;
+			var lbl:Object;
+			
+			var min:Number = Math.min(this.style.min, this.style.max);
+			var max:Number = Math.max(this.style.min, this.style.max);
+			var steps:Number = this.get_steps(min, max, this.stage.stageHeight);
+			
+			if ( this.labels.i_need_labels )
+				this.labels.make_labels(min, max, steps);
+		
 			if( !right )
 				this.labels.resize( label_pos, sc );
 			else
@@ -116,50 +194,8 @@ package elements.axis {
 			this.graphics.clear();
 			this.graphics.lineStyle( 0, 0, 0 );
 			
-			// y axel grid lines
-			//var every:Number = (this.minmax.y_max - this.minmax.y_min) / this.steps;
-			
-			// Set opacity for the first line to 0 (otherwise it overlaps the x-axel line)
-			//
-			// Bug? Does this work on graphs with minus values?
-			//
-			var i2:Number = 0;
-			var i:Number;
-			var y:Number;
-			
-			var min:Number = Math.min(this.style.min, this.style.max);
-			var max:Number = Math.max(this.style.min, this.style.max);
-			
-			if ( this.style['grid-visible'] ) {
-				//
-				// draw GRID lines
-				//
-				if (this.user_ticks) 
-				{
-					for each( var lbl:Object in this.user_labels )
-					{
-						y = sc.get_y_from_val(lbl.y, right);
-						this.graphics.beginFill(lbl["grid-colour"], 1);
-						this.graphics.drawRect( sc.left, y, sc.width, 1 );
-						this.graphics.endFill();
-					}
-				}
-				else
-				{
-					//
-					// hack: http://kb.adobe.com/selfservice/viewContent.do?externalId=tn_13989&sliceId=1
-					//
-					max += 0.000004;
-					
-					for( i = min; i <= max; i+=this.style.steps ) {
-						
-						y = sc.get_y_from_val(i, right);
-						this.graphics.beginFill( this.grid_colour, 1 );
-						this.graphics.drawRect( sc.left, y, sc.width, 1 );
-						this.graphics.endFill();
-					}
-				}
-			}
+			if ( this.style['grid-visible'] )
+				this.draw_grid_lines(steps, min, max, right, sc);
 			
 			var pos:Number;
 			
@@ -188,14 +224,12 @@ package elements.axis {
 					
 					this.graphics.beginFill( this.colour, 1 );
 					this.graphics.drawRect( tick_pos, y - (this.stroke / 2), this.tick_length, this.stroke );
-					//this.graphics.drawRect( pos - this.tick_length, y - (this.stroke / 2), this.tick_length, this.stroke );
-					//this.graphics.drawRect( left, y-(this.stroke/2), this.tick_length, this.stroke );
 					this.graphics.endFill();
 				}
 			}
 			else
 			{
-				for( i = min; i <= max; i+=this.style.steps ) {
+				for(i=min; i<=max; i+=steps) {
 					
 					// start at the bottom and work up:
 					y = sc.get_y_from_val(i, right);
@@ -208,13 +242,43 @@ package elements.axis {
 					
 					this.graphics.beginFill( this.colour, 1 );
 					this.graphics.drawRect( tick_pos, y - (this.stroke / 2), this.tick_length, this.stroke );
-					//this.graphics.drawRect( pos - this.tick_length, y - (this.stroke / 2), this.tick_length, this.stroke );
-					//this.graphics.drawRect( left, y-(this.stroke/2), this.tick_length, this.stroke );
 					this.graphics.endFill();
-						
 				}
 			}
 		}
 		
+		private function draw_grid_lines(steps:Number, min:Number, max:Number, right:Boolean, sc:ScreenCoords): void {
+			
+			var y:Number;
+			var lbl:Object;
+			//
+			// draw GRID lines
+			//
+			if (this.user_ticks) 
+			{
+				for each(lbl in this.user_labels )
+				{
+					y = sc.get_y_from_val(lbl.y, right);
+					this.graphics.beginFill(lbl["grid-colour"], 1);
+					this.graphics.drawRect( sc.left, y, sc.width, 1 );
+					this.graphics.endFill();
+				}
+			}
+			else
+			{
+				//
+				// hack: http://kb.adobe.com/selfservice/viewContent.do?externalId=tn_13989&sliceId=1
+				//
+				max += 0.000004;
+				
+				for( var i:Number = min; i<=max; i+=steps ) {
+					
+					y = sc.get_y_from_val(i, right);
+					this.graphics.beginFill( this.grid_colour, 1 );
+					this.graphics.drawRect( sc.left, y, sc.width, 1 );
+					this.graphics.endFill();
+				}
+			}
+		}
 	}
 }

@@ -7,15 +7,19 @@
 	import string.Utils;
 	
 	public class YAxisLabelsBase extends Sprite {
+		
 		private var steps:Number;
 		private var right:Boolean;
 		protected var style:Object;
+		public var i_need_labels:Boolean;
+		protected var lblText:String;
 		
-		public function YAxisLabelsBase( values:Array, steps:Number, json:Object, name:String, axis_name:String ) {
+		
+		public function YAxisLabelsBase(values:Array, steps:Number, json:Object, name:String, axis_name:String) {
 
 			this.steps = steps;
 			
-			var lblStyle:YLabelStyle = new YLabelStyle( json, name );
+			var lblStyle:YLabelStyle = new YLabelStyle(json, name);
 			this.style = lblStyle.style;
 			
 			// Default to using "rotate" from the y_axis level
@@ -28,6 +32,11 @@
 				( json[axis_name].labels != null ) ) {
 				object_helper.merge_2( json[axis_name].labels, this.style );
 			}
+			
+			this.add_labels(values);
+		}
+		
+		private function add_labels(values:Array): void {
 			
 			// are the Y Labels visible?
 			if( !this.style.show_labels )
@@ -46,11 +55,18 @@
 			}
 		}
 
+		/**
+		 * This is called from the re-size function, because it is only then
+		 * that we know the size of the flash window and know how many ticks/labels
+		 * we auto generate
+		 */
+		public function make_labels(min:Number, max:Number, steps:Number): void { }
+		
 		//
 		// use Y Min, Y Max and Y Steps to create an array of
 		// Y labels:
 		//
-		protected function make_labels( min:Number, max:Number, right:Boolean, steps:Number, lblText:String ):Array {
+		protected function make_labels_(min:Number, max:Number, right:Boolean, steps:Number, lblText:String):void {
 			var values:Array = [];
 			
 			var min_:Number = Math.min( min, max );
@@ -66,7 +82,8 @@
 				// make sure we don't generate too many labels:
 				if( eek++ > 250 ) break;
 			}
-			return values;
+			
+			this.add_labels(values);
 		}
 		
 		private function make_label( json:Object ):YTextField

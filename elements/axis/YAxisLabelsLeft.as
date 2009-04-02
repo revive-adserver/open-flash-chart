@@ -7,7 +7,8 @@ package elements.axis {
 			
 			var values:Array;
 			var ok:Boolean = false;
-			var lblText:String = "#val#";
+			this.lblText = "#val#";
+			this.i_need_labels = true;
 			
 			if( json.y_axis )
 			{
@@ -30,10 +31,12 @@ package elements.axis {
 					i = (json.y_axis && json.y_axis.max) ? json.y_axis.max : values.length - 1;
 					parent.set_y_max( i );
 					ok = true;
+					this.i_need_labels = false;
 				}
 				else if ( json.y_axis.labels is Object ) 
 				{
-					if ( json.y_axis.labels.text is String ) lblText = json.y_axis.labels.text;
+					if ( json.y_axis.labels.text is String )
+						this.lblText = json.y_axis.labels.text;
 
 					if ( json.y_axis.labels.labels is Array )
 					{
@@ -63,21 +66,34 @@ package elements.axis {
 							}
 						}
 						ok = true;
+						this.i_need_labels = false;
 					}
 				}				
 			}
 			
+			/*
 			if( !ok )
 			{
 				values = this.make_labels( parent.style.min, parent.style.max, false, parent.style.steps, lblText );
 			}
-			
+			*/
 			
 			super(values,1,json,'y_label_','y_axis');
+		}
+		
+		
+		public override function make_labels(min:Number, max:Number, steps:Number): void {
+			
+			if ( !this.i_need_labels )
+				return;
+				
+			this.i_need_labels = false;
+			this.make_labels_(min, max, false, steps, this.lblText);
 		}
 
 		// move y axis labels to the correct x pos
 		public override function resize( left:Number, sc:ScreenCoords ):void {
+			
 			var maxWidth:Number = this.get_width();
 			var i:Number;
 			var tf:YTextField;

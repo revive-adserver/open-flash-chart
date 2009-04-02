@@ -26,15 +26,9 @@
 				steps:			1,
 				visible:		true,
 				min:			0,
-				max:			10
+				max:			10,
+				auto_size:		false
 			};
-			
-			/*
-			var maxValue:Number = Math.max($bar_1->data) * 1.07;
-			$l = round(log($maxValue)/log(10));
-			$p = pow(10, $l) / 2;
-			$maxValue = round($maxValue * 1.1 / $p) * $p;
-			*/
 			
 			return style;
 		}
