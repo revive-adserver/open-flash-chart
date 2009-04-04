@@ -72,11 +72,13 @@ package  {
 		private var sc:ScreenCoords;
 		private var tooltip:Tooltip;
 		private var background:Background;
+		private var menu:Menu;
 		private var ok:Boolean;
 		private var URL:String;		// ugh, vile. The IOError doesn't report the URL
-		private var id:String;
+		private var id:String;		// chart id passed inf from user
 		private var chart_parameters:Object;
-		private var menu:Menu;
+		private var json:String;
+	
 		
 		public function main() {
 			this.chart_parameters = LoaderInfo(this.loaderInfo).parameters;
@@ -414,7 +416,6 @@ package  {
             this.stage.addEventListener(Event.ACTIVATE, this.activateHandler);
             this.stage.addEventListener(Event.RESIZE, this.resizeHandler);
 			this.stage.addEventListener(Event.MOUSE_LEAVE, this.mouseOut);
-			
 			this.addEventListener( MouseEvent.MOUSE_OVER, this.mouseMove );
 		}
 		
@@ -467,11 +468,12 @@ package  {
 		}
 		
 		private function activateHandler(event:Event):void {
-            tr.ace("activateHandler: " + event);
+            tr.aces("activateHandler:", event);
+			tr.aces("stage", this.stage);
         }
 
         private function resizeHandler(event:Event):void {
-            // FlashConnect.trace("resizeHandler: " + event);
+            // tr.ace("resizeHandler: " + event);
             this.resize();
         }
 		
@@ -746,8 +748,8 @@ package  {
 			this.y_legend		= new YLegendLeft( json );
 			this.y_legend_2		= new YLegendRight( json );
 			this.x_axis			= new XAxis( json, this.obs.get_min_x(), this.obs.get_max_x() );
-			this.y_axis			= new YAxisLeft( json );
-			this.y_axis_right	= new YAxisRight( json );
+			this.y_axis			= new YAxisLeft();
+			this.y_axis_right	= new YAxisRight();
 			
 			// access all our globals through this:
 			var g:Global = Global.getInstance();
@@ -771,6 +773,11 @@ package  {
 			this.addChild( this.y_axis_right );
 			this.addChild( this.x_axis );
 			this.addChild( this.keys );
+			
+			// now these children have access to the stage,
+			// tell them to init
+			this.y_axis.init(json);
+			this.y_axis_right.init(json);
 		}
 		
 		/**

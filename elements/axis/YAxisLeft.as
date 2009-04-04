@@ -3,15 +3,13 @@
 	
 	public class YAxisLeft extends YAxisBase {
 
-		function YAxisLeft( json:Object ) {
-			
-			super( json, 'y_axis' );
-			
+		function YAxisLeft() {}
+		
+		public override function init(json:Object): void {
+
 			this.labels = new YAxisLabelsLeft( this, json );
 			this.addChild( this.labels );
-		}
-		
-		public override function get_style():Object {
+			
 			//
 			// default values for a left axis
 			//
@@ -30,7 +28,7 @@
 				auto_size:		false
 			};
 			
-			return style;
+			super._init(json, 'y_axis', style);
 		}
 		
 		public override function resize( label_pos:Number, sc:ScreenCoords ):void {

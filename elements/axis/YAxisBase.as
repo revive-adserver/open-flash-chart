@@ -15,15 +15,17 @@ package elements.axis {
 		private var user_labels:Array;
 		private var user_ticks:Boolean;
 		
-		function YAxisBase( json:Object, name:String )
-		{
-	
-			//
-			// If we set this.style in the parent, then
-			// access it here it is null, but if we do
-			// this hack then it is OK:
-			//
-			this.style = this.get_style();
+		function YAxisBase(){}
+		
+		public function init(json:Object): void {}
+		
+		// called once the sprite has been added to the stage
+		// so now it has access to the stage
+		protected function _init(json:Object, name:String, style:Object): void {
+			
+			tr.aces('YAxisBase.init() stage', this.stage.stageHeight);
+
+			this.style = style;
 			
 			if( json[name] )
 				object_helper.merge_2( json[name], this.style );
@@ -34,6 +36,23 @@ package elements.axis {
 			this.stroke = style.stroke;
 			this.tick_length = style['tick-length'];
 			
+			tr.aces('YAxisBase auto', this.auto_range( 50001 ));
+			
+			// make sure we don't have 1,000,000 steps
+			var min:Number = Math.min(this.style.min, this.style.max);
+			var max:Number = Math.max(this.style.min, this.style.max);
+			this.style.steps = this.get_steps(min, max, this.stage.stageHeight);
+			
+			if ( this.labels.i_need_labels )
+				this.labels.make_labels(min, max, this.style.steps);
+			
+			//
+			// colour the grid lines
+			//
+			// TODO: remove this and
+			//       this.user_ticks
+			//       this.user_labels
+			//
 			if ((this.style.labels != null) &&
 				(this.style.labels.labels != null) &&
 				(this.style.labels.labels is Array) &&
@@ -63,8 +82,15 @@ package elements.axis {
 			}
 		}
 		
-		public function auto_range(): void {
-				
+		public function auto_range(max:Number): Number {
+			
+			var maxValue:Number = Math.max(max) * 1.07;
+			var l:Number = Math.round(Math.log(maxValue)/Math.log(10));
+			var p:Number = Math.pow(10, l) / 2;
+			maxValue = Math.round(maxValue * 1.1 / p) * p;
+			return maxValue;
+			
+			
 			/*
 			var maxValue:Number = Math.max($bar_1->data) * 1.07;
 			$l = round(log($maxValue)/log(10));
@@ -178,10 +204,6 @@ package elements.axis {
 			
 			var min:Number = Math.min(this.style.min, this.style.max);
 			var max:Number = Math.max(this.style.min, this.style.max);
-			var steps:Number = this.get_steps(min, max, this.stage.stageHeight);
-			
-			if ( this.labels.i_need_labels )
-				this.labels.make_labels(min, max, steps);
 		
 			if( !right )
 				this.labels.resize( label_pos, sc );
@@ -195,7 +217,7 @@ package elements.axis {
 			this.graphics.lineStyle( 0, 0, 0 );
 			
 			if ( this.style['grid-visible'] )
-				this.draw_grid_lines(steps, min, max, right, sc);
+				this.draw_grid_lines(this.style.steps, min, max, right, sc);
 			
 			var pos:Number;
 			
@@ -229,7 +251,7 @@ package elements.axis {
 			}
 			else
 			{
-				for(i=min; i<=max; i+=steps) {
+				for(i=min; i<=max; i+=this.style.steps) {
 					
 					// start at the bottom and work up:
 					y = sc.get_y_from_val(i, right);

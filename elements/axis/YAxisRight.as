@@ -3,10 +3,10 @@
 	
 	public class YAxisRight extends YAxisBase {
 
-		function YAxisRight( json:Object ) {
-			
-			super( json, 'y_axis_right' );
-			
+		function YAxisRight() {}
+		
+		public override function init(json:Object): void {
+		
 			//
 			// OK, the user has set the right Y axis,
 			// but forgot to specifically set visible to
@@ -17,9 +17,7 @@
 				
 			this.labels = new YAxisLabelsRight( this, json );
 			this.addChild( this.labels );
-		}
-		
-		public override function get_style():Object {
+			
 			//
 			// default values for a right axis (turned off)
 			//
@@ -37,7 +35,7 @@
 				max:			10
 			};
 			
-			return style;
+			super._init(json, 'y_axis_right', style);
 		}
 		
 		public override function resize( label_pos:Number, sc:ScreenCoords ):void {
