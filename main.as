@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/y-axis-big.txt";
+					var file:String = "../../data-files/area-2.txt";
 					//var file:String = "../../data-files/radar-2.txt";
 					//var file:String = "../../../test-data-files/stack.txt";
 					this.load_external_file( file );
@@ -604,6 +604,11 @@ package  {
 			this.y_legend_2.resize();
 			
 			this.obs.resize( sc );
+			
+			
+			// Test code:
+			this.dispatchEvent(new Event("on-show"));
+			
 			
 			return sc;
 		}

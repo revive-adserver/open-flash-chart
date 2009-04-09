@@ -11,6 +11,7 @@
 	//public class Area extends LineBase {
 	public class Area extends Line {
 		private var fill_colour:Number;
+		private var area_base:Number;
 		
 		public function Area( json:Object ) {
 			super(json);
@@ -66,12 +67,33 @@
 			*/
 		}
 		
-/*
-		public override function resize__(sc:ScreenCoordsBase):void {
+		
+//		public override function resize(sc:ScreenCoordsBase):void {
+//	
+//			// now draw the line + hollow dots
+//			super.resize(sc);
+//		}
+		
+		public override function resize( sc:ScreenCoordsBase ): void {
 			
-			this.graphics.clear();
-			// now draw the line + hollow dots
+			// save this position
+			this.area_base = sc.get_y_bottom(false);
+			
+			// let line deal with the resize
 			super.resize(sc);
+		}
+		
+		//
+		// this is called from both resize and the animation manager,
+		//
+		protected override function draw(): void {
+			this.graphics.clear();
+			this.fill_area();
+			// draw the line on top of the area (z axis)
+			this.draw_line();
+		}
+		
+		private function fill_area():void {
 			
 			var last:Element;
 			var first:Boolean = true;
@@ -91,7 +113,7 @@
 						
 						first = false;
 						
-						if (this.style.loop)
+						if (this.props.get('loop'))
 						{
 							// assume we are in a radar chart
 							this.graphics.moveTo( e.x, e.y );
@@ -99,7 +121,7 @@
 						else
 						{
 							// draw line from Y=0 up to Y pos
-							this.graphics.moveTo( e.x, sc.get_y_bottom(false) );
+							this.graphics.moveTo( e.x, this.area_base );
 						}
 						
 						//
@@ -107,9 +129,9 @@
 						//             starting a fill:
 						//
 						this.graphics.lineStyle(0,0,0);
-						this.graphics.beginFill( this.style.fill, this.style['fill-alpha'] );
+						this.graphics.beginFill( this.fill_colour, this.props.get('fill-alpha') );
 						
-						if (!this.style.loop)
+						if (!this.props.get('loop'))
 							this.graphics.lineTo( e.x, e.y );
 						
 					}
@@ -122,15 +144,14 @@
 			}
 			
 			if ( last != null ) {
-				if ( !this.style.loop) {
-					this.graphics.lineTo( last.x, sc.get_y_bottom(false) );
+				if ( !this.props.get('loop')) {
+					this.graphics.lineTo( last.x, this.area_base );
 				}
 			}
 			
 
 			this.graphics.endFill();
 		}
-		
-		*/
+	
 	}
 }

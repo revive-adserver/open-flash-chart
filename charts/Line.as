@@ -16,7 +16,7 @@ package charts {
 	public class Line extends Base
 	{
 		// JSON style:
-		private var props:Properties;
+		protected var props:Properties;
 		private var dot_style:Properties;
 		private var on_show:Properties;
 		private var line_style:LineStyle;
@@ -44,7 +44,7 @@ package charts {
 			//
 			var on_show_root:Properties = new Properties( {
 				type:		"pop-up",
-				cascade:	3,
+				cascade:	0.5,
 				delay:		0
 				});
 			this.on_show = new Properties(json['on-show'], on_show_root);
@@ -62,6 +62,9 @@ package charts {
 			// this allows the dots to erase part of the line
 			//
 			this.blendMode = BlendMode.LAYER;
+			
+			// TEST CODE:
+			this.addEventListener("on-show", onShowHandler);
 			
 		}
 		
@@ -85,6 +88,9 @@ package charts {
 			return dot_factory.make( index, tmp );
 		}
 		
+		public function onShowHandler(event:Event): void {
+			tr.ace('Line - on show');
+		}
 		
 		// Draw lines...
 		public override function resize( sc:ScreenCoordsBase ): void {
@@ -95,21 +101,22 @@ package charts {
 			if ( this.on_show_start )
 				this.start_on_show_timer();
 			else
-				this.draw_line();
+				this.draw();
 			
 		}
+	
 		
 		private function start_on_show_timer(): void {
 			this.on_show_start = false;
 			this.on_show_timer = new Timer(1000 / 60);	// <-- 60 frames a second = 1000ms / 60
-			this.on_show_timer.addEventListener("timer", timedFunction);
+			this.on_show_timer.addEventListener("timer", animationManager);
 			// Start the timer
 			this.on_show_timer.start();
 		}
 		
-		private function timedFunction(eventArgs:TimerEvent): void {
+		protected function animationManager(eventArgs:TimerEvent): void {
 			if ( this.still_animating() ) {
-				this.draw_line();
+				this.draw();
 			}
 			else {
 				tr.ace( 'Line.as : on show animation stop' );
@@ -136,9 +143,18 @@ package charts {
 			return false;
 		}
 		
-		private function draw_line(): void {
-			
+		//
+		// this is called from both resize and the animation manager
+		//
+		protected function draw(): void {
 			this.graphics.clear();
+			this.draw_line();
+		}
+		
+		// this is also called from area
+		protected function draw_line(): void {
+			
+			
 			this.graphics.lineStyle( this.props.get_colour('width'), this.props.get_colour('colour') );
 			
 			if( this.line_style.style != 'solid' )

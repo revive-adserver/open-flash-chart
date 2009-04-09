@@ -118,7 +118,7 @@ package charts {
 		//
 		public function resize( sc:ScreenCoordsBase ):void{}
 		
-		public function draw( val:String, mc:Object ):void {}
+		//public function draw( val:String, mc:Object ):void {}
 		
 		
 		

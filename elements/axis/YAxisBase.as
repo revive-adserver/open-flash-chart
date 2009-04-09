@@ -176,6 +176,7 @@ package elements.axis {
 			
 			// how many steps (grid lines) do we have?
 			var s:Number = (max - min) / this.style.steps;
+
 			if ( s > (height/2) ) {
 				// either no steps are set, or they are wrong and
 				// we have more grid lines than pixels to show them.
@@ -183,10 +184,10 @@ package elements.axis {
 				//      max = 1,001,000
 				//      min =     1,000
 				//      s   =   200,000
-				s = (max - min) / 5;
+				return (max - min) / 5;
 			}
 			
-			return s;
+			return this.style.steps;
 		}
 		
 		public function resize(label_pos:Number, sc:ScreenCoords):void { }
