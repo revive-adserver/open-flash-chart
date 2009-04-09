@@ -24,55 +24,8 @@
 				
 			this.fill_colour = string.Utils.get_colour(fill);
 			
-			/*
-			this.style = {
-				values:			[],
-				width:			2,
-				colour:			'#3030d0',
-				fill:			'#3030d0',
-				text:			'',		// <-- default not display a key
-				'dot-size':		5,
-				'font-size':	10,
-				'fill-alpha':	0.6,
-				'line-style':	new LineStyle( json['line-style'] ),
-				loop:			false,		// <-- for radar charts
-				
-				// default dot:
-				// HACK: fix this (remove the merge below)
-				'--dot-style':	null
-			};
-			
-			object_helper.merge_2( json, this.style );
-
-			// hack:
-			this.style['--dot-style'] = new DefaultDotProperties(
-				json['dot-style'], '#val#', this.style.colour);
-			
-			if( this.style.fill == '' )
-				this.style.fill = this.style.colour;
-			
-			this.style.colour = string.Utils.get_colour( this.style.colour );
-			
-			this.style.fill = string.Utils.get_colour( this.style.fill );
-		
-			this.key = style.text;
-			this.font_size = style['font-size'];
-			this.values = style['values'];
-			this.add_values();
-			
-			//
-			// so the mask child can punch a hole through the line
-			//
-			this.blendMode = BlendMode.LAYER;
-			*/
 		}
 		
-		
-//		public override function resize(sc:ScreenCoordsBase):void {
-//	
-//			// now draw the line + hollow dots
-//			super.resize(sc);
-//		}
 		
 		public override function resize( sc:ScreenCoordsBase ): void {
 			

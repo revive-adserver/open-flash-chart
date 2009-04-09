@@ -47,7 +47,7 @@
 			}
 			else
 			{
-				tr.aces( 'x', props.get('x') );
+				// tr.aces( 'x', props.get('x') );
 				this._x = props.get('x');
 				this.index = Number.MIN_VALUE;
 			}
@@ -97,7 +97,7 @@
 			}
 			
 			if ( this.on_show_animate )
-				this.first_show(x, y);
+				this.first_show(x, y, sc);
 			else {
 				//
 				// move the Sprite to the correct screen location:
@@ -111,7 +111,7 @@
 			return Tweener.isTweening(this);
 		}
 		
-		protected function first_show(x:Number, y:Number): void {
+		protected function first_show(x:Number, y:Number, sc:ScreenCoordsBase): void {
 			
 			this.on_show_animate = false;
 			Tweener.removeTweens(this);
@@ -125,7 +125,7 @@
 				
 				case 'pop-up':
 					this.x = x;
-					this.y = this.stage.stageHeight + this.height + 3;
+					this.y = sc.get_y_bottom(this.right_axis);
 					Tweener.addTween(this, { y:y, time:1.4, delay:d, transition:Equations.easeOutQuad } );
 					break;
 					
@@ -144,6 +144,7 @@
 				
 				/*
 				 * the tooltips go a bit funny with this one
+				 * TODO: investigate if this will work with area charts - need to move the bottom anchors
 				case 'slide-in-up':
 					this.x = 20;	// <-- left
 					this.y = this.stage.stageHeight / 2;

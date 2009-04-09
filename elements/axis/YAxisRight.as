@@ -7,14 +7,6 @@
 		
 		public override function init(json:Object): void {
 		
-			//
-			// OK, the user has set the right Y axis,
-			// but forgot to specifically set visible to
-			// true, I think we can forgive them:
-			//
-			if( json.y_axis_right )
-				style.visible = true;
-				
 			this.labels = new YAxisLabelsRight( this, json );
 			this.addChild( this.labels );
 			
@@ -30,11 +22,11 @@
 				'grid-visible':	false,	// <-- this is off by default for RIGHT axis
 				'3d':			0,
 				steps:			1,
-				visible:		false,
+				visible:		true,
 				min:			0,
 				max:			10
 			};
-			
+
 			super._init(json, 'y_axis_right', style);
 		}
 		

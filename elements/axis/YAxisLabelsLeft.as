@@ -71,24 +71,7 @@ package elements.axis {
 				}				
 			}
 			
-			/*
-			if( !ok )
-			{
-				values = this.make_labels( parent.style.min, parent.style.max, false, parent.style.steps, lblText );
-			}
-			*/
-			
 			super(values,1,json,'y_label_','y_axis');
-		}
-		
-		
-		public override function make_labels(min:Number, max:Number, steps:Number): void {
-			
-			if ( !this.i_need_labels )
-				return;
-				
-			this.i_need_labels = false;
-			this.make_labels_(min, max, false, steps, this.lblText);
 		}
 
 		// move y axis labels to the correct x pos

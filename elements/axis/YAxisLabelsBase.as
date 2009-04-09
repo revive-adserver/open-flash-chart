@@ -17,6 +17,7 @@
 		
 		public function YAxisLabelsBase(values:Array, steps:Number, json:Object, name:String, axis_name:String) {
 
+
 			this.steps = steps;
 			
 			var lblStyle:YLabelStyle = new YLabelStyle(json, name);
@@ -60,7 +61,15 @@
 		 * that we know the size of the flash window and know how many ticks/labels
 		 * we auto generate
 		 */
-		public function make_labels(min:Number, max:Number, steps:Number): void { }
+		//public function make_labels(min:Number, max:Number, steps:Number): void { }
+		public function make_labels(min:Number, max:Number, steps:Number): void {
+			
+			if ( !this.i_need_labels )
+				return;
+				
+			this.i_need_labels = false;
+			this.make_labels_(min, max, false, steps, this.lblText);
+		}
 		
 		//
 		// use Y Min, Y Max and Y Steps to create an array of

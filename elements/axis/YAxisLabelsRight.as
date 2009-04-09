@@ -7,7 +7,8 @@
 			
 			var values:Array;
 			var ok:Boolean = false;
-			var lblText:String = "#val#";
+			this.lblText = "#val#";
+			this.i_need_labels = true;
 			
 			if( json.y_axis_right )
 			{
@@ -63,11 +64,7 @@
 					}
 				}				
 			}
-			
-			/*
-			if( !ok && parent.style.visible )
-				values = make_labels( parent.style.min, parent.style.max, true, 1, lblText );
-			*/
+		
 			super( values, 1, json, 'y_label_2_', 'y_axis_right');
 		}
 

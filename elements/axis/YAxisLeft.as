@@ -24,8 +24,7 @@
 				steps:			1,
 				visible:		true,
 				min:			0,
-				max:			10,
-				auto_size:		false
+				max:			10
 			};
 			
 			super._init(json, 'y_axis', style);

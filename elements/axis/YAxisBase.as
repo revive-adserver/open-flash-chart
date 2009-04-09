@@ -87,7 +87,7 @@ package elements.axis {
 			var maxValue:Number = Math.max(max) * 1.07;
 			var l:Number = Math.round(Math.log(maxValue)/Math.log(10));
 			var p:Number = Math.pow(10, l) / 2;
-			maxValue = Math.round(maxValue * 1.1 / p) * p;
+			maxValue = Math.round((maxValue * 1.1) / p) * p;
 			return maxValue;
 			
 			
