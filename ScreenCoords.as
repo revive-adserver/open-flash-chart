@@ -349,7 +349,7 @@ package {
 		public function get_horiz_bar_coords( index:Number, group:Number ):Object {
 			
 			// split the height into equal heights for each bar
-			var bar_width:Number = this.height / (this.y_range.count()+1);
+			var bar_width:Number = this.height / this.y_range.count();
 			
 			// the bar(s) have gaps between them:
 			var bar_set_width:Number = bar_width*0.8;
