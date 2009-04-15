@@ -13,15 +13,48 @@
 		protected var style:Object;
 		public var i_need_labels:Boolean;
 		protected var lblText:String;
-		
+		public var y_max:Number;
 		
 		public function YAxisLabelsBase(values:Array, steps:Number, json:Object, name:String, axis_name:String) {
-
+			var i:Number;
+			var s:String;
+			
+			if( json[axis_name] )
+			{
+				//
+				// Old crufty JSON, refactor out at some point
+				//
+				if( json[axis_name].labels is Array )
+				{
+					values = [];
+					
+					// use passed in min if provided else zero
+					i = (json[axis_name] && json[axis_name].min) ? json[axis_name].min : 0;
+					for each( s in json[axis_name].labels )
+					{
+						values.push( { val:s, pos:i } );
+						i++;
+					}
+					//
+					// alter the MinMax object:
+					//
+					// use passed in max if provided else the number of values less 1
+					this.y_max = (json[axis_name] && json[axis_name].max) ? json[axis_name].max : values.length - 1;
+					this.i_need_labels = false;
+				}
+			}
 
 			this.steps = steps;
 			
 			var lblStyle:YLabelStyle = new YLabelStyle(json, name);
 			this.style = lblStyle.style;
+			
+			//
+			// TODO: hack
+			if ( !json[axis_name] )
+				this.style.show_labels = false;
+			//
+			//
 			
 			// Default to using "rotate" from the y_axis level
 			if ( json[axis_name] && json[axis_name].rotate ) {

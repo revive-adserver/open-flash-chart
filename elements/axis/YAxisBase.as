@@ -15,7 +15,7 @@ package elements.axis {
 		private var user_labels:Array;
 		private var user_ticks:Boolean;
 		
-		function YAxisBase(){}
+		function YAxisBase() {}
 		
 		public function init(json:Object): void {}
 		
@@ -38,6 +38,11 @@ package elements.axis {
 			
 			tr.aces('YAxisBase auto', this.auto_range( 50001 ));
 			
+			if ( this.style.max == null ) {
+				// we have labels, so use the number of
+				// labels as Y MAX
+				this.style.max = this.labels.y_max;
+			}
 			// make sure we don't have 1,000,000 steps
 			var min:Number = Math.min(this.style.min, this.style.max);
 			var max:Number = Math.max(this.style.min, this.style.max);

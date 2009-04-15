@@ -3,37 +3,19 @@
 	
 	public class YAxisLabelsRight extends YAxisLabelsBase {
 		
-		public function YAxisLabelsRight( parent:YAxisRight, json:Object ) {
+		public function YAxisLabelsRight(json:Object) {
 			
 			var values:Array;
-			var ok:Boolean = false;
+			var i:Number;
+			var s:String;
+			
 			this.lblText = "#val#";
 			this.i_need_labels = true;
 			
+			// TODO: refactor
 			if( json.y_axis_right )
 			{
-				if( json.y_axis_right.labels is Array )
-				{
-					values = [];
-					
-					// use passed in min if provided else zero
-					var i:Number = (json.y_axis_right && json.y_axis_right.min) ? json.y_axis_right.min : 0;
-					for each( var s:String in json.y_axis_right.labels )
-					{
-						values.push( { val:s, pos:i } );
-						i++;
-					}
-					
-					//
-					// alter the MinMax object:
-					//
-					// use passed in max if provided else the number of values less 1
-					i = (json.y_axis_right && json.y_axis_right.max) ? json.y_axis_right.max : values.length - 1;
-					parent.set_y_max( i );
-					ok = true;
-					this.i_need_labels = false;
-				}
-				else if ( json.y_axis_right.labels is Object ) 
+				if ( json.y_axis_right.labels is Object ) 
 				{
 					i = (json.y_axis_right && json.y_axis_right.min) ? json.y_axis_right.min : 0;
 					if ( json.y_axis_right.labels.text is String ) lblText = json.y_axis_right.labels.text;
@@ -59,7 +41,6 @@
 								i = (obj.y > i) ? obj.y : i;
 							}
 						}
-						ok = true;
 						this.i_need_labels = false;
 					}
 				}				

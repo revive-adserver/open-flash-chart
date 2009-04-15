@@ -29,8 +29,14 @@
 		
 		public override function resize( sc:ScreenCoordsBase ): void {
 			
+			var right_axis:Boolean = false;
+			
+			if ( props.has('axis') )
+				if ( props.get('axis') == 'right' )
+					right_axis = true;
+					
 			// save this position
-			this.area_base = sc.get_y_bottom(false);
+			this.area_base = sc.get_y_bottom(right_axis);
 			
 			// let line deal with the resize
 			super.resize(sc);

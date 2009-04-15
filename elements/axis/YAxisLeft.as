@@ -7,7 +7,7 @@
 		
 		public override function init(json:Object): void {
 
-			this.labels = new YAxisLabelsLeft( this, json );
+			this.labels = new YAxisLabelsLeft(json);
 			this.addChild( this.labels );
 			
 			//
@@ -24,7 +24,7 @@
 				steps:			1,
 				visible:		true,
 				min:			0,
-				max:			10
+				max:			null
 			};
 			
 			super._init(json, 'y_axis', style);
