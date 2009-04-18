@@ -11,11 +11,47 @@
 	public class ScatterBase extends Base {
 
 		// TODO: move this into Base
+		protected var props:Properties;
 		protected var style:Object;
+		private var on_show:Properties;
+		private var dot_style:Properties;
+		//
 		
 		protected var default_style:DefaultDotProperties;
 		
-		public function ScatterBase() { }
+		public function ScatterBase(json:Object) {
+		
+			//
+			// merge into Line.as and Base.as
+			//
+			var root:Properties = new Properties({
+				colour: 		'#3030d0',
+				text: 			'',		// <-- default not display a key
+				'font-size': 	12,
+				tip:			'#val#',
+				axis:			'left'
+			});
+			//
+			this.props = new Properties(json, root);
+			//
+			this.dot_style = new DefaultDotProperties(json['dot-style'], this.props.get('colour'), this.props.get('axis'));
+			//
+			// LOOK for a scatter chart the default dot is NOT invisible!!
+			//
+		//	this.dot_style.set('type', 'solid-dot');
+			//
+			// LOOK default animation for scatter is explode, no cascade
+			//
+			var on_show_root:Properties = new Properties( {
+				type:		"explode",
+				cascade:	0,
+				delay:		0.3
+				});
+			this.on_show = new Properties(json['on-show'], on_show_root);
+			//this.on_show_start = true;
+			//
+			//
+		}
 		
 		//
 		// called from the base object
@@ -25,8 +61,6 @@
 			// the user has provided their own x value
 			
 			var default_style:Object = {
-				'dot-size':		this.style['dot-size'],
-				'halo-size':	this.style['halo-size'],
 				width:			this.style.width,	// stroke
 				colour:			this.style.colour,
 				tip:			this.style.tip
@@ -42,11 +76,13 @@
 			if( default_style.colour is String )
 				default_style.colour = Utils.get_colour( default_style.colour );
 			
-			var tmp:Properties = new Properties( value, this.default_style);
-				
-			return dot_factory.make( index, tmp );
+			//var tmp:Properties = new Properties( value, this.default_style);
+			var tmp:Properties = new Properties(value, this.dot_style);
 			
-			// return dot_factory.make( 0, new Properties( { } ));// default_style );
+			// attach the animation bits:
+			tmp.set('on-show', this.on_show);
+			
+			return dot_factory.make( index, tmp );
 		}
 		
 		// Draw points...
@@ -66,6 +102,5 @@
 				}
 			}
 		}
-
 	}
 }

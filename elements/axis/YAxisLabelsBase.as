@@ -19,6 +19,9 @@
 			var i:Number;
 			var s:String;
 			
+			// TODO: hack
+			this.y_max = 10;
+			
 			if( json[axis_name] )
 			{
 				//

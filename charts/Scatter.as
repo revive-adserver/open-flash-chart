@@ -5,10 +5,12 @@
 	
 	public class Scatter extends ScatterBase
 	{
-		
-		
 		public function Scatter( json:Object )
 		{
+			super(json);
+			
+			
+			
 			this.style = {
 				values:			[],
 				width:			2,

@@ -19,6 +19,7 @@
 
 		public function ScatterLine( json:Object )
 		{
+			super(json);
 			//
 			// so the mask child can punch a hole through the line
 			//

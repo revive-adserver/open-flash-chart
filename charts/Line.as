@@ -42,6 +42,8 @@ package charts {
 			this.dot_style = new DefaultDotProperties(json['dot-style'], this.props.get('colour'), this.props.get('axis'));
 			
 			//
+			// see scatter base
+			//
 			var on_show_root:Properties = new Properties( {
 				type:		"pop-up",
 				cascade:	0.5,

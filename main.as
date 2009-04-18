@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/y-labels-auto.txt";
+					var file:String = "../../data-files/x-axis-big.txt";
 					this.load_external_file( file );
 
 					/*

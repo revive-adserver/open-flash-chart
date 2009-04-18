@@ -40,7 +40,8 @@ package elements.axis {
 				steps:		null,
 				size:		10,
 				align:		'auto',
-				colour:		'#000000'
+				colour:		'#000000',
+				"visible-steps":	null
 			};
 			
 			// cache the text for tooltips
