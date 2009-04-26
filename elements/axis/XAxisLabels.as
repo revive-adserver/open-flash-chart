@@ -77,16 +77,26 @@ package elements.axis {
 				//
 				this.need_labels = false;
 				
+				//
+				// BUG: this should start counting at X MIN, not zero
+				//
 				var x:Number = 0;
-				
+				var lblCount:Number = 0;
+				// Allow for only displaying some of the labels 
+				var visibleSteps:Number = (this.style["visible-steps"] == null) ? this.style.steps : this.style["visible-steps"];
+
 				for each( var s:Object in this.style.labels )
 				{
-					var tmpStyle:Object = {};
+					var tmpStyle:Object = { };
 					object_helper.merge_2( this.style, tmpStyle );
+
+					tmpStyle.visible = ((lblCount % visibleSteps) == 0);
 					tmpStyle.x = x;
+					
 					// we need the x position for #x_label# tooltips
 					this.add( s, tmpStyle );
 					x++;
+					lblCount++;
 				}
 			}
 		}
@@ -157,7 +167,7 @@ package elements.axis {
 				label_style.text = label as String;
 			else
 				object_helper.merge_2( label, label_style );
-
+			
 			// Replace magic date variables in x label text
 			if (label_style.x != null) {
 				label_style.text = this.replace_magic_values(label_style.text, label_style.x);
