@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/x-axis-labels-3.txt";
+					var file:String = "../../data-files/on-show-area-mid-slide.txt";
 					this.load_external_file( file );
 
 					/*
