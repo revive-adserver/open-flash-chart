@@ -36,8 +36,8 @@ package elements.axis {
 				rotate:		0,
 				visible:	null,
 				labels:		null,
-				text:		'#val#',  // default to display the position number or x value
-				steps:		null,
+				text:		'#val#',	// <-- default to display the position number or x value
+				steps:		null,		// <-- null for auto labels
 				size:		10,
 				align:		'auto',
 				colour:		'#000000',
@@ -76,6 +76,8 @@ package elements.axis {
 				// we WERE passed labels
 				//
 				this.need_labels = false;
+				if (this.style.steps == null)
+					this.style.steps = 1;
 				
 				//
 				// BUG: this should start counting at X MIN, not zero

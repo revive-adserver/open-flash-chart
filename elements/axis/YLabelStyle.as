@@ -10,7 +10,8 @@ package elements.axis {
 
 			this.style = {	size: 10,
 							colour: 0x000000,
-							show_labels: true
+							show_labels: true,
+							visible: true
 						 };
 
 			var comma:Number;

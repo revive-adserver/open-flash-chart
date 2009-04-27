@@ -6,29 +6,48 @@ package elements.axis {
 		public function YAxisLabelsLeft(json:Object) {
 			
 			var values:Array;
-			var i:Number;
 			var s:String;
+			var axis_name:String = 'y_axis';
 			
 			this.lblText = "#val#";
 			this.i_need_labels = true;
 			
 			// TODO: refactor
-			if( json.y_axis )
+			if( json[axis_name] )
 			{
-				if ( json.y_axis.labels is Object ) 
+				if ( json[axis_name].labels is Object ) 
 				{
-					if ( json.y_axis.labels.text is String )
-						this.lblText = json.y_axis.labels.text;
+					if ( json[axis_name].labels.text is String )
+						this.lblText = json[axis_name].labels.text;
 
-					if ( json.y_axis.labels.labels is Array )
+					var visibleSteps:Number = 1;
+					if( json[axis_name].steps is Number )
+						visibleSteps = json[axis_name].steps;
+						
+					if( json[axis_name].labels.steps is Number )
+						visibleSteps = json[axis_name].labels.steps;
+					
+					if ( json[axis_name].labels.labels is Array )
 					{
 						values = [];
+						// use passed in min if provided else zero
+						var label_pos:Number = (json[axis_name] && json[axis_name].min) ? json[axis_name].min : 0;
+						
 						for each( var obj:Object in json.y_axis.labels.labels )
 						{
-							if (obj is Number) 
+							if(obj is Number)
 							{
 								values.push( { val:lblText, pos:obj } );
-								i = (obj > i) ? obj as Number : i;
+								//i = (obj > i) ? obj as Number : i;
+							}
+							else if(obj is String)
+							{
+								values.push( {
+									val:	obj,
+									pos:	label_pos,
+									visible:	((label_pos % visibleSteps) == 0)
+									} );
+								//i = (obj > i) ? obj as Number : i;
 							}
 							else if (obj.y is Number)
 							{
@@ -44,8 +63,10 @@ package elements.axis {
 									lblStyle.rotate = obj.rotate;
 									
 								values.push( lblStyle );
-								i = (obj.y > i) ? obj.y : i;
+								//i = (obj.y > i) ? obj.y : i;
 							}
+							
+							label_pos++;
 						}
 						this.i_need_labels = false;
 					}

@@ -19,7 +19,7 @@
 			var i:Number;
 			var s:String;
 			
-			// TODO: hack
+			// TODO: calculate Y max from the data
 			this.y_max = 10;
 			
 			if( json[axis_name] )
@@ -84,11 +84,18 @@
 			
 			for each ( var v:Object in values )
 			{
-				var tmp:YTextField = this.make_label( v );
-				tmp.y_val = v.pos;
-				this.addChild(tmp);
+				var lblStyle:Object = { };
+				object_helper.merge_2( this.style, lblStyle );
+				object_helper.merge_2( v, lblStyle );
+			
+				if ( lblStyle.visible )
+				{
+					var tmp:YTextField = this.make_label( lblStyle );
+					tmp.y_val = v.pos;
+					this.addChild(tmp);
 				
-				pos++;
+					pos++;
+				}
 			}
 		}
 
@@ -131,19 +138,9 @@
 			this.add_labels(values);
 		}
 		
-		private function make_label( json:Object ):YTextField
+		private function make_label( lblStyle:Object ):YTextField
 		{
 			
-			
-			// does _root already have this textFiled defined?
-			// this happens when we do an AJAX reload()
-			// these have to be deleted by hand or else flash goes wonky.
-			// In an ideal world we would put this code in the object
-			// distructor method, but I don't think actionscript has these :-(
-			
-			var lblStyle:Object = { };
-			object_helper.merge_2( this.style, lblStyle );
-			object_helper.merge_2( json, lblStyle );
 			lblStyle.colour = string.Utils.get_colour(lblStyle.colour);
 			
 			var tf:YTextField = new YTextField();
