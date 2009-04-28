@@ -760,8 +760,9 @@ package  {
 			g.x_labels = this.x_axis.labels;
 			g.x_legend = this.x_legend;
 
-			//  can pick up X Axis labels for the
-			// tooltips
+			//
+			// pick up X Axis labels for the tooltips
+			// 
 			this.obs.tooltip_replace_labels( this.x_axis.labels );
 			//
 			//
