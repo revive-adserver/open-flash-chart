@@ -152,7 +152,7 @@
 			this.tip_pos = new flash.geom.Point( tmp.x + (tmp.width / 2), top );
 			
 			if ( this.on_show_animate )
-				this.first_show(tmp.x, top, height);
+				this.first_show(tmp.x, top, tmp.width, height);
 			else {
 				//
 				// move the Sprite to the correct screen location:
@@ -167,7 +167,7 @@
 			return { width:tmp.width, top:top, height:height, upside_down:upside_down };
 		}
 		
-		protected function first_show(x:Number, y:Number, height:Number): void {
+		protected function first_show(x:Number, y:Number, width:Number, height:Number): void {
 			
 			this.on_show_animate = false;
 			Tweener.removeTweens(this);
@@ -198,21 +198,35 @@
 					Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:1.2, delay:d, transition:Equations.easeOutQuad } );
 					break;
 					
-				case 'grow':
+				case 'grow-down':
 					this.x = x;
 					this.y = y;
 					this.scaleY = 0.01;
 					Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutQuad } );
 					break;
 					
+				case 'grow-up':
+					this.x = x;
+					this.y = y+height;
+					this.scaleY = 0.01;
+					Tweener.addTween(this, { scaleY:1, time:1.2, delay:d, transition:Equations.easeOutQuad } );
+					Tweener.addTween(this, { y:y, time:1.2, delay:d, transition:Equations.easeOutQuad } );
+					break;
+				
 				case 'pop':
 					this.y = top;
-					this.alpha = 0;
+					this.alpha = 0.2;
 					Tweener.addTween(this, { alpha:this.mouse_out_alpha, time:0.7, delay:d, transition:Equations.easeOutQuad } );
-					this.scaleX = 0.01;
-					this.scaleY = 0.01;
-					Tweener.addTween(this, { scaleY:1, scaleX:1, time:1.2, delay:d, transition:Equations.easeOutElastic } );
-			
+					
+					// shrink the bar to 3x3 px
+					this.x = x + (width/2);
+					this.y = y + (height/2);
+					this.width = 3;
+					this.height = 3;
+					
+					Tweener.addTween(this, { x:x, y:y, width:width, height:height, time:1.2, delay:d, transition:Equations.easeOutElastic } );
+					break;
+					
 				default:
 					this.y = y;
 					this.x = x;

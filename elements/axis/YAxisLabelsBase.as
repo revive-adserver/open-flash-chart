@@ -53,8 +53,10 @@
 			this.style = lblStyle.style;
 			
 			//
-			// TODO: hack
-			if ( !json[axis_name] )
+			// TODO: hack, if the user has not defined either left or right
+			//       by default set left axis to show and right to hide.
+			//
+			if ( !json[axis_name] && axis_name!='y_axis' )
 				this.style.show_labels = false;
 			//
 			//
@@ -100,12 +102,14 @@
 		}
 
 		/**
-		 * This is called from the re-size function, because it is only then
-		 * that we know the size of the flash window and know how many ticks/labels
-		 * we auto generate
+		 * This is called from the init function, because it is only after the Sprite
+		 * is added to the stagethat we know the size of the flash window and know
+		 * how many ticks/labelswe auto generate
 		 */
-		//public function make_labels(min:Number, max:Number, steps:Number): void { }
 		public function make_labels(min:Number, max:Number, steps:Number): void {
+
+			tr.aces('make_labels', this.i_need_labels, min, max, false, steps, this.lblText);
+			tr.aces(this.style.show_labels);
 			
 			if ( !this.i_need_labels )
 				return;
