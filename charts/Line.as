@@ -107,7 +107,9 @@ package charts {
 			
 		}
 	
-		
+		//
+		// this is a bit dirty, as the dots animate we draw the line 60 times a second
+		//
 		private function start_on_show_timer(): void {
 			this.on_show_start = false;
 			this.on_show_timer = new Timer(1000 / 60);	// <-- 60 frames a second = 1000ms / 60

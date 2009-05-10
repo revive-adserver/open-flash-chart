@@ -234,7 +234,11 @@ package elements.axis {
 			
 			// Axis line:
 			this.graphics.beginFill( this.colour, 1 );
-			this.graphics.drawRect( pos, sc.top, this.stroke, sc.height );
+			this.graphics.drawRect(
+				int(pos),	// <-- pixel align
+				sc.top,
+				this.stroke,
+				sc.height );
 			this.graphics.endFill();
 			
 			// ticks..
@@ -303,7 +307,11 @@ package elements.axis {
 					
 					y = sc.get_y_from_val(i, right);
 					this.graphics.beginFill( this.grid_colour, 1 );
-					this.graphics.drawRect( sc.left, y, sc.width, 1 );
+					this.graphics.drawRect(
+						int(sc.left),
+						int(y),		// <-- make sure they are pixel aligned (2.5 - 3.5 == fuzzy lines)
+						sc.width,
+						1 );
 					this.graphics.endFill();
 				}
 			}

@@ -127,19 +127,43 @@
 					this.x = x;
 					this.y = sc.get_y_bottom(this.right_axis);
 					Tweener.addTween(this, { y:y, time:1.4, delay:d, transition:Equations.easeOutQuad } );
+					
+					if ( this.line_mask != null )
+					{
+						this.line_mask.x = x;
+						this.line_mask.y = sc.get_y_bottom(this.right_axis);
+						Tweener.addTween(this.line_mask, { y:y, time:1.4, delay:d, transition:Equations.easeOutQuad });
+					}
+					
 					break;
 					
 				case 'explode':
 					this.x = this.stage.stageWidth/2;
 					this.y = this.stage.stageHeight/2;
 					Tweener.addTween(this, { y:y, x:x, time:1.4, delay:d, transition:Equations.easeOutQuad } );
+					
+					if ( this.line_mask != null )
+					{
+						this.line_mask.x = this.stage.stageWidth/2;
+						this.line_mask.y = this.stage.stageHeight/2;
+						Tweener.addTween(this.line_mask, { y:y, x:x, time:1.4, delay:d, transition:Equations.easeOutQuad });
+					}
+					
 					break;
 				
 				case 'mid-slide':
 					this.x = x;
 					this.y = this.stage.stageHeight / 2;
 					this.alpha = 0.2;
-					Tweener.addTween(this, { alpha:1, y:y, time:1.4, delay:d, transition:Equations.easeOutQuad } );
+					Tweener.addTween(this, { alpha:1, y:y, time:1.4, delay:d, transition:Equations.easeOutQuad });
+					
+					if ( this.line_mask != null )
+					{
+						this.line_mask.x = x;
+						this.line_mask.y = this.stage.stageHeight / 2;
+						Tweener.addTween(this.line_mask, { y:y, time:1.4, delay:d, transition:Equations.easeOutQuad });
+					}
+						
 					break;
 				
 				/*
@@ -162,6 +186,14 @@
 					this.x = x;
 					this.y = -height - 10;
 					Tweener.addTween(this, { y:y, time:1.4, delay:d, transition:Equations.easeOutBounce } );
+					
+					if ( this.line_mask != null )
+					{
+						this.line_mask.x = x;
+						this.line_mask.y = -height - 10;
+						Tweener.addTween(this.line_mask, { y:y, time:1.4, delay:d, transition:Equations.easeOutQuad });
+					}
+					
 					break;
 
 				case 'fade-in':
@@ -183,6 +215,7 @@
 							delay:d, transition:Equations.easeOutQuad, 
 							onComplete:function():void { tr.ace('Fin'); }
 						} );
+					
 					break;
 					
 				default:
