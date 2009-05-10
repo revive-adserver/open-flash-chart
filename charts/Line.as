@@ -45,12 +45,12 @@ package charts {
 			// see scatter base
 			//
 			var on_show_root:Properties = new Properties( {
-				type:		"pop-up",
+				type:		"none",		// "pop-up",
 				cascade:	0.5,
 				delay:		0
 				});
 			this.on_show = new Properties(json['on-show'], on_show_root);
-			this.on_show_start = true;
+			this.on_show_start = true;// this.on_show.get('type');
 			//
 			//
 			
@@ -64,10 +64,6 @@ package charts {
 			// this allows the dots to erase part of the line
 			//
 			this.blendMode = BlendMode.LAYER;
-			
-			// TEST CODE:
-			this.addEventListener("on-show", onShowHandler);
-			
 		}
 		
 		//
@@ -90,9 +86,6 @@ package charts {
 			return dot_factory.make( index, tmp );
 		}
 		
-		public function onShowHandler(event:Event): void {
-			tr.ace('Line - on show');
-		}
 		
 		// Draw lines...
 		public override function resize( sc:ScreenCoordsBase ): void {
@@ -119,10 +112,10 @@ package charts {
 		}
 		
 		protected function animationManager(eventArgs:TimerEvent): void {
-			if ( this.still_animating() ) {
-				this.draw();
-			}
-			else {
+			
+			this.draw();
+			
+			if( !this.still_animating() ) {
 				tr.ace( 'Line.as : on show animation stop' );
 				this.on_show_timer.stop();
 			}

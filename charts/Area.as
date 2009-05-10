@@ -8,7 +8,6 @@
 	import flash.display.Sprite;
 	import charts.series.dots.DefaultDotProperties;
 
-	//public class Area extends LineBase {
 	public class Area extends Line {
 		private var fill_colour:Number;
 		private var area_base:Number;

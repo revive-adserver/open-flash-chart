@@ -31,7 +31,7 @@
 			
 		
 			var on_show_root:Properties = new Properties( {
-				type:		"pop-up",
+				type:		"none",		//"pop-up",
 				cascade:	3,
 				delay:		0
 				});

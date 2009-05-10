@@ -36,7 +36,7 @@
 		
 		public function PieSlice( index:Number, value:Properties ) {
 		
-			this.colour = value.get('colour');
+			this.colour = value.get_colour('colour');
 			this.slice_angle = value.get('angle');
 			this.border_width = 1;
 			this.angle = value.get('start');
