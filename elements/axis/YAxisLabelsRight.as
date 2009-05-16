@@ -5,48 +5,10 @@
 		
 		public function YAxisLabelsRight(json:Object) {
 			
-			var values:Array;
-			var i:Number;
-			var s:String;
-			
 			this.lblText = "#val#";
 			this.i_need_labels = true;
-			
-			// TODO: refactor
-			if( json.y_axis_right )
-			{
-				if ( json.y_axis_right.labels is Object ) 
-				{
-					i = (json.y_axis_right && json.y_axis_right.min) ? json.y_axis_right.min : 0;
-					if ( json.y_axis_right.labels.text is String ) lblText = json.y_axis_right.labels.text;
-
-					if ( json.y_axis_right.labels.labels is Array )
-					{
-						values = [];
-						for each( var obj:Object in json.y_axis_right.labels.labels )
-						{
-							if (obj is Number) 
-							{
-								values.push( { val:lblText, pos:obj } );
-								i = (obj > i) ? obj as Number : i;
-							}
-							else if (obj.y is Number)
-							{
-								s = (obj.text is String) ? obj.text : lblText;
-								var lblStyle:Object = { val:s, pos:obj.y }
-								if (obj.colour != null) lblStyle.colour = obj.colour;
-								if (obj.size != null) lblStyle.size = obj.size;
-								if (obj.rotate != null) lblStyle.rotate = obj.rotate;
-								values.push( lblStyle );
-								i = (obj.y > i) ? obj.y : i;
-							}
-						}
-						this.i_need_labels = false;
-					}
-				}				
-			}
-		
-			super( values, 1, json, 'y_label_2_', 'y_axis_right');
+	
+			super(json, 'y_axis_right');
 		}
 
 		// move y axis labels to the correct x pos

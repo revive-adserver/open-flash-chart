@@ -15,9 +15,11 @@
 		protected var lblText:String;
 		public var y_max:Number;
 		
-		public function YAxisLabelsBase(values:Array, steps:Number, json:Object, name:String, axis_name:String) {
+		public function YAxisLabelsBase(json:Object, axis_name:String) {
 			var i:Number;
 			var s:String;
+			var values:Array;
+			var steps:Number;
 			
 			// TODO: calculate Y max from the data
 			this.y_max = 10;
@@ -25,7 +27,8 @@
 			if( json[axis_name] )
 			{
 				//
-				// Old crufty JSON, refactor out at some point
+				// Old crufty JSON, refactor out at some point,
+				// 
 				//
 				if( json[axis_name].labels is Array )
 				{
@@ -47,6 +50,69 @@
 				}
 			}
 
+			//
+			// an object, that contains an array of objects:
+			//
+			if( json[axis_name] )
+			{
+				if ( json[axis_name].labels is Object ) 
+				{
+					if ( json[axis_name].labels.text is String )
+						this.lblText = json[axis_name].labels.text;
+
+					var visibleSteps:Number = 1;
+					if( json[axis_name].steps is Number )
+						visibleSteps = json[axis_name].steps;
+						
+					if( json[axis_name].labels.steps is Number )
+						visibleSteps = json[axis_name].labels.steps;
+					
+					if ( json[axis_name].labels.labels is Array )
+					{
+						values = [];
+						// use passed in min if provided else zero
+						var label_pos:Number = (json[axis_name] && json[axis_name].min) ? json[axis_name].min : 0;
+						
+						for each( var obj:Object in json[axis_name].labels.labels )
+						{
+							if(obj is Number)
+							{
+								values.push( { val:lblText, pos:obj } );
+								//i = (obj > i) ? obj as Number : i;
+							}
+							else if(obj is String)
+							{
+								values.push( {
+									val:	obj,
+									pos:	label_pos,
+									visible:	((label_pos % visibleSteps) == 0)
+									} );
+								//i = (obj > i) ? obj as Number : i;
+							}
+							else if (obj.y is Number)
+							{
+								s = (obj.text is String) ? obj.text : lblText;
+								var style:Object = { val:s, pos:obj.y }
+								if (obj.colour != null)
+									style.colour = obj.colour;
+									
+								if (obj.size != null)
+									style.size = obj.size;
+									
+								if (obj.rotate != null)
+									style.rotate = obj.rotate;
+									
+								values.push( style );
+								//i = (obj.y > i) ? obj.y : i;
+							}
+							
+							label_pos++;
+						}
+						this.i_need_labels = false;
+					}
+				}				
+			}
+			
 			this.steps = steps;
 			
 			var lblStyle:YLabelStyle = new YLabelStyle(json, name);

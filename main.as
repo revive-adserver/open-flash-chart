@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/on-show-line.txt";
+					var file:String = "../../data-files/y-axis-labels-user-y.txt";
 					this.load_external_file( file );
 
 					/*
@@ -112,27 +112,45 @@ package  {
 			}
 			
 			// inform javascript that it can call our reload method
-			ExternalInterface.addCallback("reload", reload); // mf 18nov08, line 110 of original 'main.as'
+			this.addCallback("reload", reload); // mf 18nov08, line 110 of original 'main.as'
 		 
 			// inform javascript that it can call our load method
-			ExternalInterface.addCallback("load", load);
+			this.addCallback("load", load);
 			
 			// inform javascript that it can call our post_image method
-			ExternalInterface.addCallback("post_image", post_image);
+			this.addCallback("post_image", post_image);
 			
 			// 
-			ExternalInterface.addCallback("get_img_binary",  getImgBinary);
+			this.addCallback("get_img_binary",  getImgBinary);
 
 			// more interface
-			ExternalInterface.addCallback("get_version",	getVersion);
+			this.addCallback("get_version",	getVersion);
 			
 			// tell the web page that we are ready
 			if( this.chart_parameters['id'] )
-				ExternalInterface.call("ofc_ready", this.chart_parameters['id']);
+				this.callExternalCallback("ofc_ready", this.chart_parameters['id']);
 			else
-				ExternalInterface.call("ofc_ready");
+				this.callExternalCallback("ofc_ready");
 			
 			this.set_the_stage();
+		}
+		
+		private function addCallback(functionName:String, closure:Function): void {
+
+			// the debug player does not have an external interface
+			// because it is NOT embedded in a browser
+			if (ExternalInterface.available)
+				ExternalInterface.addCallback("get_version",	getVersion);
+			
+		}
+		
+		private function callExternalCallback(functionName:String, ... optionalArgs ): * {
+			
+			// the debug player does not have an external interface
+			// because it is NOT embedded in a browser
+			if (ExternalInterface.available)
+				ExternalInterface.call(functionName, optionalArgs);
+			
 		}
 		
 		public function getVersion():String {return VERSION;}
@@ -183,7 +201,7 @@ package  {
 			
 			// this just calls the javascript function which will grab an image from use
 			// an do something with it.
-			ExternalInterface.call("save_image", this.chart_parameters['id']);
+			this.callExternalCallback("save_image", this.chart_parameters['id']);
 		}
 
 		
@@ -247,7 +265,7 @@ package  {
 						tr.ace("progress:" + e.bytesLoaded + ", total: " + e.bytesTotal);
 						if ((e.bytesLoaded == e.bytesTotal) && (callback != null)) {
 							tr.aces('Calling: ', callback + '(' + id + ')'); 
-							ExternalInterface.call(callback, id);
+							this.call(callback, id);
 						}
 					});
 
@@ -286,9 +304,9 @@ package  {
 		//
 		//
 		public function find_data(): Boolean {
-						
+			
 			// var all:String = ExternalInterface.call("window.location.href.toString");
-			var vars:String = ExternalInterface.call("window.location.search.substring", 1);
+			var vars:String = this.callExternalCallback("window.location.search.substring", 1);
 			
 			if( vars != null )
 			{
@@ -326,9 +344,9 @@ package  {
 			var json_string:*;
 			
 			if( this.chart_parameters['id'] )
-				json_string = ExternalInterface.call( get_data , this.chart_parameters['id']);
+				json_string = this.callExternalCallback( get_data , this.chart_parameters['id']);
 			else
-				json_string = ExternalInterface.call( get_data );
+				json_string = this.callExternalCallback( get_data );
 			
 			
 			if( json_string != null )
@@ -546,9 +564,9 @@ package  {
 			
 			// tell the web page that we have resized our content
 			if( this.chart_parameters['id'] )
-				ExternalInterface.call("ofc_resize", sc.left, sc.width, sc.top, sc.height, this.chart_parameters['id']);
+				this.callExternalCallback("ofc_resize", sc.left, sc.width, sc.top, sc.height, this.chart_parameters['id']);
 			else
-				ExternalInterface.call("ofc_resize", sc.left, sc.width, sc.top, sc.height);
+				this.callExternalCallback("ofc_resize", sc.left, sc.width, sc.top, sc.height);
 				
 			sc = null;
 		}
