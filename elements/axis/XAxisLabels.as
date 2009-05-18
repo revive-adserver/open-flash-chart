@@ -6,6 +6,7 @@ package elements.axis {
 	import flash.geom.Rectangle;
 	import elements.axis.AxisLabel;
 	import string.Utils;
+	import string.DateUtils;
 	import com.serialization.json.JSON;
 	// import DateUtils;
 	
@@ -263,7 +264,7 @@ package elements.axis {
 			return height;
 		}
 		
-		public function resize( sc:ScreenCoords, yPos:Number ) : void//, b:Box )
+		public function resize( sc:ScreenCoords, yPos:Number ) : void
 		{
 			
 			this.graphics.clear();
@@ -326,7 +327,7 @@ package elements.axis {
 		
 		private function replace_magic_values(labelText:String, xVal:Number):String {
 			labelText = labelText.replace('#val#', NumberUtils.formatNumber(xVal));
-			// labelText = DateUtils.replace_magic_values(labelText, xVal);
+			labelText = DateUtils.replace_magic_values(labelText, xVal);
 			return labelText;
 		}
 

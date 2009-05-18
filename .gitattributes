@@ -167,5 +167,6 @@ obj/open-flash-chartConfig.xml -text
 /object_helper.as -text
 /open-flash-chart.as3proj -text
 string/Css.as -text
+string/DateUtils.as -text
 string/Utils.as -text
 /tr.as -text

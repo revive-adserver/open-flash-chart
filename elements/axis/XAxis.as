@@ -380,16 +380,12 @@ package elements.axis {
 			}
 		}
 		
-		public function height_():Number {
-			return this.stroke + this.tick_height;
-		}
-		
 		public function get_height():Number {
 			if( this.three_d )
 			{
 				// 12 is the size of the slanty
 				// 3D part of the X axis
-				return this.three_d_height+12+this.tick_height;
+				return this.three_d_height+12+this.tick_height + this.labels.get_height();
 			}
 			else
 				return this.stroke + this.tick_height + this.labels.get_height();
