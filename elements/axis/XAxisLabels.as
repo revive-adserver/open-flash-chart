@@ -176,6 +176,9 @@ package elements.axis {
 				label_style.text = this.replace_magic_values(label_style.text, label_style.x);
 			}
 			
+			var lines:Array = label_style.text.split( '<br>' );
+			label_style.text = lines.join( '\n' );
+			
 			// Map X location to label string
 			this.axis_labels[label_style.x] = label_style.text;
 
