@@ -56,7 +56,7 @@ package  {
 	
 	public class main extends Sprite {
 		
-		public  var VERSION:String = "2 Jörmungandr";
+		public  var VERSION:String = "2 Jörmungandr (2)";
 		private var title:Title = null;
 		//private var x_labels:XAxisLabels;
 		private var x_axis:XAxis;
@@ -149,7 +149,7 @@ package  {
 			// the debug player does not have an external interface
 			// because it is NOT embedded in a browser
 			if (ExternalInterface.available)
-				ExternalInterface.call(functionName, optionalArgs);
+				return ExternalInterface.call(functionName, optionalArgs);
 			
 		}
 		
@@ -308,6 +308,7 @@ package  {
 			// var all:String = ExternalInterface.call("window.location.href.toString");
 			var vars:String = this.callExternalCallback("window.location.search.substring", 1);
 			
+			tr.aces( 1, vars );
 			if( vars != null )
 			{
 				var p:Array = vars.split( '&' );
@@ -441,6 +442,9 @@ package  {
 			// tr.ace('move ' + Math.random().toString());
 			// tr.ace( this.tooltip.get_tip_style() );
 			
+			if ( !this.tooltip )
+				return;		// <- an error and the JSON was not loaded
+				
 			switch( this.tooltip.get_tip_style() ) {
 				case Tooltip.CLOSEST:
 					this.mouse_move_closest( event );
