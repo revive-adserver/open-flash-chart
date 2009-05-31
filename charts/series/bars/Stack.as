@@ -8,16 +8,13 @@
 	public class Stack extends Base {
 		private var total:Number;
 		
-		public function Stack( index:Number, style:Object, group:Number ) {
+		public function Stack( index:Number, props:Properties, group:Number ) {
 			
 			// we are not passed a string value, the value
 			// is set by the parent collection later
-			this.total =  style.total;
+			this.total =  props.get('total');
 			
-			// HACK:
-			var p:Properties = new Properties(style);
-			super(index, p, group);
-			//super(index, style, style.colour, style.tip, style.alpha, group);
+			super(index, props, group);
 		}
 
 		protected override function replace_magic_values( t:String ): String {

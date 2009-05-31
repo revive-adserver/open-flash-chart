@@ -32,8 +32,6 @@
     <option useResourceBundleMetadata="True" />
     <option warnings="True" />
     <option verboseStackTraces="True" />
-    <option linkReport="" />
-    <option loadExterns="" />
     <option additional="" />
     <option customSDK="" />
   </build>
@@ -76,6 +74,6 @@
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
-    <option testMovie="ExternalPlayer" />
+    <option testMovie="NewWindow" />
   </options>
 </project>

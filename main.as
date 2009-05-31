@@ -56,7 +56,7 @@ package  {
 	
 	public class main extends Sprite {
 		
-		public  var VERSION:String = "2 Jörmungandr (2)";
+		public  var VERSION:String = "2 Jörmungandr (3)";
 		private var title:Title = null;
 		//private var x_labels:XAxisLabels;
 		private var x_axis:XAxis;
@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/x-labels-user-labels-br.txt";
+					var file:String = "../../data-files/stack-bar-2.txt";
 					this.load_external_file( file );
 
 					/*
@@ -140,7 +140,7 @@ package  {
 			// the debug player does not have an external interface
 			// because it is NOT embedded in a browser
 			if (ExternalInterface.available)
-				ExternalInterface.addCallback("get_version",	getVersion);
+				ExternalInterface.addCallback(functionName, closure);
 			
 		}
 		

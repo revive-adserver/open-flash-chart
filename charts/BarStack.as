@@ -9,8 +9,8 @@
 	public class BarStack extends BarBase {
 		
 		public function BarStack( json:Object, num:Number, group:Number ) {
-			
-			super(null, 0);
+	
+			super({}, 0);
 			
 			this.style = {
 				colours:			['#FF0000','#00FF00'],	// <-- ugly default colours
@@ -21,7 +21,7 @@
 			};
 			
 			object_helper.merge_2( json, style );
-			
+	
 //			this.axis = which_axis_am_i_attached_to(data, num);
 			
 			//
@@ -31,7 +31,7 @@
 			// where it is in that grouping
 			//
 			this.group = group;
-			
+		
 			this.values = this.style.values;
 
 			this.add_values();
@@ -68,8 +68,8 @@
 				colours:	this.style.colours,
 				alpha:		this.style.alpha
 			};
-			
-			return new StackCollection( index, default_style, this.group );
+			tr.aces(11);
+			return new StackCollection( index, this.get_element_helper_prop(default_style), this.group );
 		}
 		
 		

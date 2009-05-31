@@ -15,19 +15,21 @@
 		protected var group:Number;
 		private var total:Number;
 		
-		public function StackCollection( index:Number, style:Object, group:Number ) {
+		public function StackCollection( index:Number, props:Properties, group:Number ) {
 			
-			this.tooltip = style.tip;
+			//this.tooltip = this.replace_magic_values( props.get('tip') );
+			this.tooltip = props.get('tip');
 			// this is very similar to a normal
 			// PointBarBase but without the mouse
 			// over and mouse out events
 			this.index = index;
 			
 			var item:Object;
+		tr.aces(1);
 			
 			// a stacked bar has n Y values
 			// so this is an array of objects
-			this.vals = style.values as Array;
+			this.vals = props.get('values') as Array;
 			
 			this.total = 0;
 			for each( item in this.vals ) {
@@ -43,7 +45,7 @@
 			// parse our HEX colour strings
 			//
 			this.colours = new Array();
-			for each( var colour:String in style.colours )
+			for each( var colour:String in props.get('colours') )
 				this.colours.push( string.Utils.get_colour( colour ) );
 				
 			this.group = group;
@@ -62,20 +64,20 @@
 				// is this a null stacked bar group?
 				if( item != null )
 				{
+					tr.ace(9);
 					colr = this.colours[(count % this.colours.length)]
 					
-					var value:Object = {
-						top:		0,		// <-- set this later
-						bottom:		bottom,
-						colour:		colr,		// <-- default colour (may be overriden later)
-						total:		this.total,
-						tip:		this.tooltip,
-						alpha:		style.alpha
-					}
-				
+					var defaul_stack_props:Properties = new Properties({
+							bottom:		bottom,
+							colour:		colr,		// <-- colour from list (may be overriden later)
+							total:		this.total
+						}, props);
+					
 					//
 					// a valid item is one of [ Number, Object, null ]
 					//
+					var my_props:Object = {};
+					
 					if( item is Number ) {
 						top += item;
 					}
@@ -84,15 +86,18 @@
 						// MERGE:
 						top += item.val;
 						if( item.colour )
-							value.colour = string.Utils.get_colour(item.colour);
+							my_props.colour = string.Utils.get_colour(item.colour);
 							
 						if( item.tip )
-							value.tip = item.tip;
+							my_props.tip = item.tip;
 					}
 					
-					value.top = top;
+					my_props.top = top;
+			tr.ace_json(my_props);
 					
-					var p:Stack = new Stack( index, value, group );
+					var stack_props:Properties = new Properties(my_props, defaul_stack_props);
+					
+					var p:Stack = new Stack( index, stack_props, group );
 					this.addChild( p );
 					
 					bottom = top;
