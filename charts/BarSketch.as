@@ -7,18 +7,21 @@
 		private var outline_colour:Number;
 		private var offset:Number;
 		
+		// TODO: remove
+		protected var style:Object;
+		
 		public function BarSketch( json:Object, group:Number ) {
 			
 			//
 			// these are specific values to the Sketch
 			// and so we need to sort them out here
 			//
-			var style:Object = {
+			this.style = {
 				'outline-colour':	"#000000",
 				offset:				6
 			};
 			
-			object_helper.merge_2( json, style );
+			object_helper.merge_2( json, this.style );
 			
 			super( style, group );
 		}

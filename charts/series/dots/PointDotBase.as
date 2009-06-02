@@ -8,6 +8,7 @@
 	import flash.geom.Point;
 	import caurina.transitions.Tweener;
 	import caurina.transitions.Equations;
+	import string.DateUtils;
 	
 	public class PointDotBase extends Element {
 		
@@ -251,6 +252,8 @@
 			
 			// debug the dots sizes
 			t = t.replace('#size#', NumberUtils.formatNumber(this.radius));
+			
+			t = DateUtils.replace_magic_values(t, this._x);
 			return t;
 		}
 		

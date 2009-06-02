@@ -31,8 +31,13 @@
 			if ( this._parent != null )
 				return this._parent.get( name );
 				
+			//
+			// property not found, report and dump the stack trace
+			//
+			var e:Error = new Error();
+			var str:String = e.getStackTrace();
 			
-			tr.aces( 'ERROR: property not found', name);
+			tr.aces( 'ERROR: property not found', name, str);
 			return Number.NEGATIVE_INFINITY;
 		}
 		

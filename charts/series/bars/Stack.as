@@ -13,7 +13,7 @@
 			// we are not passed a string value, the value
 			// is set by the parent collection later
 			this.total =  props.get('total');
-			
+
 			super(index, props, group);
 		}
 
@@ -29,28 +29,19 @@
 			
 			this.tooltip = this.tooltip.replace('#x_label#', t );
 		}
-				
-		//
-		// BUG: we assume that all are positive numbers:
-		//
+		
 		public override function resize( sc:ScreenCoordsBase ):void {
+			
+			var h:Object = this.resize_helper( sc as ScreenCoords );
+			
 			this.graphics.clear();
-			
-			var sc2:ScreenCoords = sc as ScreenCoords;
-			
-			var tmp:Object = sc2.get_bar_coords( this.index, this.group );
-			
-			// move the Sprite into position:
-			this.x = tmp.x;
-			this.y = sc.get_y_from_val( this.top, this.right_axis );
-			
-			var height:Number = sc.get_y_from_val( this.bottom, this.right_axis) - this.y;
-
-			this.graphics.beginFill( this.colour, 1 );
-			this.graphics.drawRect( 0, 0, tmp.width, height );
+			this.graphics.beginFill( this.colour, 1.0 );
+			this.graphics.moveTo( 0, 0 );
+			this.graphics.lineTo( h.width, 0 );
+			this.graphics.lineTo( h.width, h.height );
+			this.graphics.lineTo( 0, h.height );
+			this.graphics.lineTo( 0, 0 );
 			this.graphics.endFill();
-			
-			this.tip_pos = new flash.geom.Point( this.x + (tmp.width / 2), this.y );
 		}
 	}
 }

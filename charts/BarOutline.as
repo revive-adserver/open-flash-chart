@@ -6,16 +6,20 @@
 	public class BarOutline extends BarBase {
 		private var outline_colour:Number;
 		
+		//TODO: remove
+		protected var style:Object;
+		
+		
 		public function BarOutline( json:Object, group:Number ) {
 			
 			//
 			// specific value for outline
 			//
-			var style:Object = {
+			this.style = {
 				'outline-colour':	"#000000"
 			};
 			
-			object_helper.merge_2( json, style );
+			object_helper.merge_2( json, this.style );
 			
 			super( json, group );
 		}

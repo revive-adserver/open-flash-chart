@@ -9,7 +9,11 @@ package {
 				FlashConnect.trace( 'null' );
 			else
 				FlashConnect.trace( o.toString() );
-				
+		
+			// var tempError:Error = new Error();
+			// var stackTrace:String = tempError.getStackTrace();
+			// FlashConnect.trace( 'stackTrace:' + stackTrace );
+		
 			if ( false )
 				tr.trace_full();
 		}
@@ -37,7 +41,7 @@ package {
 		 * Found this at:
 		 *   http://www.ultrashock.com/forums/actionscript/can-you-trace-a-line-95261.html
 		 */
-		static private function trace_full(snum:uint=3):void
+		static public function ace_full(snum:uint=3):void
 		{
 			// FROM:
 			// http://snippets.dzone.com/posts/show/3703

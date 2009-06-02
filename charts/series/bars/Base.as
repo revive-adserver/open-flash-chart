@@ -48,8 +48,9 @@
 			// This is UGLY!!! We need to decide if we are passing in a SINGLE style object,
 			// or many parameters....
 			//
-			if( props.has('on-click') )
-				this.set_on_click( props.get('on-click') );
+			if ( props.has('on-click') )	// <-- may be null/not set
+				if( props.get('on-click') != false )	// <-- may be FALSE
+					this.set_on_click( props.get('on-click') );
 				
 			if( props.has('axis') )
 				if( props.get('axis') == 'right' )

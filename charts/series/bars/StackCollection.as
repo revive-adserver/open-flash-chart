@@ -19,13 +19,13 @@
 			
 			//this.tooltip = this.replace_magic_values( props.get('tip') );
 			this.tooltip = props.get('tip');
+			
 			// this is very similar to a normal
 			// PointBarBase but without the mouse
 			// over and mouse out events
 			this.index = index;
 			
 			var item:Object;
-		tr.aces(1);
 			
 			// a stacked bar has n Y values
 			// so this is an array of objects
@@ -64,38 +64,31 @@
 				// is this a null stacked bar group?
 				if( item != null )
 				{
-					tr.ace(9);
 					colr = this.colours[(count % this.colours.length)]
 					
+					// override bottom, colour and total, leave tooltip, on-click, on-show etc..
 					var defaul_stack_props:Properties = new Properties({
 							bottom:		bottom,
 							colour:		colr,		// <-- colour from list (may be overriden later)
 							total:		this.total
 						}, props);
-					
+						
 					//
 					// a valid item is one of [ Number, Object, null ]
 					//
-					var my_props:Object = {};
-					
-					if( item is Number ) {
-						top += item;
-					}
-					else
-					{
-						// MERGE:
-						top += item.val;
-						if( item.colour )
-							my_props.colour = string.Utils.get_colour(item.colour);
-							
-						if( item.tip )
-							my_props.tip = item.tip;
+					if ( item is Number ) {
+						item = { val: item };
 					}
 					
-					my_props.top = top;
-			tr.ace_json(my_props);
+					if ( item == null ) {
+						item = { val: null };
+					}
 					
-					var stack_props:Properties = new Properties(my_props, defaul_stack_props);
+					// MERGE:
+					top += item.val;
+					item.top = top;
+					// now override on-click, on-show, colour etc...
+					var stack_props:Properties = new Properties(item, defaul_stack_props);
 					
 					var p:Stack = new Stack( index, stack_props, group );
 					this.addChild( p );

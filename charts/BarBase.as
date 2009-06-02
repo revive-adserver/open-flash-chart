@@ -9,9 +9,9 @@
 	public class BarBase extends Base
 	{
 		protected var group:Number;
-		protected var style:Object;
-		private var props:Properties;
-		private var on_show:Properties;
+		//protected var style:Object;
+		protected var props:Properties;
+		protected var on_show:Properties;
 		
 		public function BarBase( json:Object, group:Number )
 		{
@@ -23,41 +23,27 @@
 				'font-size':		12,
 				tip:				'#val#<br>#x_label#',
 				alpha:				0.6,
-				'on-click':			null,
+				'on-click':			false,
 				'axis':				'left'
 			} );
 			
 			this.props = new Properties(json, root);
 			
-		
+		/*
 			var on_show_root:Properties = new Properties( {
 				type:		"none",		//"pop-up",
 				cascade:	3,
 				delay:		0
 				});
 			this.on_show = new Properties(json['on-show'], on_show_root);
+		*/
+			this.on_show = this.get_on_show(json['on-show']);
 			
-			
-			this.style = {
-				values:				[],
-				colour:				'#3030d0',
-				text:				'',		// <-- default not display a key
-				'font-size':		12,
-				tip:				'#val#<br>#x_label#',
-				alpha:				0.6,
-				'on-click':			null,
-				'axis':				'left'
-			};
-			
-			object_helper.merge_2( json, this.style );
-			
-			this.colour		= string.Utils.get_colour( this.props.get('colour') );
-			//this.key		= this.style.text;
+			this.colour		= this.props.get_colour('colour');
 			this.key		= this.props.get('text');
 			this.font_size	= this.props.get('font-size');
 
 			// Minor hack, replace all #key# with this key text:
-			this.style.tip = this.style.tip.replace('#key#', this.key);
 			this.props.set( 'tip', this.props.get('tip').replace('#key#', this.key) );
 			
 			
@@ -69,8 +55,19 @@
 			//
 			this.group = group;
 			
-			this.values = this.style.values;
+			this.values = this.props.get('values');
 			this.add_values();
+		}
+		
+		protected function get_on_show(json:Object): Properties {
+			
+			var on_show_root:Properties = new Properties( {
+				type:		"none",		//"pop-up",
+				cascade:	3,
+				delay:		0
+				});
+				
+			return new Properties(json, on_show_root);
 		}
 		
 		
@@ -114,20 +111,20 @@
 		protected function get_element_helper_prop( value:Object ): Properties {
 			
 			var default_style:Properties = new Properties({
-				colour:		this.style.colour,
-				tip:		this.style.tip,
-				alpha:		this.style.alpha,
-				'on-click':	this.style['on-click'],
-				axis:		this.style.axis,
+				colour:		this.props.get('colour'),
+				tip:		this.props.get('tip'),
+				alpha:		this.props.get('alpha'),
+				'on-click':	this.props.get('on-click'),
+				axis:		this.props.get('axis'),
 				'on-show':	this.on_show
 			});
-			
+		
 			var s:Properties;
 			if( value is Number )
 				s = new Properties({'top': value}, default_style);
 			else
 				s = new Properties(value, default_style);
-			
+		
 			return s;
 		}
 		
