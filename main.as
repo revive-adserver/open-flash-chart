@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/x-labels-auto-dates.txt";
+					var file:String = "../../data-files/exp.txt";
 					this.load_external_file( file );
 
 					/*
