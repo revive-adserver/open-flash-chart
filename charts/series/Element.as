@@ -113,8 +113,14 @@
 				this.browse_url( this.link );
 			else if ( this.link.substring(0, 6) == 'https:' )
 				this.browse_url( this.link );
-			else
+			else {
+				//
+				// TODO: fix the on click to pass out the chart id:
+				//
+				// var ex:ExternalInterfaceManager = ExternalInterfaceManager.getInstance();
+				// ex.callJavascript(this.link, this.index);
 				ExternalInterface.call( this.link, this.index );
+			}
 		}
 			
 		private function browse_url( url:String ):void {

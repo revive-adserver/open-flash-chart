@@ -40,62 +40,124 @@
 		
 		public override function resize( sc:ScreenCoordsBase ):void {
 			
-			var s:ScreenCoords = sc as ScreenCoords;
-			var tmp:Object = s.get_bar_coords( this.index, this.group );
-
+			// this moves everyting relative to the box (NOT the whiskers)
+			var h:Object = this.resize_helper( sc as ScreenCoords );
+			
 			// 
-			var bar_high:Number		= sc.get_y_from_val(this.high, this.right_axis);
-			var bar_top:Number		= sc.get_y_from_val(this.top, this.right_axis);
-			var bar_bottom:Number	= sc.get_y_from_val(this.bottom, this.right_axis);
-			var bar_low:Number		= sc.get_y_from_val(this.low, this.right_axis);
+			//var bar_high:Number = 0;
+			//var bar_low:Number = height;
 			
-			var top:Number;
-			var height:Number;
-			var upside_down:Boolean = false;
+			// calculate the box position:
+			var tmp:Number			= sc.get_y_from_val(Math.max(this.top, this.bottom), this.right_axis);
+			var bar_high:Number		= sc.get_y_from_val(this.high, this.right_axis) - tmp;
+			var bar_top:Number		= 0;
+			var bar_bottom:Number	= sc.get_y_from_val(this.bottom, this.right_axis) - tmp;
+			var bar_low:Number		= sc.get_y_from_val(this.low, this.right_axis) - tmp;
 			
-			if( bar_bottom < bar_top ) {
-				upside_down = true;
-			}
-			
-			height = Math.abs( bar_bottom - bar_top );
+			//var height:Number = Math.abs( bar_bottom - bar_top );
 			
 			//
 			// move the Sprite to the correct screen location:
 			//
-			this.y = bar_high;
-			this.x = tmp.x;
+			//this.y = bar_high;
+			//this.x = tmp.x;
 			
 			//
 			// tell the tooltip where to show its self
 			//
-			this.tip_pos = new flash.geom.Point( this.x + (tmp.width / 2), this.y );
+			this.tip_pos = new flash.geom.Point( this.x + (h.width / 2), this.y );
 			
-			var mid:Number = tmp.width / 2;
+			var mid:Number = h.width / 2;
 			this.graphics.clear();
+			
+			this.top_line(mid, bar_high);
+			
+			if ( this.top == this.bottom )
+				this.draw_doji(h.width, bar_top);
+			else
+				this.draw_box(bar_top, h.height, h.width, h.upside_down);
+			
+			this.bottom_line(mid, h.height, bar_low);
+			// top line
+			
+			//
+			// tell the tooltip where to show its self
+			//
+			this.tip_pos = new flash.geom.Point(
+				this.x + (h.width / 2),
+				this.y + bar_high );
+		}
+		
+		private function top_line(mid:Number, height:Number): void {
 			// top line
 			this.graphics.beginFill( this.colour, 1.0 );
 			this.graphics.moveTo( mid-1, 0 );
 			this.graphics.lineTo( mid+1, 0 );
-			this.graphics.lineTo( mid+1, bar_top-bar_high );
-			this.graphics.lineTo( mid-1, bar_top-bar_high );
+			this.graphics.lineTo( mid+1, height );
+			this.graphics.lineTo( mid-1, height );
 			this.graphics.endFill();
+		}
+		
+		private function bottom_line(mid:Number, top:Number, bottom:Number):void {
+			this.graphics.beginFill( this.colour, 1.0 );
+			this.graphics.moveTo( mid-1, top );
+			this.graphics.lineTo( mid+1, top );
+			this.graphics.lineTo( mid+1, bottom );
+			this.graphics.lineTo( mid-1, bottom );
+			this.graphics.endFill();
+		}
+		
+		//
+		// http://en.wikipedia.org/wiki/Candlestick_chart
+		//
+		private function draw_doji(width:Number, pos:Number):void {
+			// box
+			this.graphics.beginFill( this.colour, 1.0 );
+			this.graphics.moveTo( 0, pos-1 );
+			this.graphics.lineTo( width, pos-1 );
+			this.graphics.lineTo( width, pos+1 );
+			this.graphics.lineTo( 0, pos+1 );
+			this.graphics.endFill();
+		}
+		
+	
+		
+		private function draw_box(top:Number, bottom:Number, width:Number, upside_down:Boolean):void {
 			
 			// box
 			this.graphics.beginFill( this.colour, 1.0 );
-			this.graphics.moveTo( 0, bar_top-bar_high );
-			this.graphics.lineTo( tmp.width, bar_top-bar_high );
-			this.graphics.lineTo( tmp.width, bar_bottom-bar_high );
-			this.graphics.lineTo( 0, bar_bottom-bar_high );
+			this.graphics.moveTo( 0, top );
+			this.graphics.lineTo( width, top );
+			this.graphics.lineTo( width, bottom );
+			this.graphics.lineTo( 0, bottom );
+			this.graphics.lineTo( 0, top );
+			
+			if ( upside_down) {
+				// snip out the middle of the box:
+				this.graphics.moveTo( 2, top+2 );
+				this.graphics.lineTo( width-2, top+2 );
+				this.graphics.lineTo( width-2, bottom-2 );
+				this.graphics.lineTo( 2, bottom-2 );
+				this.graphics.lineTo( 2, top+2 );
+			}
 			this.graphics.endFill();
 			
-			// top line
-			this.graphics.beginFill( this.colour, 1.0 );
-			this.graphics.moveTo( mid-1, bar_bottom-bar_high );
-			this.graphics.lineTo( mid+1, bar_bottom-bar_high );
-			this.graphics.lineTo( mid+1, bar_low-bar_high );
-			this.graphics.lineTo( mid-1, bar_low-bar_high );
-			this.graphics.endFill();
-			
+			if ( upside_down ) {
+				
+				//
+				// HACK: we fill an invisible rect over
+				//       the hollow rect so the mouse over
+				//       event fires correctly (even when the
+				//       mouse is in the hollow part)
+				//
+				this.graphics.lineStyle( 0, 0, 0 );
+				this.graphics.beginFill(0, 0);
+				this.graphics.moveTo( 2, top-2 );
+				this.graphics.lineTo( width-2, top-2 );
+				this.graphics.lineTo( width-2, bottom-2 );
+				this.graphics.lineTo( 2, bottom-2 );
+				this.graphics.endFill();
+			}
 		}
 			
 	}

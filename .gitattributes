@@ -1,6 +1,7 @@
 * text=auto !eol
 /.FlashDevelop_AS3_cache -text
 /ErrorMsg.as -text
+/ExternalInterfaceManager.as -text
 /JsonErrorMsg.as -text
 /JsonInspector.as -text
 /Loading.as -text

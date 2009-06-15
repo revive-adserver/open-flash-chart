@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/line-bug-report.txt";
+					var file:String = "../../data-files/candle.txt";
 					this.load_external_file( file );
 
 					/*
@@ -125,6 +125,19 @@ package  {
 
 			// more interface
 			this.addCallback("get_version",	getVersion);
+			
+			// TODO: chanf all external to use this:
+			
+			//
+			// tell our external interface manager to pass out the chart ID
+			// with every external call.
+			//
+			if ( this.chart_parameters['id'] )
+			{
+				var ex:ExternalInterfaceManager = ExternalInterfaceManager.getInstance();
+				ex.setUp(this.chart_parameters['id']);
+			}
+			
 			
 			// tell the web page that we are ready
 			if( this.chart_parameters['id'] )
