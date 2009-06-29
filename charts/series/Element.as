@@ -32,6 +32,9 @@
 		
 		public function Element()
 		{
+			// elements don't change shape much, so lets
+			// cache it
+			this.cacheAsBitmap = true;
 			this.right_axis = false;	
 		}
 		

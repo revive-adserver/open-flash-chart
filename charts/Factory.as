@@ -132,6 +132,9 @@ package charts {
 						bar_group++;
 						break;
 		
+					case 'tags':
+						collection.add( new Tags( elements[i] ) );
+						break;
 				}
 			}
 			/*

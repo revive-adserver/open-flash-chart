@@ -64,6 +64,7 @@ charts/Scatter.as -text
 charts/ScatterBase.as -text
 charts/ScatterLine.as -text
 charts/Shape.as -text
+charts/Tags.as -text
 charts/series/Element.as -text
 charts/series/bars/Bar.as -text
 charts/series/bars/Bar3D.as -text
@@ -98,6 +99,7 @@ charts/series/pies/DefaultPieProperties.as -text
 charts/series/pies/PieLabel.as -text
 charts/series/pies/PieSlice.as -text
 charts/series/pies/PieSliceContainer.as -text
+charts/series/tags/Tag.as -text
 com/adobe/crypto/MD5.as -text
 com/adobe/crypto/SHA1.as -text
 com/adobe/crypto/SHA224.as -text

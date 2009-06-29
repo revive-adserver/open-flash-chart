@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/candle.txt";
+					var file:String = "../../data-files/tags.txt";
 					this.load_external_file( file );
 
 					/*
