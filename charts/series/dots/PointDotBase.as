@@ -32,7 +32,7 @@
 				delay:		0
 				});
 			*/
-				
+			
 			// line charts have a value and no X, scatter charts have
 			// x, y (not value): radar charts have value, Y does not 
 			// make sense.

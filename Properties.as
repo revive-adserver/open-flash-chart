@@ -10,7 +10,7 @@
 		
 		public function Properties( json:Object, parent:Properties=null ) {
 		
-			// why is this a dictionary?
+			// Dictionary can use an object as a key
 			this._props = new Dictionary();
 			this._parent = parent;
 			
@@ -25,14 +25,16 @@
 		
 		public function get(name:String):* {
 			
-			if ( this._props[name] != null )
+			// is this key in the dictionary?
+			if ( name in this._props )
 				return this._props[name];
 			
+			// test the parent
 			if ( this._parent != null )
 				return this._parent.get( name );
 				
 			//
-			// property not found, report and dump the stack trace
+			// key/property not found, report and dump the stack trace
 			//
 			var e:Error = new Error();
 			var str:String = e.getStackTrace();

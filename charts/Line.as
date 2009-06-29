@@ -75,7 +75,7 @@ package charts {
 				value = { value:value };
 			
 			var tmp:Properties = new Properties(value, this.dot_style);
-				
+			
 			// Minor hack, replace all #key# with this key text,
 			// we do this *after* the merge.
 			tmp.set( 'tip', tmp.get('tip').replace('#key#', this.key) );

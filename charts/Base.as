@@ -363,6 +363,10 @@ package charts {
 			{
 				var tmp:Element;
 				
+				//
+				// TODO: fix or document what is happening in link-null-bug.txt
+				//
+				
 				// filter out the 'null' values
 				if( val != null )
 				{
