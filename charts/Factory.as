@@ -135,6 +135,11 @@ package charts {
 					case 'tags':
 						collection.add( new Tags( elements[i] ) );
 						break;
+						
+					case 'arrow':
+						collection.add( new Arrow( elements[i] ) );
+						break;
+						
 				}
 			}
 			/*

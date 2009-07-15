@@ -44,5 +44,4 @@
 			this.graphics.endFill();
 		}
 	}
-	
 }

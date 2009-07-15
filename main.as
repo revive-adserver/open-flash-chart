@@ -56,7 +56,7 @@ package  {
 	
 	public class main extends Sprite {
 		
-		public  var VERSION:String = "2 Kvasir";
+		public  var VERSION:String = "2 Lug Wyrm Charmer";
 		private var title:Title = null;
 		//private var x_labels:XAxisLabels;
 		private var x_axis:XAxis;

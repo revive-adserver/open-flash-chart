@@ -30,6 +30,7 @@ caurina/transitions/SpecialPropertySplitter.as -text
 caurina/transitions/TweenListObj.as -text
 caurina/transitions/Tweener.as -text
 charts/Area.as -text
+charts/Arrow.as -text
 charts/Bar.as -text
 charts/Bar3D.as -text
 charts/BarBase.as -text

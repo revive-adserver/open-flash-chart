@@ -35,10 +35,12 @@
 			if ( style['on-click'] )
 				this.set_on_click( style['on-click'] );
 				
-			this.text = this.replace_magic_values(style.text);
+			//this.text = this.replace_magic_values(style.text);
+			this.htmlText = this.replace_magic_values(style.text);
 			this.autoSize = "left";
 			this.alpha = style.alpha;
 			this.border = style.border;
+		
 			if (style.background != null) {
 				this.background = true;
 				this.backgroundColor = Utils.get_colour(style.background);
@@ -55,6 +57,7 @@
 			fmt.color = style.colour;
 			fmt.size = style['font-size'];
 			fmt.bold = style.bold;
+			fmt.underline = style.underline;
 			fmt.align = "center";
 			this.setTextFormat(fmt);
 			
