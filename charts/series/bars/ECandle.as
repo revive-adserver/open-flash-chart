@@ -7,13 +7,19 @@
 	public class ECandle extends Base {
 		protected var high:Number;
 		protected var low:Number;
+		protected var negative_colour:Number;
 
 		
 		public function ECandle( index:Number, props:Properties, group:Number ) {
 			
 			super(index, props, group);
-			//super(index, {'top':props.get('top')}, props.get_colour('colour'), props.get('tip'), props.get('alpha'), group);
-			//super(index, style, style.colour, style.tip, style.alpha, group);
+			
+			tr.aces( props.has('negative-colour'), props.get_colour('negative-colour'));
+			
+			if( props.has('negative-colour') )
+				this.negative_colour = props.get_colour('negative-colour');
+			else
+				this.negative_colour = this.colour;
 		}
 		
 		//
@@ -69,15 +75,18 @@
 			
 			var mid:Number = h.width / 2;
 			this.graphics.clear();
+			var c:Number = this.colour;
+			if ( h.upside_down)
+				c = this.negative_colour;
 			
-			this.top_line(mid, bar_high);
+			this.top_line(c, mid, bar_high);
 			
 			if ( this.top == this.bottom )
-				this.draw_doji(h.width, bar_top);
+				this.draw_doji(c, h.width, bar_top);
 			else
-				this.draw_box(bar_top, h.height, h.width, h.upside_down);
+				this.draw_box(c, bar_top, h.height, h.width, h.upside_down);
 			
-			this.bottom_line(mid, h.height, bar_low);
+			this.bottom_line(c, mid, h.height, bar_low);
 			// top line
 			
 			//
@@ -88,9 +97,9 @@
 				this.y + bar_high );
 		}
 		
-		private function top_line(mid:Number, height:Number): void {
+		private function top_line(colour:Number, mid:Number, height:Number): void {
 			// top line
-			this.graphics.beginFill( this.colour, 1.0 );
+			this.graphics.beginFill( colour, 1.0 );
 			this.graphics.moveTo( mid-1, 0 );
 			this.graphics.lineTo( mid+1, 0 );
 			this.graphics.lineTo( mid+1, height );
@@ -98,8 +107,8 @@
 			this.graphics.endFill();
 		}
 		
-		private function bottom_line(mid:Number, top:Number, bottom:Number):void {
-			this.graphics.beginFill( this.colour, 1.0 );
+		private function bottom_line(colour:Number, mid:Number, top:Number, bottom:Number):void {
+			this.graphics.beginFill( colour, 1.0 );
 			this.graphics.moveTo( mid-1, top );
 			this.graphics.lineTo( mid+1, top );
 			this.graphics.lineTo( mid+1, bottom );
@@ -110,9 +119,9 @@
 		//
 		// http://en.wikipedia.org/wiki/Candlestick_chart
 		//
-		private function draw_doji(width:Number, pos:Number):void {
+		private function draw_doji(colour:Number, width:Number, pos:Number):void {
 			// box
-			this.graphics.beginFill( this.colour, 1.0 );
+			this.graphics.beginFill( colour, 1.0 );
 			this.graphics.moveTo( 0, pos-1 );
 			this.graphics.lineTo( width, pos-1 );
 			this.graphics.lineTo( width, pos+1 );
@@ -122,10 +131,10 @@
 		
 	
 		
-		private function draw_box(top:Number, bottom:Number, width:Number, upside_down:Boolean):void {
+		private function draw_box(colour:Number, top:Number, bottom:Number, width:Number, upside_down:Boolean):void {
 			
 			// box
-			this.graphics.beginFill( this.colour, 1.0 );
+			this.graphics.beginFill( colour, 1.0 );
 			this.graphics.moveTo( 0, top );
 			this.graphics.lineTo( width, top );
 			this.graphics.lineTo( width, bottom );
