@@ -9,8 +9,6 @@
 		{
 			super(json);
 			
-			
-			
 			this.style = {
 				values:			[],
 				width:			2,
@@ -35,12 +33,6 @@
 			this.key		= style.text;
 			this.font_size	= style['font-size'];
 			this.circle_size = style['dot-size'];
-			
-			for each( var val:Object in style.values )
-			{
-				if( val['dot-size'] == null )
-					val['dot-size'] = style['dot-size'];
-			}
 			
 			this.values = style.values;
 

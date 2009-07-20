@@ -135,16 +135,12 @@
 				
 				var tmp:Sprite = this.getChildAt(i) as Sprite;
 				
-				
-				tr.ace("!!");
 				//
 				// filter out the line masks
 				//
 				if( tmp is Element )
 				{
 					var e:Element = tmp as Element;
-					
-					tr.ace(e.x);
 					
 					// tell the point where it is on the screen
 					// we will use this info to place the tooltip

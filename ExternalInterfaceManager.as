@@ -27,6 +27,7 @@
 		public function setUp(chart_id:String):void {
 			this.has_id = true;
 			this.chart_id = chart_id;
+	tr.aces('this.chart_id',this.chart_id);
 		}
 		
 		// THIS NEEDS FIXING. I can't figure out how to preprend the chart

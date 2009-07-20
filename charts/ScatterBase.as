@@ -63,7 +63,8 @@
 			var default_style:Object = {
 				width:			this.style.width,	// stroke
 				colour:			this.style.colour,
-				tip:			this.style.tip
+				tip:			this.style.tip,
+				'dot-size':		10
 			};
 			
 			// Apply dot style defined at the plot level
@@ -78,7 +79,7 @@
 			
 			//var tmp:Properties = new Properties( value, this.default_style);
 			var tmp:Properties = new Properties(value, this.dot_style);
-			
+	
 			// attach the animation bits:
 			tmp.set('on-show', this.on_show);
 			
