@@ -95,7 +95,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/scatter.txt";
+					var file:String = "../../data-files/y-axis-auto-steps.txt";
 					this.load_external_file( file );
 
 					/*
@@ -138,12 +138,17 @@ package  {
 				ex.setUp(this.chart_parameters['id']);
 			}
 			
-			
+			//
+			// TODO: move this so it is called after set_the_stage is ready.
+			//
 			// tell the web page that we are ready
 			if( this.chart_parameters['id'] )
 				this.callExternalCallback("ofc_ready", this.chart_parameters['id']);
 			else
 				this.callExternalCallback("ofc_ready");
+			//
+			//
+			//
 			
 			this.set_the_stage();
 		}
@@ -321,7 +326,6 @@ package  {
 			// var all:String = ExternalInterface.call("window.location.href.toString");
 			var vars:String = this.callExternalCallback("window.location.search.substring", 1);
 			
-			tr.aces( 1, vars );
 			if( vars != null )
 			{
 				var p:Array = vars.split( '&' );

@@ -23,8 +23,6 @@ package elements.axis {
 		// so now it has access to the stage
 		protected function _init(json:Object, name:String, style:Object): void {
 			
-			tr.aces('YAxisBase.init() stage', this.stage.stageHeight);
-
 			this.style = style;
 			
 			if( json[name] )
@@ -37,6 +35,8 @@ package elements.axis {
 			this.tick_length = style['tick-length'];
 			
 			tr.aces('YAxisBase auto', this.auto_range( 50001 ));
+			tr.aces('YAxisBase min, max', this.style.min, this.style.max);
+			
 			
 			if ( this.style.max == null ) {
 				// we have labels, so use the number of
