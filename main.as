@@ -81,35 +81,12 @@ package  {
 	
 		
 		public function main() {
+			
+			// hook into all the events
+			this.set_the_stage();
+
 			this.chart_parameters = LoaderInfo(this.loaderInfo).parameters;
-			if( this.chart_parameters['loading'] == null )
-				this.chart_parameters['loading'] = 'Loading data...';
-				
-			var l:Loading = new Loading(this.chart_parameters['loading']);
-			this.addChild( l );
-
 			this.build_right_click_menu();
-			this.ok = false;
-
-			if( !this.find_data() )
-			{
-				// no data found -- debug mode?
-				try {
-					var file:String = "../../data-files/y-axis-auto-steps.txt";
-					this.load_external_file( file );
-
-					/*
-					// test AJAX calls like this:
-					var file:String = "../data-files/bar-2.txt";
-					this.load_external_file( file );
-					file = "../data-files/radar-area.txt";
-					this.load_external_file( file );
-					*/
-				}
-				catch (e:Error) {
-					this.show_error( 'Loading test data\n'+file+'\n'+e.message );
-				}
-			}
 			
 			// inform javascript that it can call our reload method
 			this.addCallback("reload", reload); // mf 18nov08, line 110 of original 'main.as'
@@ -126,7 +103,7 @@ package  {
 			// more interface
 			this.addCallback("get_version",	getVersion);
 			
-			// TODO: chanf all external to use this:
+			// TODO: change all external to use this:
 			
 			//
 			// tell our external interface manager to pass out the chart ID
@@ -138,20 +115,61 @@ package  {
 				ex.setUp(this.chart_parameters['id']);
 			}
 			
-			//
-			// TODO: move this so it is called after set_the_stage is ready.
-			//
-			// tell the web page that we are ready
-			if( this.chart_parameters['id'] )
-				this.callExternalCallback("ofc_ready", this.chart_parameters['id']);
-			else
-				this.callExternalCallback("ofc_ready");
-			//
-			//
-			//
-			
-			this.set_the_stage();
+			this.load_data();
 		}
+		
+		private function set_the_stage():void {
+
+			tr.aces('set_the_stage()');
+			
+			// tell flash to align top left, and not to scale
+			// anything (we do that in the code)
+			this.stage.align = StageAlign.TOP_LEFT;
+			//
+			// ----- RESIZE ----
+			//
+			// noScale: now we can pick up resize events
+			this.stage.scaleMode = StageScaleMode.NO_SCALE;
+            this.stage.addEventListener(Event.ACTIVATE, this.activateHandler);
+		}
+		
+		private function activateHandler(event:Event):void {
+			
+            tr.aces("activateHandler:", event);
+			//tr.aces("stage", this.stage);
+		}
+		
+		private function load_data():void {
+			
+			this.ok = false;
+		
+			if( this.chart_parameters['loading'] == null )
+				this.chart_parameters['loading'] = 'Loading data...';
+				
+			var l:Loading = new Loading(this.chart_parameters['loading']);
+			this.addChild( l );
+			
+			tr.aces('find_data()');
+			if( !this.find_data() )
+			{
+				// no data found -- debug mode?
+				try {
+					var file:String = "../../data-files/line-display-bug-with-russian-text.txt";
+					this.load_external_file( file );
+
+					/*
+					// test AJAX calls like this:
+					var file:String = "../data-files/bar-2.txt";
+					this.load_external_file( file );
+					file = "../data-files/radar-area.txt";
+					this.load_external_file( file );
+					*/
+				}
+				catch (e:Error) {
+					this.show_error( 'Loading test data\n'+file+'\n'+e.message );
+				}
+			}
+        }
 		
 		private function addCallback(functionName:String, closure:Function): void {
 
@@ -437,21 +455,7 @@ package  {
 			return this.x_legend;
 		}
 		
-		private function set_the_stage():void {
-
-			// tell flash to align top left, and not to scale
-			// anything (we do that in the code)
-			this.stage.align = StageAlign.TOP_LEFT;
-			//
-			// ----- RESIZE ----
-			//
-			// noScale: now we can pick up resize events
-			this.stage.scaleMode = StageScaleMode.NO_SCALE;
-            this.stage.addEventListener(Event.ACTIVATE, this.activateHandler);
-            this.stage.addEventListener(Event.RESIZE, this.resizeHandler);
-			this.stage.addEventListener(Event.MOUSE_LEAVE, this.mouseOut);
-			this.addEventListener( MouseEvent.MOUSE_OVER, this.mouseMove );
-		}
+		
 		
 		
 		private function mouseMove( event:Event ):void {
@@ -504,13 +508,10 @@ package  {
 			this.tooltip.closest( elements );
 		}
 		
-		private function activateHandler(event:Event):void {
-            tr.aces("activateHandler:", event);
-			tr.aces("stage", this.stage);
-        }
+		
 
         private function resizeHandler(event:Event):void {
-            // tr.ace("resizeHandler: " + event);
+            tr.aces("resizeHandler: ", event);
             this.resize();
         }
 		
@@ -676,6 +677,8 @@ package  {
 		}
 		
 		//
+		// This is called from load_external (async) or
+		// load via external javascript function (sync)
 		// we have data! parse it and make the chart
 		//
 		private function parse_json( json_string:String ):void {
@@ -708,6 +711,20 @@ package  {
 			}
 			
 			json_string = '';
+			
+			// we are displaying things, either a chart or an error message,
+			// so now we want to watch for resizes
+			this.stage.addEventListener(Event.RESIZE, this.resizeHandler);
+			this.stage.addEventListener(Event.MOUSE_LEAVE, this.mouseOut);
+			this.addEventListener( MouseEvent.MOUSE_OVER, this.mouseMove );
+			
+			//
+			// tell the web page that we are ready
+			//
+			if( this.chart_parameters['id'] )
+				this.callExternalCallback("ofc_ready", this.chart_parameters['id']);
+			else
+				this.callExternalCallback("ofc_ready");
 		}
 		
 		private function build_chart( json:Object ):void {
@@ -891,7 +908,7 @@ package  {
 			
 			this.contextMenu = cm;
 		}
-		
+		/*
 		public function format_y_axis_label( val:Number ): String {
 //			if( this._y_format != undefined )
 //			{
@@ -904,7 +921,7 @@ package  {
 //			else
 				return NumberUtils.format(val,2,true,true,false);
 		}
-
+*/
 
 	}
 	

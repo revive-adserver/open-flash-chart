@@ -34,7 +34,7 @@ package elements.axis {
 			this.stroke = style.stroke;
 			this.tick_length = style['tick-length'];
 			
-			tr.aces('YAxisBase auto', this.auto_range( 50001 ));
+			tr.aces('YAxisBase auto', this.auto_range( 7500 ));
 			tr.aces('YAxisBase min, max', this.style.min, this.style.max);
 			
 			
@@ -94,7 +94,7 @@ package elements.axis {
 			var p:Number = Math.pow(10, l) / 2;
 			maxValue = Math.round((maxValue * 1.1) / p) * p;
 			return maxValue;
-			
+			/**/
 			
 			/*
 			var maxValue:Number = Math.max($bar_1->data) * 1.07;
@@ -142,6 +142,25 @@ package elements.axis {
 
 		}
 		
+		private function doMultiplier(steps:Number):Number
+		{
+			// TODO: This starting value will not work on decimal values: 0.001, 0.00001...
+			var multiplier:Number = 0.1;
+			// Multiply "multiplier" by the digits in "multiplierStep" to get a sequence of: 1, 2, 5, 10, 20, 50...
+			var multiplierStep:Array = [2, 2.5, 2];
+			var i:Number = 0;
+			do {
+				multiplier *= multiplierStep[i];
+				//tr.ace("MULTIPLIER: " + multiplier + " index: " + i + " step: " + multiplierStep[i] + " steps: " + steps);
+				if ((steps / multiplier) < multiplierStep[i])
+					break;
+				i++;
+				if (i >= multiplierStep.length)
+					i = 0;
+			} while (true);
+			return multiplier;
+		} 
+
 		public function get_style():Object { return null;  }
 		
 		//
@@ -174,7 +193,8 @@ package elements.axis {
 		private function get_steps(min:Number, max:Number, height:Number):Number {
 			// try to avoid infinite loops...
 			if ( this.style.steps == 0 )
-				this.style.steps = 1;
+				//this.style.steps = 1;
+				this.style.steps = doMultiplier (Math.round((max - min) / (height / 40))); 
 				
 			if ( this.style.steps < 0 )
 				this.style.steps *= -1;
