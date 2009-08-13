@@ -28,11 +28,11 @@
 			this.default_style = new DefaultDotProperties(
 				json['dot-style'], this.style.colour, this.style.axis);
 			
-			this.line_width = style.width;
+//			this.line_width = style.width;
 			this.colour		= string.Utils.get_colour( style.colour );
 			this.key		= style.text;
 			this.font_size	= style['font-size'];
-			this.circle_size = style['dot-size'];
+//			this.circle_size = style['dot-size'];
 			
 			this.values = style.values;
 

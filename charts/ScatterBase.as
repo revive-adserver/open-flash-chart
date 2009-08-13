@@ -10,8 +10,7 @@
 	
 	public class ScatterBase extends Base {
 
-		// TODO: move this into Base
-		protected var props:Properties;
+
 		protected var style:Object;
 		private var on_show:Properties;
 		private var dot_style:Properties;

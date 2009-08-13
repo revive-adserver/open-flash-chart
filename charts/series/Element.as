@@ -59,6 +59,10 @@
 		public function get_x(): Number {
 			return this._x;
 		}
+		
+		public function get_y(): Number {
+			return this._y;
+		}
 
 		/**
 		 * When true, this element is displaying a tooltip

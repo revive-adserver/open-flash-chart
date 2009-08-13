@@ -5,7 +5,7 @@
 
 		function YAxisRight() {}
 		
-		public override function init(json:Object): void {
+		public override function init(range:Object, json:Object): void {
 		
 			this.labels = new YAxisLabelsRight(json);
 			this.addChild( this.labels );
@@ -23,8 +23,8 @@
 				'3d':			0,
 				steps:			1,
 				visible:		false,	// <-- by default this is invisible
-				min:			0,
-				max:			10
+				min:			null,
+				max:			null
 			};
 
 			//
@@ -35,7 +35,7 @@
 			if( json.y_axis_right )
 				style.visible = true;
 
-			super._init(json, 'y_axis_right', style);
+			super._init(range, json, 'y_axis_right', style);
 		}
 		
 		public override function resize( label_pos:Number, sc:ScreenCoords ):void {

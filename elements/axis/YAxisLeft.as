@@ -5,7 +5,7 @@
 
 		function YAxisLeft() {}
 		
-		public override function init(json:Object): void {
+		public override function init(range:Object, json:Object): void {
 
 			this.labels = new YAxisLabelsLeft(json);
 			this.addChild( this.labels );
@@ -23,11 +23,11 @@
 				'3d':			0,
 				steps:			1,
 				visible:		true,
-				min:			0,
+				min:			null,
 				max:			null
 			};
 			
-			super._init(json, 'y_axis', style);
+			super._init(range, json, 'y_axis', style);
 		}
 		
 		public override function resize( label_pos:Number, sc:ScreenCoords ):void {

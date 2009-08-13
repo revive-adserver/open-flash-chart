@@ -10,12 +10,17 @@ package charts {
 		// accessed by the Keys object to display the key
 		protected var key:String;
 		protected var font_size:Number;
+		protected var colour:Number;
+		
+		protected var props:Properties;
 		
 		
-		public var colour:Number;
-		public var line_width:Number;
-		public var circle_size:Number;
-		
+//		TODO: remove this after release 'm'
+//		
+//		public var line_width:Number;
+//		public var circle_size:Number;
+//		protected var axis:Number;
+
 		//
 		// hold the Element values, for lines this is an
 		// array of string Y values, for Candle it is an
@@ -24,10 +29,8 @@ package charts {
 		//
 		public var values:Array;
 		
-		protected var axis:Number;
 		
-		public function Base()
-		{}
+		public function Base() {}
 		
 		public function get_colour(): Number {
 			return this.colour;
@@ -51,7 +54,7 @@ package charts {
 		// whatever sets of data that *may* be attached to the right
 		// Y Axis call this to see if they are attached to it or not.
 		// All lines, area and bar charts call this.
-		//
+		/*
 		protected function which_axis_am_i_attached_to( data:Array, i:Number ): Number {
 			//
 			// some data sets are attached to the right
@@ -73,7 +76,7 @@ package charts {
 					
 			return 1;
 		}
-			
+		*/
 		
 		/**
 		 * may be called by main.as to make the X Axis labels
@@ -113,14 +116,36 @@ package charts {
 			return min;
 		}
 		
+		public function get_y_range():Object {
+			
+			var max:Number = Number.MIN_VALUE;
+			var min:Number = Number.MAX_VALUE;
+			//
+			// count the non-mask items:
+			//
+			for ( var i:Number = 0; i < this.numChildren; i++ ) {
+				if ( this.getChildAt(i) is Element ) {
+					
+					var e:Element = this.getChildAt(i) as Element;
+					var y:Number = e.get_y();
+					max = Math.max(max, y);
+					min = Math.min(min, y);
+				}
+			}
+	
+			return {max: max, min: min};
+		}
+		
+		public function left_axis():Boolean {
+			
+			// anything that is not 'right' defaults to the left axis
+			return this.props.get('axis')!='right';
+		}
+		
 		//
 		// this should be overriden
 		//
 		public function resize( sc:ScreenCoordsBase ):void{}
-		
-		//public function draw( val:String, mc:Object ):void {}
-		
-		
 		
 		
 		//

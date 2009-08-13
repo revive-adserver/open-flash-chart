@@ -22,10 +22,6 @@
 		public var style:Object;
 		public var total_value:Number = 0;
 		
-		// new:
-		private var props:Properties;
-		//
-		
 		public function Pie( json:Object )
 		{
 			this.labels = new Array();

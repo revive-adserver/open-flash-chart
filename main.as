@@ -154,7 +154,7 @@ package  {
 			{
 				// no data found -- debug mode?
 				try {
-					var file:String = "../../data-files/line-display-bug-with-russian-text.txt";
+					var file:String = "../../data-files/y-axis-auto-range-lines.txt";
 					this.load_external_file( file );
 
 					/*
@@ -836,8 +836,11 @@ package  {
 			
 			// now these children have access to the stage,
 			// tell them to init
-			this.y_axis.init(json);
-			this.y_axis_right.init(json);
+			tr.ace_json(this.obs.get_y_range());
+			tr.ace_json(this.obs.get_y_range(false));
+			
+			this.y_axis.init(this.obs.get_y_range(), json);
+			this.y_axis_right.init(this.obs.get_y_range(false), json);
 		}
 		
 		/**

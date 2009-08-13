@@ -16,7 +16,6 @@ package charts {
 	public class Line extends Base
 	{
 		// JSON style:
-		protected var props:Properties;
 		private var dot_style:Properties;
 		private var on_show:Properties;
 		private var line_style:LineStyle;

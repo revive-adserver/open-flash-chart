@@ -46,8 +46,9 @@
 				json['dot-style'], this.style.colour, this.style.axis);
 				
 			this.style.colour = string.Utils.get_colour( style.colour );
-			
-			this.line_width = style.width;
+
+//	TODO: do we use this?
+//			this.line_width = style.width;
 			this.colour		= this.style.colour;
 			this.key		= style.text;
 			this.font_size	= style['font-size'];

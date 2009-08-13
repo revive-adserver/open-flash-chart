@@ -37,6 +37,23 @@ package charts {
 			return min;
 		}
 		
+		public function get_y_range(left_axis:Boolean = true):Object {
+			
+			var max:Number = Number.MIN_VALUE;
+			var min:Number = Number.MAX_VALUE;
+
+			for each( var o:Base in this.sets ) {
+				
+				if (left_axis == o.left_axis())
+				{
+					var range:Object = o.get_y_range();
+					max = Math.max(max, range.max);
+					min = Math.min(min, range.min);
+				}
+			}
+
+			return {max: max, min: min};
+		}
 		
 		// get x, y co-ords of vals
 		public function resize( sc:ScreenCoordsBase ):void {

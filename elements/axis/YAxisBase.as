@@ -17,11 +17,11 @@ package elements.axis {
 		
 		function YAxisBase() {}
 		
-		public function init(json:Object): void {}
+		public function init(range:Object, json:Object): void {}
 		
 		// called once the sprite has been added to the stage
 		// so now it has access to the stage
-		protected function _init(json:Object, name:String, style:Object): void {
+		protected function _init(range:Object, json:Object, name:String, style:Object): void {
 			
 			this.style = style;
 			
@@ -34,15 +34,26 @@ package elements.axis {
 			this.stroke = style.stroke;
 			this.tick_length = style['tick-length'];
 			
-			tr.aces('YAxisBase auto', this.auto_range( 7500 ));
+			tr.aces('YAxisBase auto', this.round_dn( range.min ), this.round_up( range.max ));
 			tr.aces('YAxisBase min, max', this.style.min, this.style.max);
 			
+			if ( this.labels.i_need_labels )
+			{
+				if ( this.style.max == null && this.style.min == null ) {
+					// No labels and not min, max set:
+					this.style.min = this.round_dn( range.min );
+					this.style.max = this.round_up( range.max );
+				}
 			
-			if ( this.style.max == null ) {
-				// we have labels, so use the number of
-				// labels as Y MAX
-				this.style.max = this.labels.y_max;
 			}
+			else
+			{
+				if ( this.style.max == null ) {
+					// we have labels, so use the number of labels as Y MAX
+					this.style.max = this.labels.y_max;
+				}
+			}
+			
 			// make sure we don't have 1,000,000 steps
 			var min:Number = Math.min(this.style.min, this.style.max);
 			var max:Number = Math.max(this.style.min, this.style.max);
@@ -87,13 +98,40 @@ package elements.axis {
 			}
 		}
 		
-		public function auto_range(max:Number): Number {
+		// round so that:
+		//  25.5 ==  26
+		// -25.5 == -26
+		
+		public function round_dn(max:Number): Number {
 			
-			var maxValue:Number = Math.max(max) * 1.07;
+			var factor:Number = 50;
+			
+			return Math.floor(max / factor) * factor;
+		}
+		
+		public function round_up(max:Number): Number {
+			
+			var factor:Number = 50;
+			
+			return Math.round(max / factor) * factor;
+			
+			/*
+			var minus:Boolean = false;
+			
+			if (max < 0 ) {
+				max *= -1;
+				minus = true;
+			}
+				
+			var maxValue:Number = max * 1.07;
 			var l:Number = Math.round(Math.log(maxValue)/Math.log(10));
 			var p:Number = Math.pow(10, l) / 2;
 			maxValue = Math.round((maxValue * 1.1) / p) * p;
+			if (minus)
+				maxValue *= -1;
+				
 			return maxValue;
+			*/
 			/**/
 			
 			/*

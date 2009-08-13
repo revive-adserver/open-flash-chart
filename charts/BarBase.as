@@ -9,8 +9,6 @@
 	public class BarBase extends Base
 	{
 		protected var group:Number;
-		//protected var style:Object;
-		protected var props:Properties;
 		protected var on_show:Properties;
 		
 		public function BarBase( json:Object, group:Number )
