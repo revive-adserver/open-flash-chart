@@ -111,6 +111,9 @@ package  {
 			//
 			if ( this.chart_parameters['id'] )
 			{
+				// Make sure externalInterface.call won't allow XSS
+				this.chart_parameters['id'] = this.chart_parameters['id'].replace(/\\/g, "\\\\");
+				
 				var ex:ExternalInterfaceManager = ExternalInterfaceManager.getInstance();
 				ex.setUp(this.chart_parameters['id']);
 			}
@@ -437,7 +440,7 @@ package  {
 			// remove the 'loading data...' msg:
 			this.removeChildAt(0);
 			var msg:ErrorMsg = new ErrorMsg( 'Open Flash Chart\nIO ERROR\nLoading test data\n' + e.text );
-			msg.add_html( 'This is the URL that I tried to open:<br><a href="'+this.URL+'">'+this.URL+'</a>' );
+			msg.add_html( 'This is the URL that I tried to open:<br><a href="' + Utils.htmlspecialchars(this.URL) + '">' + Utils.htmlspecialchars(this.URL) + '</a>' );
 			this.addChild( msg );
 		}
 		

@@ -1,10 +1,13 @@
 /**
 * ...
 * @author Default
-* @version 0.1
+* @version 0.2
 */
 
 package string {
+
+	import flash.xml.XMLNode;
+	import flash.xml.XMLNodeType;
 
 	public class Utils {
 		
@@ -26,6 +29,11 @@ package string {
 			// not recognised as a valid colour, so?
 			return Number( col );
 				
+		}
+		
+		static public function htmlspecialchars( str:String ) : String
+		{
+			return XML( new XMLNode( XMLNodeType.TEXT_NODE, str ) ).toXMLString().replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 		}
 		
 	}

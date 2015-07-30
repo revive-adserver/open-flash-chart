@@ -9,6 +9,7 @@
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import string.Utils;
+	
 	//import mx.managers.CursorManager;
 	//import mx.controls.Label;
 	
@@ -226,7 +227,7 @@
 			}
 			catch (e:Error)
 			{
-				trace("Error opening link: " + this.link);
+				trace("Error opening link: " + Utils.htmlspecialchars(this.link));
 			}
 		}
 
