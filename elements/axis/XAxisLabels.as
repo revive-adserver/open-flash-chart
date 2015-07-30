@@ -7,7 +7,7 @@ package elements.axis {
 	import elements.axis.AxisLabel;
 	import string.Utils;
 	import string.DateUtils;
-	import com.serialization.json.JSON;
+	
 	// import DateUtils;
 	
 	public class XAxisLabels extends Sprite {

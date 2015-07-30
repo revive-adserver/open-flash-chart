@@ -19,7 +19,7 @@ package  {
 	import flash.display.StageScaleMode;
 	import string.Utils;
 	import global.Global;
-	import com.serialization.json.JSON;
+	
 	import flash.external.ExternalInterface;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
@@ -688,7 +688,7 @@ package  {
 			var ok:Boolean = false;
 			
 			try {
-				var json:Object = JSON.deserialize( json_string );
+				var json:Object = JSON.parse( json_string );
 				ok = true;
 			}
 			catch (e:Error) {
@@ -730,7 +730,7 @@ package  {
 		private function build_chart( json:Object ):void {
 			
 			tr.ace('----');
-			tr.ace(JSON.serialize(json));
+			tr.ace(JSON.stringify(json));
 			tr.ace('----');
 			
 			if ( this.obs != null )

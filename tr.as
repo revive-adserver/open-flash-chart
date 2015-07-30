@@ -1,6 +1,6 @@
 package {
 	import org.flashdevelop.utils.FlashConnect;
-	import com.serialization.json.JSON;
+	
 	
 	public class tr {
 		
@@ -124,7 +124,7 @@ package {
 
 		
 		public static function ace_json( json:Object ):void {
-			tr.ace(JSON.serialize(json));
+			tr.ace(JSON.stringify(json));
 		}
 	}
 }

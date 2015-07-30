@@ -13,3 +13,15 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+== COMPILE INSTRUCTION ==
+Works with the 4.6.0 SDK from Flash Builder, targeting Flash Player 11.1
+
+Please put:
+	
+	 -load-config+=local-font-config.xml
+	 
+In the additional command line arguments of the Project config
+
+Also copy the Arial font to C:\Temp\fonts

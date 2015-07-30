@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flex-config>
+    <compiler>
+        <fonts>
+            <local-font-paths>
+                <path-element>C:/Temp/fonts</path-element>
+                <!--<path-element>/System/Library/Fonts/</path-element>-->
+            </local-font-paths>
+        </fonts>
+    </compiler>
+</flex-config>

@@ -9,7 +9,7 @@ package {
 	import flash.text.TextFormat;
 	import flash.filters.DropShadowFilter;
 	// import charts.Elements.Element;
-	import com.serialization.json.JSON;
+	
 	import string.Utils;
 	import string.Css;
 	import object_helper;
