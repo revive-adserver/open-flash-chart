@@ -8,11 +8,11 @@
   <compiler>
     <define append="true">
       <name>CONFIG::debug</name>
-      <value>true</value>
+      <value>false</value>
     </define>
     <define append="true">
       <name>CONFIG::release</name>
-      <value>false</value>
+      <value>true</value>
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
@@ -30,6 +30,7 @@
       <name>CONFIG::desktop</name>
       <value>false</value>
     </define>
+    <omit-trace-statements>true</omit-trace-statements>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
       <path-element>D:\open-flash-chart</path-element>
